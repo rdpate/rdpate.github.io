@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<title>Copy Text</title>
+<style>
+body { font-size: 200%; padding: 0 0.1em; margin: 0; }
+div.copy_line { margin: 0.1em 0; width: 100%; display: flex; }
+div.copy_line input[type="text"] { font-size: inherit; flex: 1; }
+input[type="button"] { font-size: 60%; padding-left: 0.1em; padding-right: 0.1em; margin-right: 0.1em; }
+</style>
+<script>
+function copy_line(button) { x = button.nextSibling; x.select(); navigator.clipboard.writeText(x.value); }
+function save_file() {
+    var elements = document.getElementsByTagName("input");
+    for (var i = 0; i < elements.length; ++i) {
+        e = elements[i];
+        if (e.type == "text") {
+            e.setAttribute("value", e.value);
+            }
+        }
+    var download = document.createElement("a");
+    download.download = "copy-text.html";
+    download.href = "data:text/plan;charset=utf-8," + encodeURIComponent(document.getElementsByTagName("html")[0].outerHTML);
+    download.style.display = "none";
+    document.body.appendChild(download);
+    download.click();
+    document.body.removeChild(download);
+    alert("An updated file is now in your downloads folder.");
+    }
+function add_rows() {
+    var after = document.getElementById("add_here");
+    var template = document.getElementById("template");
+    var copy = template.cloneNode(true);
+    copy.removeAttribute("id");
+    copy.removeAttribute("style");
+    for (var i = 0; i < 5; ++i) template.parentNode.insertBefore(copy.cloneNode(true), template);
+    }
+</script>
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAAB9CAMAAAC4XpwXAAAA7VBMVEX/////7McAAACqc03/xhJ/VDzHx8f/1I+udk+CVj52UDVZOyqxeFBdPyoGAgHd0bBBQUEcEw1GLiH/2Jndu3+caUf/9c+Hf2vy4L3yogNHR0f/0BNcSQcvIBX/yXvNzc36uQ2SY0JTTED7qANTOAGmhQydfUxsSTFWRCr/0oEjFxBWVlaVe1P/3ZX/36Th4eGzs7Nzc3OTk5MRDQEoHwOHh4fotxGFaAlSQQbx8fHRpg9mUAc6KwSjbQItLS2VdgseHh7EnA5FNiGlfAqDakUfGAIrJyG9mV+6rpO+oGyonYQ2KhpjTjDvwnd3b16A9AgFAAADBUlEQVRoge3b/V+aQBwHcD2xgTPSVdigZracLbZQUVNzpa3aU+7//3PG9xTkSYHjxP3w/bxe+kLx7i33AL/c5XLMMdodXdU7bYO9CubUdWJHr2eNd4k73WzxDkXNXq9n0qNOlnifks2BpmmDJj3uZ4fvgXeraQJE027h496WTaNup2JpDwub+g/W54pzdhtzwNA942xI2eVLGHrO6dz9kewByBjQ5t3wrgkHY+9JecRZ73vrn8AlTxaH0AAT72neY9Dq6l5zFXdz006g337/BulZg4AvPron5FSDXrbfFq2t2r0A32nnHyGXhNyzN/2orwZjdftwNcrtgd7Otd3D//y9FdDlkBr6sf6RMSXh8ekwy42cQWe+Xw/NNM5UUNcU9ukC3OPUNvy6KcTSiRqN162fyWeuXNME9YG5rNQcBHRPBYsaYMZGPwvhLloSC07ERlGSpGI1oAuzpT4TAnq14A5UIL0lce7GITokRBdmMMsnK3ytboVRL6zXNWE8GwvaNnV67ZIUpgfi0sWUulho0BRbkMB836w3XGHSj6ubZ9wm3ZNqK7ku7kfM99g6eScl1su71//WarUvNGYiXa7ZBZ9kZl0+UBTl5ivkGp5xURHsZ9zUKqccQrmjNHo+n795A7GG4PNpZC4hz5ZulcsfQjlueoJUOetnifQXzvqPRPpPbrqdk/hRFO564qCOOuqoo4466qijjjrqqKOOOuqoo4466qijjjrqqKOOOuqoo446J10BPfW6i2TkyYGTI8ivDHXlNwlJZtd+8f/p+xnqfz45eaILkFtS8lVezPrVh892XileZljhlkK38wh4qcyyvi69buO70OdXi2ZnW9mYUp+/OvgO9NWV70B3+nwXugfPWJ+7mz1r3T3gMtcffVeerU48fZ5KVxLmIgRn1el62kR5If5mT6GzxYez6MF11Kw42xpyOYoJT8mPM67eP2aK6MdT7VxIH9Tj62WukeLvl6F7hapcY8JbvL1COT10HvGIHo2v3yOWNrH2iOVG3co20g3ZH/cPiZ8AJx7a4N0AAAAASUVORK5CYII=">
+</head>
+<body>
+<!-- To have text appear when you open this file in your browser, put the text in the "value" quotes at the far right of the below lines. -->
+<div class="copy_line"><input type="button" value="Copy" onclick="copy_line(this)"><input type="text" value=""></div>
+<div class="copy_line"><input type="button" value="Copy" onclick="copy_line(this)"><input type="text" value=""></div>
+<div class="copy_line"><input type="button" value="Copy" onclick="copy_line(this)"><input type="text" value=""></div>
+<div class="copy_line"><input type="button" value="Copy" onclick="copy_line(this)"><input type="text" value=""></div>
+<div class="copy_line"><input type="button" value="Copy" onclick="copy_line(this)"><input type="text" value=""></div>
+<div class="copy_line" id="template" style="display: none"><input type="button" value="Copy" onclick="copy_line(this)"><input type="text" value=""></div>
+<br>
+<p>Put text into the input fields above.  At this time, only single lines can be used.  Click "Copy" and that text will be copied to your clipboard, and you can then paste it elsewhere.</p>
+<div><input type="button" value="Add Rows" onclick="add_rows()"> <input type="button" value="Download Updated File" onclick="save_file()"></div>
+</body>
+</html>
