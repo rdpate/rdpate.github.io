@@ -41,7 +41,7 @@ function suggest_deadline(now) {
         if (is_business_day(suggest_date)) days_added += 1;
     }
 
-    const minimum_add_minutes = 5;
+    const minimum_add_minutes = 6;  // 6 instead of 5 to allow for 60-second update intervals
     const round_to_minutes = 15;
     
     suggest_date.setSeconds(0);
@@ -154,5 +154,5 @@ function body_onload() {
 <option value="">(custom)</option>
 </select></label> <input style="visibility: hidden" type="text" id="other" value="" size="40" oninput="update_format(this.value)"></p>
 <hr style="margin-top: 2em;">
-<p>The above 2-business-day deadlines are taken from the current time plus 5 minutes, rounded up to a 15-minute increment.</p>
+<p>The above deadlines are at least 2 business days after today, with 5 minutes added to the current time and then rounded up to a 15-minute increment.</p>
 <p>For format codes, see <a href="https://thdoan.github.io/strftime/">https://thdoan.github.io/strftime/</a>.</p>
