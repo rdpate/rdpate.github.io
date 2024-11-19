@@ -1,0 +1,158 @@
+<!doctype html>
+<head>
+<title>Suggest Deadline</title>
+<style>
+body { font-size: 14pt; padding: 0 0.5em; margin: 0; }
+div { font-size: 150%; margin: 0.7em 0; width: 100%; }
+button { font-size: 60%; padding-left: 0.1em; padding-right: 0.1em; margin-right: 0.1em; vertical-align: middle; cursor: pointer; }
+</style>
+<script src="strftime.js"></script>
+<script>
+function date_ymd(d) {
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    return `${d.getFullYear()}-${month}-${day}`
+}
+const holidays = ["2024-11-05", "2024-11-11", "2024-11-28", "2024-11-29", "2024-12-24", "2024-12-25", "2025-01-01", "2025-01-20", "2025-04-18", "2025-05-26", "2025-07-04", "2025-09-01", "2025-10-13", "2025-11-11", "2025-11-27", "2025-11-28", "2025-12-25", "2025-12-26"];
+function is_business_day(d) {
+    switch (d.getDay()) {
+        case 0:
+        case 6:
+            return false;
+        default:
+            const last = holidays[holidays.length - 1];
+            d = date_ymd(d);
+            if (d > last) {
+                throw new Error("Holidays need to be updated.  The last holiday entered is " + last + ".");
+            }
+            return ! holidays.includes(d);
+    }
+}
+function suggest_deadline(now) {
+    // We can ignore DST switches on the assumption this will never be used from 1am to 2am.  This could be corrected with more code.
+    
+    if (!now) now = new Date();
+    
+    let days_added = 0;
+    let suggest_date = now;
+    if (!is_business_day(suggest_date)) days_added -= 1;
+    while (days_added < 2) {
+        suggest_date = new Date(suggest_date.getTime() + 24 * 60 * 60 * 1000);
+        if (is_business_day(suggest_date)) days_added += 1;
+    }
+
+    const minimum_add_minutes = 5;
+    const round_to_minutes = 15;
+    
+    suggest_date.setSeconds(0);
+    suggest_date.setMilliseconds(0);
+    if (is_business_day(now)) {
+        const min_time = new Date(now.getTime() + minimum_add_minutes * 60 * 1000);
+        const add_minutes = (round_to_minutes - min_time.getMinutes() % round_to_minutes) % round_to_minutes;
+        const suggest_time = new Date(min_time.getTime() + add_minutes * 60 * 1000);
+        suggest_date.setHours(suggest_time.getHours());
+        suggest_date.setMinutes(suggest_time.getMinutes());
+    }
+    else {
+        suggest_date.setHours(9);
+        suggest_date.setMinutes(0);
+    }
+    return suggest_date;
+}
+function refresh() {
+    var deadline;
+    try { deadline = suggest_deadline(); }
+    catch (e) {
+        clearInterval(refresh.interval_id);
+        document.body = "Error: " + e.message;
+        return;
+    }
+    document.querySelectorAll("span[data-strftime]").forEach(
+        e => e.innerHTML = strftime(e.getAttribute("data-strftime"), deadline)
+    );
+    
+}
+function select_format(new_value, default_value) {
+    const other = document.getElementById("other");
+    if (new_value == "") {
+        other.style.visibility = "visible";
+        if (other.value == "") other.value = default_value;
+        new_value = other.value;
+    }
+    else {
+        other.style.visibility = "hidden";
+    }
+    update_format(new_value);
+}
+function update_format(fmt) {
+    const holder = document.getElementById("holder");
+    holder.setAttribute("data-strftime", fmt);
+    refresh();
+    save_format(fmt);
+}
+const Cookie = {
+    // https://stackoverflow.com/a/48706852
+    get: name => {
+        let c = document.cookie.match(`(?:(?:^|.*; *)${name} *= *([^;]*).*$)|^.*$`)[1]
+        if (c) return decodeURIComponent(c)
+    },
+    set: (name, value, opts = {}) => {
+        /*If options contains days then we're configuring max-age*/
+        if (opts.days) {
+            opts['max-age'] = opts.days * 60 * 60 * 24;
+
+            /*Deleting days from options to pass remaining opts to cookie settings*/
+            delete opts.days 
+        }
+
+        /*Configuring options to cookie standard by reducing each property*/
+        opts = Object.entries(opts).reduce(
+            (accumulatedStr, [k, v]) => `${accumulatedStr}; ${k}=${v}`, ''
+        )
+
+        /*Finally, creating the key*/
+        document.cookie = name + '=' + encodeURIComponent(value) + opts
+    },
+    delete: (name, opts) => Cookie.set(name, '', {'max-age': -1, ...opts}) 
+    // path & domain must match cookie being deleted 
+}
+function save_format(new_value) {
+    //console.log("saving new_value:", new_value);
+    Cookie.set("deadline_format", new_value, {days: 365});
+}
+function load_format() {
+    const saved = Cookie.get("deadline_format");
+    if (saved) {
+        update_format(saved);
+        const other = document.getElementById("other");
+        other.value = saved;
+        
+        const select_format = document.getElementById("select_format");
+        const opts = select_format.options;
+        for (let x = 0; x < opts.length; ++x) {
+            if (saved == opts[x].value) {
+                select_format.value = saved;
+                return;
+            }
+        }
+        select_format.value = "";
+        other.style.visibility = "visible";
+    }
+}
+function body_onload() {
+    load_format();
+    refresh.interval_id = setInterval(refresh, 60 * 1000);
+    refresh();
+}
+</script>
+<body onload="body_onload()">
+<div><button onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent);">Copy</button> <span id="holder" data-strftime="%A, %B %e at %l:%M %p ET">Error: Not loaded.</span></div>
+<p><label>Format: <select id="select_format" onchange="select_format(this.options[this.selectedIndex].value, this.options[0].value)">
+<option>%A, %B %e at %l:%M %p ET</option>
+<option>%B %e, %Y, at %l:%M %p ET</option>
+<option>%m/%d/%Y, %l:%M %p ET</option>
+<option value="">(custom)</option>
+</select></label> <input style="visibility: hidden" type="text" id="other" value="" size="40" oninput="update_format(this.value)"></p>
+<hr style="margin-top: 2em;">
+<p>The above 2-business-day deadlines are taken from the current time plus 5 minutes, rounded up to a 15-minute increment.</p>
+<p>For format codes, see <a href="https://thdoan.github.io/strftime/">https://thdoan.github.io/strftime/</a>.</p>
