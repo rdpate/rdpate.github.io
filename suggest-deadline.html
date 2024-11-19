@@ -75,12 +75,13 @@ function refresh() {
 function select_format(new_value, default_value) {
     const other = document.getElementById("other");
     if (new_value == "") {
-        other.style.visibility = "visible";
         if (other.value == "") other.value = default_value;
         new_value = other.value;
+        other.style.visibility = "visible";
     }
     else {
         other.style.visibility = "hidden";
+        other.value = new_value;
     }
     update_format(new_value);
 }
