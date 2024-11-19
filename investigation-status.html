@@ -57,8 +57,7 @@ function add_entry(form, output_id) {
         if (entry_type_other == "") errors.push("Missing 'other' entry type.");
     }
 
-    if (followup_status == "" && entry_type != "[Investigator Note]" && entry_type != "Other") errors.push("Missing follow-up status.");
-    else if (followup_status == "deadline_given") {
+    if (followup_status == "deadline_given") {
         if (deadline_date == "") errors.push("Missing deadline date.");
         if (deadline_time == "") errors.push("Missing deadline time.");
     }
