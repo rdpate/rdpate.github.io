@@ -1,0 +1,213 @@
+<!doctype html>
+<head>
+<style>
+div {padding: 0.5ex;}
+</style>
+<script>
+function date_ymd(d) {
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    return `${d.getFullYear()}-${month}-${day}`
+}
+function time_ampm(d) {
+    const hours = d.getHours() - (d.getHours() > 12 ? 12 : 0);
+    const minutes = d.getMinutes().toString().padStart(2, '0');
+    const suffix = (d.getHours() < 12 ? 'AM' : 'PM');
+    return `${hours}:${minutes} ${suffix}`
+}
+function date_ymd_to_mdy(value) {
+    var [year, month, day] = value.split("-");
+    if (`${year}-${month}-${day}` != value) return value;
+    return `${month}/${day}/${year}`;
+}
+function time_24_to_ampm(value) {
+    if (value == "") return "";
+    var [hour, mins] = value.split(":");
+    if (`${hour}:${mins}` != value) return value;
+    return `${hour - (hour > 12 ? 12 : 0)}:${mins} ${hour >= 12 ? "PM" : "AM"}`;
+}
+function add_entry(form, output_id) {
+    const entry_type = form.elements.entry_type.value.trim();
+    const entry_type_other = form.elements.entry_type_other.value.trim();
+    const spoke_with = form.elements.spoke_with.value.trim();
+    const spoke_with_other = form.elements.spoke_with_other.value.trim();
+    const followup_status = form.elements.followup_status.value.trim();
+    const deadline_date = date_ymd_to_mdy(form.elements.deadline_date.value.trim());
+    const deadline_time = time_24_to_ampm(form.elements.deadline_time.value.trim());
+    const new_entry = form.elements.new_entry.value.trim();
+    
+    let errors = [];
+    if (entry_type == "") errors.push("Missing entry type.");
+    else if (entry_type.startsWith("Called ")) {
+        if (entry_type == "Called " && entry_type_other == "") errors.push("Missing phone number called.");
+        if (spoke_with == "" || (spoke_with == "other" && spoke_with_other == "")) errors.push("Missing party spoken with.");
+        if (spoke_with == "none" && followup_status == "deadline_given") errors.push("Cannot enter a deadline without also entering who was spoken with.");
+    }
+    else if (entry_type == "Answered incoming call") {
+        if (spoke_with == "claimant") {}
+        else if (spoke_with == "other") {
+            if (spoke_with_other == "") errors.push("Missing party spoken with.");
+        }
+        else errors.push("Missing party spoken with.");
+    }
+    else if (entry_type.startsWith("Emailed ")) {}
+    else if (entry_type == "Received email") {}
+    else if (entry_type == "[Investigator Note]") {}
+    else if (entry_type == "Other") {
+        if (entry_type_other == "") errors.push("Missing 'other' entry type.");
+    }
+
+    if (followup_status == "" && entry_type != "[Investigator Note]" && entry_type != "Other") errors.push("Missing follow-up status.");
+    else if (followup_status == "deadline_given") {
+        if (deadline_date == "") errors.push("Missing deadline date.");
+        if (deadline_time == "") errors.push("Missing deadline time.");
+    }
+    if (new_entry == "") errors.push("Missing new entry.");
+    if (errors.length > 0) {
+        alert(errors.join("\n"));
+        return false;
+    }
+    
+    let new_prefix = (entry_type == "Other" ? entry_type_other : entry_type);
+    if (entry_type.startsWith("Called ") || entry_type == "Answered incoming call") {
+        switch (spoke_with) {
+            case "claimant": new_prefix += " and spoke with the claimant"; break;
+            case "other": new_prefix += " and spoke with " + spoke_with_other; break;
+            case "voicemail": new_prefix += " and reached voicemail"; break;
+            case "none": new_prefix += " but did not reach anyone"; break;
+        }
+    }
+    if (!new_prefix.endsWith("]")) new_prefix += ".";
+    if (entry_type.startsWith("Called ") && followup_status == "deadline_given") {
+        new_prefix += `  More information was requested no later than ${deadline_date}, ${deadline_time}.`; 
+    }
+    new_prefix += "\n";
+    const now = new Date();
+    new_prefix = `[${date_ymd(now)}, ${time_ampm(now)}] ` + new_prefix;
+    
+    const output = document.getElementById(output_id);
+    output.innerText = new_prefix + "  " + new_entry + "\n\n" + output.innerText;
+    form.elements.new_entry.value = "";
+    return true;
+}
+function select_entry_type(value, form, other_id, spoke_with_id, copy_id) {
+    if (value == "" || value == "[Investigator Note]" || value == "Received email") {
+        document.getElementById(copy_id).style.visibility = "hidden";
+        document.getElementById(other_id).style.visibility = "hidden";
+        document.getElementById(spoke_with_id).style.visibility = "hidden";
+        form.elements.spoke_with_other.style.visibility = "hidden";
+    }
+    else if (value == "Answered incoming call") {
+        document.getElementById(copy_id).style.visibility = "hidden";
+        document.getElementById(other_id).style.visibility = "hidden";
+        document.getElementById(spoke_with_id).style.visibility = "visible";
+        form.elements.spoke_with_other.style.visibility = (form.elements.spoke_with.selectedIndex == 2 ? "visible" : "hidden");
+    }
+    else if (value.startsWith("Emailed ")) {
+        document.getElementById(copy_id).style.visibility = (value != "Emailed " ? "visible" : "hidden");
+        document.getElementById(other_id).style.visibility = (value == "Emailed " ? "visible" : "hidden");
+        document.getElementById(spoke_with_id).style.visibility = "hidden";
+        form.elements.spoke_with_other.style.visibility = "hidden";
+    }
+    else if (value.startsWith("Called ")) {
+        document.getElementById(copy_id).style.visibility = (value != "Called " ? "visible" : "hidden");
+        document.getElementById(other_id).style.visibility = (value == "Called " ? "visible" : "hidden");
+        document.getElementById(spoke_with_id).style.visibility = "visible";
+        form.elements.spoke_with_other.style.visibility = (form.elements.spoke_with.selectedIndex == 2 ? "visible" : "hidden");
+    }
+    else if (value == "Other") {
+        document.getElementById(copy_id).style.visibility = "hidden";
+        document.getElementById(other_id).style.visibility = "visible";
+        document.getElementById(spoke_with_id).style.visibility = "hidden";
+        form.elements.spoke_with_other.style.visibility = "hidden";
+    }
+}
+function is_business_day(d) {
+    const holidays = ["2024-11-05", "2024-11-11", "2024-11-28", "2024-11-29", "2024-12-24", "2024-12-25", "2025-01-01", "2025-01-20", "2025-04-18", "2025-05-26", "2025-07-04", "2025-09-01", "2025-10-13", "2025-11-11", "2025-11-27", "2025-11-28", "2025-12-25", "2025-12-26"];
+    switch (d.getDay()) {
+        case 0:
+        case 6:
+            return false;
+        default:
+            return ! holidays.includes(date_ymd(d));
+    }
+}
+function suggest_deadline(date_picker, time_picker, now) {
+    // We can ignore DST switches on the assumption  this will never be used from 1am to 2am.  This could be corrected with more code.
+    
+    if (!now) now = new Date();
+    
+    let days_added = 0;
+    let suggest_date = now;
+    if (!is_business_day(suggest_date)) days_added -= 1;
+    while (days_added < 2) {
+        suggest_date = new Date(suggest_date.getTime() + 24 * 60 * 60 * 1000);
+        if (is_business_day(suggest_date)) days_added += 1;
+    }
+    date_picker.value = date_ymd(suggest_date);
+
+    const minimum_add_minutes = 5;
+    const round_to_minutes = 15;
+    
+    if (is_business_day(now)) {
+        const min_time = new Date(new Date().getTime() + minimum_add_minutes * 60 * 1000);
+        const add_minutes = (round_to_minutes - min_time.getMinutes() % round_to_minutes) % round_to_minutes;
+        const suggest_time = new Date(min_time.getTime() + add_minutes * 60 * 1000);
+        time_picker.value = suggest_time.toTimeString().substring(0,5);
+    }
+    else time_picker.value = '09:00';
+}
+</script>
+<body>
+<form onsubmit="return false">
+<fieldset style="max-width: 100ex"><legend>Claimant Follow-up Status</legend>
+<div><label><input type="radio" id="followup_status_deadline_given" name="followup_status" value="deadline_given"> More information was requested no later than <input type="date" name="deadline_date"> <input type="time" name="deadline_time"></label> <button onclick="suggest_deadline(this.form.elements.deadline_date, this.form.elements.deadline_time); getElementById('followup_status_deadline_given').checked = true; return false;">suggest</button>  <img alt="Copy" title="Copy deadline" style="vertical-align: middle; padding-left: 1ex;" onclick="const x = forms[0].elements; const date = date_ymd_to_mdy(x.deadline_date.value.trim()); const time = time_24_to_ampm(x.deadline_time.value.trim()); const text = date + ((date == '' || time == '') ? '' : ', ') + time; navigator.clipboard.writeText(text); return false;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAVCAIAAADEqSm4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGbSURBVDhPY/iPDUxfsC48tSY2swGCYjIbItPqnjx9CZX+/x+LtrWb9zNw6olreYtpeiEjBibNxzCdWLQ19c4VUHaVMwhAQ/KGAQxMWhCdWLS1T1rEr+SCpgeCQDqZtZ4+f0WaNiACOt4vphSkLae8B8gKTqy09U7/8fNX99SleLRJaHkHxJUz5Fb2skraiGp4Cqu5M7Dpfvz8pXf6MvzaAuMrGHyiioH2yuj5q5mHsUhYf/r8tWcaAdtA2oCYX9klNrsR4jEgwO83hDZgcANJqKahom3iQnK0NXTNAYqgqYYjSW0fn8hiLNqev3zDwCDPq+DMo+CEhoCCDKw60+auxaINCD5/+dY7bdmUOatnL9o4d8mm2Ys3TpmzBoj6pi8/dPw8UAF2bXBw++6jMxdu3Lj9AMqHAai22CxEdCMDW590Bm5DNYswKB8GQIkL6EtBFTego4FpEgWx6gATqpSOr5lbMlQ5DDC0T1jEwGMkpOompOqODbkxcOo3986HKocBUMbZvOtI56RFQO9ioo5Ji3btPwlRigD//wMAGucyCG7+ffYAAAAASUVORK5CYII="><br>
+<label for="followup_status_deadline_given"><i>&nbsp; &nbsp; &nbsp; &nbsp; (included in statements for phone entries)</i></label></div>
+<div><label><input type="radio" name="followup_status" value="info_needed_no_deadline"> More information is needed, and a response deadline must still be given.<!-- <i>(Use sparingly!)</i>--></label><!--<br>&nbsp; &nbsp; &nbsp; &nbsp; Set reminder: [imagine date &amp; time entry here]--></div>
+<div><label><input type="radio" name="followup_status" value="complete"> No follow-up is required at this time.</label></div>
+</fieldset>
+<fieldset style="max-width: 100ex"><legend>Claimant Statements</legend>
+<div><label>Entry Type: <select name="entry_type" onchange="select_entry_type(this.options[this.selectedIndex].value, this.form, 'entry_type_other', 'spoke_with', 'copy'); return false;">
+<option></option>
+<option value="Called 555-555-5555">Called 555-555-5555 (primary)</option>
+<option value="Called 123-456-7890">Called 123-456-7890 (secondary)</option>
+<option value="Called ">Called ... (other)</option>
+<option>Answered incoming call</option>
+<option></option>
+<option>Emailed claimant@example.com</option>
+<option value="Emailed ">Emailed ... (other)</option>
+<option>Received email</option>
+<option></option>
+<option>[Investigator Note]</option>
+<option></option>
+<option value="Other">(other)</option>
+</select></label> <img id="copy" alt="Copy" title="Copy phone number or email" style="visibility: hidden; vertical-align: middle; padding-left: 1ex;" onclick="const x = forms[0].elements.entry_type.value; const text = (x.startsWith('Called ') && x != 'Called ' ? x.replace('Called ','') : x.startsWith('Emailed ') ? x.replace('Emailed ','') : ''); if (text != '') navigator.clipboard.writeText(text); return false;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAVCAIAAADEqSm4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGbSURBVDhPY/iPDUxfsC48tSY2swGCYjIbItPqnjx9CZX+/x+LtrWb9zNw6olreYtpeiEjBibNxzCdWLQ19c4VUHaVMwhAQ/KGAQxMWhCdWLS1T1rEr+SCpgeCQDqZtZ4+f0WaNiACOt4vphSkLae8B8gKTqy09U7/8fNX99SleLRJaHkHxJUz5Fb2skraiGp4Cqu5M7Dpfvz8pXf6MvzaAuMrGHyiioH2yuj5q5mHsUhYf/r8tWcaAdtA2oCYX9klNrsR4jEgwO83hDZgcANJqKahom3iQnK0NXTNAYqgqYYjSW0fn8hiLNqev3zDwCDPq+DMo+CEhoCCDKw60+auxaINCD5/+dY7bdmUOatnL9o4d8mm2Ys3TpmzBoj6pi8/dPw8UAF2bXBw++6jMxdu3Lj9AMqHAai22CxEdCMDW590Bm5DNYswKB8GQIkL6EtBFTego4FpEgWx6gATqpSOr5lbMlQ5DDC0T1jEwGMkpOompOqODbkxcOo3986HKocBUMbZvOtI56RFQO9ioo5Ji3btPwlRigD//wMAGucyCG7+ffYAAAAASUVORK5CYII="></div>
+<div id="entry_type_other" style="visibility: hidden"><label>Other: <input type="text" size="40" name="entry_type_other"></div>
+<div id="spoke_with" style="visibility: hidden"><label>Spoke with: <select name="spoke_with" onchange="this.form.elements.spoke_with_other.style.visibility = (this.selectedIndex == 2 ? 'visible' : 'hidden'); return false;">
+<option></option>
+<option value="claimant">...and spoke with the CLAIMANT.</option>
+<option value="other">...and spoke with ... (OTHER)</option>
+<option value="voicemail">...and reached VOICEMAIL.</option>
+<option value="none">...but did not reach anyone.</option>
+</select></label> <input type="text" name="spoke_with_other" size="15" style="visibility: hidden"></div>
+
+<div>
+New Entry:<br>
+<textarea name="new_entry" style="min-width: 100ex; min-height: 20em;"></textarea><br>
+<button onclick="if (add_entry(this.form, 'entry')) document.getElementById('saved_warning').style.visibility = 'visible'; return false;">Add</button>
+</div>
+
+<hr>
+
+<div>
+All Entries: <strong id="saved_warning" style="color: red; visibility: hidden">[Warning: Not Saved]</strong><br>
+<div id="entry" style="background: #DDD; min-height: 5em; border: 1px solid"></div>
+</div>
+
+</fieldset>
+
+<br><br>
+<div>
+<button onclick="document.getElementById('saved_warning').style.visibility = 'hidden'; return false;">Save</button> (imagine this is the normal save button at the top-right of the screen)<br>(this also saves the follow-up status, even without adding a new entry)
+</div>
+</form>

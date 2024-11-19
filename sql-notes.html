@@ -1,0 +1,170 @@
+<title>SQL Notes</title>
+<style>
+h1 { border-top: 5px solid; padding-top: 15px; margin-top: 60px; }
+h1:first-child { margin-top: 0 }
+pre { padding: 5px; background: #DEF; font-size: 16pt; margin: 12pt 0 2px 0; }
+</style>
+<body>
+
+<h1>Links</h1>
+<ul>
+<li><a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/Functions.html#GUID-D079EFD3-C683-441F-977E-2C9503089982">Oracle SQL Functions</a></li>
+<li><a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/index.html">Oracle Database 19c - Get Started</a></li>
+<li><a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/functions">MS SQL Server Database Functions</a></li>
+</ul>
+
+<h1>Dates, Times, &amp; Timestamps</h1>
+
+<pre><code>ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD';  -- or 'YYYY-MON-DD'
+</code></pre><button type="button" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button>
+
+<pre><code>ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD HH24:MI:SS';  -- or 'YYYY-MON-DD HH:MI:SS PM'
+</code></pre><button type="button" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button>
+
+<pre><code>WITH report_dates AS (
+    SELECT begin_date + ( level - 1 ) AS report_date
+    FROM (
+        SELECT trunc(sysdate, 'd') - 21 AS begin_date
+             , trunc(sysdate)           AS end_date  -- This is inclusive and will be the last report_date.
+        FROM dual
+    )
+    CONNECT BY
+        level &lt;= end_date + 1 - begin_date
+)
+-- Example:
+SELECT report_date
+     , COUNT(some_date_column)  -- if using COUNT(*), then a window without any join matches will have COUNT(*) equal to 1, due to NULL
+FROM report_dates
+LEFT JOIN some_table_with_date_column ON ( some_date_column >= report_date AND some_date_column &lt; report_date + 1 )
+GROUP BY report_date
+ORDER BY report_date;
+</code></pre><button type="button" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button>
+
+<pre><code>WITH report_bwe AS (
+    SELECT begin_sunday + ( level - 1 ) * 7 AS window_begin
+         , begin_sunday + level * 7         AS next_window_begin
+         , begin_sunday + level * 7 - 1     AS bwe_date
+    FROM (
+        SELECT trunc(sysdate - 7 * lookback_weeks, 'd')      AS begin_sunday
+             , trunc(sysdate + 7 * lookahead_weeks, 'd') - 1 AS end_saturday
+        FROM (
+            SELECT 8 AS lookback_weeks
+                 , 0 AS lookahead_weeks  -- 0 excludes current week, 1 includes current week, 2 includes current and next week, etc.
+            FROM dual
+        )
+    )
+    WHERE trunc(begin_sunday, 'd') = begin_sunday          -- check that begin_sunday is a Sunday
+          AND trunc(end_saturday, 'd') + 6 = end_saturday  -- check that end_saturday is a Saturday
+          AND begin_sunday &lt; end_saturday                  -- check that begin_sunday is before end_saturday
+    CONNECT BY
+        level &lt;= (end_saturday + 1 - begin_sunday) / 7
+)
+SELECT bwe_date
+     , COUNT(some_date_column)  -- if using COUNT(*), then a window without any join matches will have COUNT(*) equal to 1, due to NULL
+FROM report_bwe
+LEFT JOIN some_table_with_date_column ON ( some_date_column >= window_begin AND some_date_column &lt; next_window_begin )
+GROUP BY bwe_date
+ORDER BY bwe_date;
+</code></pre><button type="button" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button>
+
+<pre><code>WITH report_months AS (
+    SELECT add_months(trunc(sysdate, 'month'), -(level - include_current))     AS month_begin
+         , add_months(trunc(sysdate, 'month'), -(level - include_current) + 1) AS next_month_begin
+    FROM (
+        SELECT 3 AS completed_months  -- change to however many months to go back
+             , 1 AS include_current   -- change to 0 to exclude the current month
+        FROM dual
+    )
+    CONNECT BY
+        level &lt;= completed_months + include_current
+)
+SELECT month_begin
+     , COUNT(some_date_column)  -- if using COUNT(*), then a window without any join matches will have COUNT(*) equal to 1, due to NULL
+FROM report_months
+LEFT JOIN some_table_with_date_column ON ( some_date_column >= month_begin AND some_date_column &lt; next_month_begin )
+GROUP BY month_begin
+ORDER BY month_begin;
+</code></pre><button type="button" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button>
+
+<pre><code>WITH report_windows AS (
+    SELECT begin_ts + ( level - 1 ) * duration AS window_begin
+         , begin_ts + level * duration         AS next_window_begin
+    FROM (
+        SELECT trunc(sysdate, 'd') - 21 AS begin_ts   -- First window's beginning timestamp.
+             , trunc(sysdate)           AS end_ts     -- Last window's ending timestamp, but will be rounded up if the last window is not a full duration.
+             , 7                        AS duration   -- Window duration as fractions of a day.  2/24 is two hours; 7 is seven days.
+
+             -- to show year-plus history, these are convenient begin dates (to put in for begin_ts above)
+             , trunc(add_months(sysdate, -1), 'year')  AS ytd                 -- rolls over on Feb 1st
+             , trunc(add_months(sysdate, -13), 'year') AS last_year_plus_ytd  -- rolls over on Feb 1st
+             , trunc(add_months(sysdate, -25), 'year') AS two_years_plus_ytd  -- rolls over on Feb 1st
+        FROM dual
+    )
+    CONNECT BY
+        level &lt;= ceil((end_ts - begin_ts) / duration)
+)
+SELECT window_begin
+     , COUNT(some_date_column)  -- if using COUNT(*), then a window without any join matches will have COUNT(*) equal to 1, due to NULL
+FROM report_windows
+LEFT JOIN some_table_with_date_column ON ( some_date_column >= window_begin AND some_date_column &lt; next_window_begin )
+GROUP BY window_begin
+ORDER BY window_begin;
+</code></pre><button type="button" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button>
+
+<h1>Lists</h1>
+<p>These functions provide convenient inline lists.</p>
+
+<h2>Levels</h2>
+<pre><code>WITH integers AS (
+    SELECT level AS num
+    FROM dual
+    CONNECT BY
+        level &lt;= 42 -- number of levels, from 1 to this number (inclusive)
+)
+SELECT *
+FROM integers
+</code></pre><button type="button" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button>
+
+<h2>List of Numbers</h2>
+<pre><code>SELECT column_value
+FROM <b>sys.odcinumberlist(1, 2, 3)</b>;
+</code></pre><button type="button" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button>
+
+<h2>List of Strings</h2>
+<pre><code>SELECT column_value
+FROM <b>sys.odcivarchar2list('a', 'b', 'c')</b>;
+</code></pre><button type="button" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button>
+
+<h2>List of Dates</h2>
+<pre><code>SELECT column_value
+FROM <b>sys.odcidatelist(DATE '2022-10-21', DATE '2023-08-09', DATE '2024-04-19')</b>;
+</code></pre><button type="button" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button>
+
+<h2>Integer Buckets</h2>
+<ul><li>Last bucket is unbounded, but is written with an "impossibly large" upper limit to avoid checking NULL.</li></ul>
+<pre><code>WITH buckets_minimums AS (
+    SELECT ROWNUM       AS num
+         , column_value AS min_value
+    FROM sys.odcinumberlist(0, 31, 46, 61, 76
+                          , 91, 121)
+), buckets AS (
+    SELECT CASE
+                 WHEN max_value IS NULL THEN min_value || '+'
+                 ELSE min_value
+                          || '-'
+                          || max_value
+             END                         AS name
+         , min_value
+         , coalesce(max_value, 999999999) AS max_value
+    FROM (
+        SELECT bucket.num
+             , bucket.min_value
+             , next_bucket.min_value - 1 AS max_value  -- NULL means unbounded
+        FROM buckets_minimums bucket
+        LEFT JOIN buckets_minimums next_bucket ON ( next_bucket.num = bucket.num + 1 )
+    )
+)
+SELECT *
+FROM buckets
+ORDER BY max_value;
+</code></pre><button type="button" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button>
