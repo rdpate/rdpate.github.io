@@ -168,3 +168,35 @@ SELECT *
 FROM buckets
 ORDER BY max_value;
 </code></pre><button type="button" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button>
+
+<hr>
+<h2>Miscellaneous</h2>
+<pre><code>-- Handles positive numbers:
+--  round(VALUE, -greatest(0, floor(log(10, VALUE)) - 2))
+-- Handles all real numbers:
+--  round(VALUE, -greatest(0, case when VALUE = 0 then 0 else floor(log(10, abs(VALUE))) - 2 end))
+
+SELECT value
+     , round(value, - cut_places) AS rounded
+     , log10
+     , cut_places
+FROM (
+    SELECT value
+         , CASE
+                 WHEN value != 0 THEN round(log(10
+                                                  , abs(value))
+                                              , 4)
+             END AS log10
+         , CASE
+                 WHEN value = 0 THEN 0
+                 ELSE floor(log(10
+                                  , abs(value))) - 2
+             END AS cut_places
+    FROM (
+        SELECT column_value AS value
+        FROM sys.odcinumberlist(- 12345.6789, - 1234.5678, - 123.4567, - 12.3456, - 1.2345
+                              , 0, 0.1234, 1.2345, 12.3456, 123.4567
+                              , 1234.5789, 12345.6789, 123456.789, 1234567.89, 12345678.9
+                              , 123456789, 1234567890)
+    )
+);</code></pre><button type="button" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button>
