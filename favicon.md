@@ -1,0 +1,1 @@
+* [Favicon.ico](favicon.ico) modified from an icon by [itim2101 at Flaticon](https://www.flaticon.com/free-icon/clipboard_1103440).
