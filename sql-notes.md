@@ -111,6 +111,37 @@ title: SQL Notes
 
 <!-- -->
 
+    WITH report_windows AS (
+        -- purpose: Return [begin, end] for each month from first_year and first_month_no through today, excluding months not between first_month_no and last_month_no (which possibly wraps around New Year's Day).
+        SELECT window_begin
+             , add_months(window_begin, 1) - ( 1 / 60 / 60 / 24 ) AS window_end
+        FROM (
+            SELECT add_months(first_month, level - 1) AS window_begin
+                 , first_month_no
+                 , last_month_no
+            FROM (
+                SELECT x.*
+                     , add_months(TO_DATE(first_year || '-01-01', 'YYYY-MM-DD')
+                                  , first_month_no - 1) AS first_month
+                FROM (
+                    SELECT 2015 AS first_year       -- First year included.
+                         , 10   AS first_month_no   -- First month included.
+                         , 3    AS last_month_no    -- Last month included.  If less than first_month, then in the next year.  If equal to first_month, then only one month per year.
+                    FROM dual
+                ) x
+            )
+            CONNECT BY
+                level <= months_between(add_months(trunc(sysdate, 'year')
+                                                 , 11)
+                                      , first_month)
+        )
+        WHERE window_begin <= sysdate
+              AND mod(EXTRACT(MONTH FROM window_begin) + 12 - first_month_no
+                    , 12) <= mod(last_month_no + 12 - first_month_no, 12)
+    )
+    SELECT *
+    FROM report_months;
+
 ## Lists
 
 These functions provide convenient inline lists.
