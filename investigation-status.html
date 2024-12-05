@@ -34,6 +34,8 @@ function add_entry(form, output_id) {
     const followup_status = form.elements.followup_status.value.trim();
     const deadline_date = date_ymd_to_mdy(form.elements.deadline_date.value.trim());
     const deadline_time = time_24_to_ampm(form.elements.deadline_time.value.trim());
+    const waiting_description = form.elements.waiting_other.value.trim();
+    const waiting_date = form.elements.waiting_date.value.trim();
     const new_entry = form.elements.new_entry.value.trim();
     
     let errors = [];
@@ -60,6 +62,10 @@ function add_entry(form, output_id) {
     if (followup_status == "deadline_given") {
         if (deadline_date == "") errors.push("Missing deadline date.");
         if (deadline_time == "") errors.push("Missing deadline time.");
+    }
+    else if (followup_status == "waiting_other") {
+        if (waiting_description == "") errors.push("Missing short description of what is being waited upon.");
+        if (waiting_date == "") errors.push("Missing waiting date.");
     }
     if (new_entry == "") errors.push("Missing new entry.");
     if (errors.length > 0) {
@@ -162,8 +168,9 @@ function suggest_deadline(date_picker, time_picker, now) {
 <fieldset style="max-width: 100ex"><legend>Claimant Follow-up Status</legend>
 <div><label><input type="radio" id="followup_status_deadline_given" name="followup_status" value="deadline_given"> More information was requested no later than <input type="date" name="deadline_date"> <input type="time" name="deadline_time"></label> <button onclick="suggest_deadline(this.form.elements.deadline_date, this.form.elements.deadline_time); getElementById('followup_status_deadline_given').checked = true; return false;">suggest</button>  <img alt="Copy" title="Copy deadline" style="vertical-align: middle; padding-left: 1ex;" onclick="const x = forms[0].elements; const date = date_ymd_to_mdy(x.deadline_date.value.trim()); const time = time_24_to_ampm(x.deadline_time.value.trim()); const text = date + ((date == '' || time == '') ? '' : ', ') + time; navigator.clipboard.writeText(text); return false;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAVCAIAAADEqSm4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGbSURBVDhPY/iPDUxfsC48tSY2swGCYjIbItPqnjx9CZX+/x+LtrWb9zNw6olreYtpeiEjBibNxzCdWLQ19c4VUHaVMwhAQ/KGAQxMWhCdWLS1T1rEr+SCpgeCQDqZtZ4+f0WaNiACOt4vphSkLae8B8gKTqy09U7/8fNX99SleLRJaHkHxJUz5Fb2skraiGp4Cqu5M7Dpfvz8pXf6MvzaAuMrGHyiioH2yuj5q5mHsUhYf/r8tWcaAdtA2oCYX9klNrsR4jEgwO83hDZgcANJqKahom3iQnK0NXTNAYqgqYYjSW0fn8hiLNqev3zDwCDPq+DMo+CEhoCCDKw60+auxaINCD5/+dY7bdmUOatnL9o4d8mm2Ys3TpmzBoj6pi8/dPw8UAF2bXBw++6jMxdu3Lj9AMqHAai22CxEdCMDW590Bm5DNYswKB8GQIkL6EtBFTego4FpEgWx6gATqpSOr5lbMlQ5DDC0T1jEwGMkpOompOqODbkxcOo3986HKocBUMbZvOtI56RFQO9ioo5Ji3btPwlRigD//wMAGucyCG7+ffYAAAAASUVORK5CYII="><br>
 <label for="followup_status_deadline_given"><i>&nbsp; &nbsp; &nbsp; &nbsp; (included in statements for phone entries)</i></label></div>
-<div><label><input type="radio" name="followup_status" value="info_needed_no_deadline"> Follow-up is needed, and a deadline must still be given. <i>(Use sparingly!)</i></label><!--<br>&nbsp; &nbsp; &nbsp; &nbsp; Set reminder: [imagine date &amp; time entry here]--></div>
-<div><label><input type="radio" name="followup_status" value="complete"> No follow-up is needed at this time.</label></div>
+<div><label><input type="radio" name="followup_status" value="info_needed_no_deadline"> Follow-up is needed, and a deadline must still be given.<!-- <i>(Use sparingly!)</i> --></label></div>
+<div><label><input type="radio" name="followup_status" value="complete"> No follow-up is needed at this time.<br><i>&nbsp; &nbsp; &nbsp; &nbsp; [insert summary of follow-up status with other issues for same claimant assigned to same investigator]</i></label></div>
+<div><label><input type="radio" name="followup_status" value=waiting_other> Waiting on <input type=text name=waiting_other size=21 placeholder="(short description)"> until <input type=date name=waiting_date> <input type=time>.<br><i>&nbsp; &nbsp; &nbsp; &nbsp; (date is required, time is optional)</i></label></div>
 </fieldset>
 <fieldset style="max-width: 100ex"><legend>Claimant Statements</legend>
 <div><label>Entry Type: <select name="entry_type" onchange="select_entry_type(this.options[this.selectedIndex].value, this.form, 'entry_type_other', 'spoke_with', 'copy'); return false;">
@@ -188,11 +195,15 @@ function suggest_deadline(date_picker, time_picker, now) {
 <option value="other">...and spoke with ... (OTHER)</option>
 <option value="voicemail">...and reached VOICEMAIL.</option>
 <option value="none">...but did not reach anyone.</option>
-</select></label> <input type="text" name="spoke_with_other" size="15" style="visibility: hidden"></div>
+</select></label> <input type="text" name="spoke_with_other" size="15" style="visibility: hidden" placeholder="Who?"></div>
 
 <div>
 New Entry:<br>
-<textarea name="new_entry" style="min-width: 100ex; min-height: 20em;"></textarea><br>
+<textarea name="new_entry" style="min-width: 100ex; min-height: 20em;" placeholder="Upon clicking &quot;Add&quot;, the new entry will be prefixed the current date, current time, the entry type, and the entry details (phone number, email address, etc) from just above.
+
+For phone call entries only, if follow-up status has a deadline, then the new entry will also include: &quot;More information was requested no later than [deadline].&quot;
+
+Non-phone entries and follow-up status other than a deadline will NOT be included in the new entry."></textarea><br>
 <button onclick="if (add_entry(this.form, 'entry')) document.getElementById('saved_warning').style.visibility = 'visible'; return false;">Add</button>
 </div>
 
