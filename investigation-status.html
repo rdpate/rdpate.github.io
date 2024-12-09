@@ -1,5 +1,6 @@
 <!doctype html>
 <head>
+<title>Investigation Status Mockup</title>
 <style>
 div { padding: 0.5ex; }
 td { padding: 0.5ex; }
@@ -27,18 +28,24 @@ function time_24_to_ampm(value) {
     if (`${hour}:${mins}` != value) return value;
     return `${hour - (hour > 12 ? 12 : 0)}:${mins} ${hour >= 12 ? "PM" : "AM"}`;
 }
-function add_entry(form, output_id) {
-    const entry_type = form.elements.entry_type.value.trim();
-    const entry_type_other = form.elements.entry_type_other.value.trim();
-    const spoke_with = form.elements.spoke_with.value.trim();
-    const spoke_with_other = form.elements.spoke_with_other.value.trim();
-    const followup_status = form.elements.followup_status.value.trim();
-    const deadline_date = date_ymd_to_mdy(form.elements.deadline_date.value.trim());
-    const deadline_time = time_24_to_ampm(form.elements.deadline_time.value.trim());
-    const waiting_description = form.elements.waiting_other.value.trim();
-    const waiting_date = form.elements.waiting_date.value.trim();
-    const new_entry = form.elements.new_entry.value.trim();
-    
+function add_entry(form, prefix, output_id) {
+    const entry_type = form.elements[prefix + "entry_type"].value;
+    const entry_type_other = form.elements[prefix + "entry_type_other"].value.trim();
+    const spoke_with = form.elements[prefix + "spoke_with"].value.trim();
+    const spoke_with_other = form.elements[prefix + "spoke_with_other"].value.trim();
+    const followup_status = form.elements[prefix + "followup_status"].value.trim();
+    const deadline_date_ymd = form.elements[prefix + "deadline_date"].value.trim();
+    const deadline_date = date_ymd_to_mdy(deadline_date_ymd);
+    const deadline_time_24 = form.elements[prefix + "deadline_time"].value.trim();
+    const deadline_time = time_24_to_ampm(deadline_time_24);
+    const waiting_description = form.elements[prefix + "waiting_other"].value.trim();
+    const waiting_date_ymd = form.elements[prefix + "waiting_date"].value.trim();
+    const waiting_date = date_ymd_to_mdy(waiting_date_ymd);
+    const waiting_time_24 = form.elements[prefix + "waiting_time"].value.trim();
+    const waiting_time = time_24_to_ampm(waiting_time_24);
+    const new_entry = form.elements[prefix + "new_entry"].value.trim();
+    const now = new Date();
+
     let errors = [];
     if (entry_type == "") errors.push("Missing entry type.");
     else if (entry_type.startsWith("Called ")) {
@@ -48,33 +55,34 @@ function add_entry(form, output_id) {
     }
     else if (entry_type == "Answered incoming call") {
         if (spoke_with == "claimant") {}
-        else if (spoke_with == "other") {
-            if (spoke_with_other == "") errors.push("Missing party spoken with.");
-        }
-        else errors.push("Missing party spoken with.");
+        else if (spoke_with != "other" || spoke_with_other == "") errors.push("Missing party spoken with.");
     }
     else if (entry_type.startsWith("Emailed ")) {}
+    else if (entry_type.startsWith("Faxed ")) {}
     else if (entry_type == "Received email") {}
     else if (entry_type == "[Investigator Note]") {}
-    else if (entry_type == "Other") {
+    else if (entry_type == "Other ") {
         if (entry_type_other == "") errors.push("Missing 'other' entry type.");
     }
 
     if (followup_status == "deadline_given") {
         if (deadline_date == "") errors.push("Missing deadline date.");
         if (deadline_time == "") errors.push("Missing deadline time.");
+        if (deadline_date && deadline_time && now > new Date(deadline_date_ymd + (deadline_time_24 ? "T" + deadline_time_24 : ""))) errors.push("Deadline is in the past.");
     }
     else if (followup_status == "waiting_other") {
         if (waiting_description == "") errors.push("Missing short description of what is being waited upon.");
         if (waiting_date == "") errors.push("Missing waiting date.");
+        if (waiting_date && now > new Date(waiting_date_ymd + (waiting_time_24 ? "T" + waiting_time_24 : ""))) errors.push("Waiting date/time is in the past.");
     }
     if (new_entry == "") errors.push("Missing new entry.");
     if (errors.length > 0) {
-        alert(errors.join("\n"));
+        if (errors.length == 1) alert("Error: " + errors[0]);
+        else alert("Errors:\n\n* " + errors.join("\n* "));
         return false;
     }
-    
-    let new_prefix = (entry_type == "Other" ? entry_type_other : entry_type);
+
+    let new_prefix = (entry_type == "Other " ? entry_type_other : entry_type + (entry_type.endsWith(" ") ? entry_type_other : ""));
     if (entry_type.startsWith("Called ") || entry_type == "Answered incoming call") {
         switch (spoke_with) {
             case "claimant": new_prefix += " and spoke with the claimant"; break;
@@ -84,49 +92,55 @@ function add_entry(form, output_id) {
         }
     }
     if (!new_prefix.endsWith("]")) new_prefix += ".";
-    if (entry_type.startsWith("Called ") && followup_status == "deadline_given") {
-        new_prefix += `  More information was requested no later than ${deadline_date}, ${deadline_time}.`; 
+    if ((entry_type.startsWith("Called ") || entry_type == "Answered incoming call") && followup_status == "deadline_given") {
+        new_prefix += `  More information was requested no later than ${deadline_date}, ${deadline_time}.`;
     }
     new_prefix += "\n";
-    const now = new Date();
     new_prefix = `[${date_ymd(now)}, ${time_ampm(now)}] ` + new_prefix;
-    
+
     const output = document.getElementById(output_id);
     output.innerText = new_prefix + "  " + new_entry + "\n\n" + output.innerText;
-    form.elements.new_entry.value = "";
+    form.elements[prefix + "new_entry"].value = "";
+    
+    mark_unsaved();
     return true;
 }
-function select_entry_type(value, form, other_id, spoke_with_id, copy_id) {
+function mark_unsaved() { document.getElementById("unsaved_warning").style.visibility = "visible"; }
+function select_entry_type(value, form, prefix) {
+    const spoke_with_id = prefix + "spoke_with";
+    const spoke_with_select = form.elements[spoke_with_id];
     if (value == "" || value == "[Investigator Note]" || value == "Received email") {
-        document.getElementById(copy_id).style.visibility = "hidden";
-        document.getElementById(other_id).style.visibility = "hidden";
+        document.getElementById(prefix + "copy").style.visibility = "hidden";
         document.getElementById(spoke_with_id).style.visibility = "hidden";
-        form.elements.spoke_with_other.style.visibility = "hidden";
+        document.getElementById(prefix + "spoke_with_other").style.visibility = "hidden";
     }
     else if (value == "Answered incoming call") {
-        document.getElementById(copy_id).style.visibility = "hidden";
-        document.getElementById(other_id).style.visibility = "hidden";
+        document.getElementById(prefix + "copy").style.visibility = "hidden";
         document.getElementById(spoke_with_id).style.visibility = "visible";
-        form.elements.spoke_with_other.style.visibility = (form.elements.spoke_with.selectedIndex == 2 ? "visible" : "hidden");
+        spoke_with_select.options[spoke_with_select.options.length - 2].disabled = true;
+        spoke_with_select.options[spoke_with_select.options.length - 1].disabled = true;
+        document.getElementById(prefix + "spoke_with_other").style.visibility = (spoke_with_select.value == "other" ? "visible" : "hidden");
     }
     else if (value.startsWith("Emailed ")) {
-        document.getElementById(copy_id).style.visibility = (value != "Emailed " ? "visible" : "hidden");
-        document.getElementById(other_id).style.visibility = (value == "Emailed " ? "visible" : "hidden");
+        document.getElementById(prefix + "copy").style.visibility = (!value.endsWith(" ") ? "visible" : "hidden");
         document.getElementById(spoke_with_id).style.visibility = "hidden";
-        form.elements.spoke_with_other.style.visibility = "hidden";
+        document.getElementById(prefix + "spoke_with_other").style.visibility = "hidden";
     }
     else if (value.startsWith("Called ")) {
-        document.getElementById(copy_id).style.visibility = (value != "Called " ? "visible" : "hidden");
-        document.getElementById(other_id).style.visibility = (value == "Called " ? "visible" : "hidden");
+        document.getElementById(prefix + "copy").style.visibility = (!value.endsWith(" ") ? "visible" : "hidden");
         document.getElementById(spoke_with_id).style.visibility = "visible";
-        form.elements.spoke_with_other.style.visibility = (form.elements.spoke_with.selectedIndex == 2 ? "visible" : "hidden");
+        spoke_with_select.options[spoke_with_select.options.length - 2].disabled = false;
+        spoke_with_select.options[spoke_with_select.options.length - 1].disabled = false;
+        document.getElementById(prefix + "spoke_with_other").style.visibility = (spoke_with_select.value == "other" ? "visible" : "hidden");
     }
-    else if (value == "Other") {
-        document.getElementById(copy_id).style.visibility = "hidden";
-        document.getElementById(other_id).style.visibility = "visible";
+    else if (value == "Other ") {
+        document.getElementById(prefix + "copy").style.visibility = "hidden";
         document.getElementById(spoke_with_id).style.visibility = "hidden";
-        form.elements.spoke_with_other.style.visibility = "hidden";
+        document.getElementById(prefix + "spoke_with_other").style.visibility = "hidden";
     }
+
+    document.getElementById(prefix + "entry_type_other").style.visibility = (value.endsWith(" ") ? "visible" : "hidden");
+    update_will_include_deadline(prefix);
 }
 function is_business_day(d) {
     const holidays = ["2024-11-05", "2024-11-11", "2024-11-28", "2024-11-29", "2024-12-24", "2024-12-25", "2025-01-01", "2025-01-20", "2025-04-18", "2025-05-26", "2025-07-04", "2025-09-01", "2025-10-13", "2025-11-11", "2025-11-27", "2025-11-28", "2025-12-25", "2025-12-26"];
@@ -138,11 +152,11 @@ function is_business_day(d) {
             return ! holidays.includes(date_ymd(d));
     }
 }
-function suggest_deadline(date_picker, time_picker, now) {
-    // We can ignore DST switches on the assumption  this will never be used from 1am to 2am.  This could be corrected with more code.
-    
+function suggest_deadline(date_picker, time_picker, now=null) {
+    // We can ignore DST switches on the assumption this will never be used from 1am to 2am.  This could be corrected with more code.
+
     if (!now) now = new Date();
-    
+
     let days_added = 0;
     let suggest_date = now;
     if (!is_business_day(suggest_date)) days_added -= 1;
@@ -154,7 +168,7 @@ function suggest_deadline(date_picker, time_picker, now) {
 
     const minimum_add_minutes = 5;
     const round_to_minutes = 15;
-    
+
     if (is_business_day(now)) {
         const min_time = new Date(new Date().getTime() + minimum_add_minutes * 60 * 1000);
         const add_minutes = (round_to_minutes - min_time.getMinutes() % round_to_minutes) % round_to_minutes;
@@ -163,73 +177,155 @@ function suggest_deadline(date_picker, time_picker, now) {
     }
     else time_picker.value = '09:00';
 }
+function update_will_include_deadline(prefix, visible) {
+    if (visible === undefined) {
+        const deadline_given = document.getElementById(prefix + "followup_status_deadline_given").checked;
+        const entry_type = document.forms[0].elements[prefix + "entry_type"].value;
+        const is_phone = entry_type.startsWith("Called ") || entry_type == "Answered incoming call";
+        visible = deadline_given && is_phone;
+    }
+    document.getElementById(prefix + "will_include_deadline").style.visibility = (visible ? "visible" : "hidden");
+}
 </script>
 <body>
-<table style="border: 1px solid; border-collapse: collapse; margin-bottom: 1em"><tr style="border: 1px solid"><td valign=top align=center><img src="data:image/png;base64,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" height=15 width=15 onclick="alert(this.title)" title="The design notes appear like this."><td>This icon indicates design notes which you can read by clicking the icon or holding your mouse over the icon.<br>These icons will NOT appear in the final product.<tr><td valign=top align=center><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAVCAIAAADEqSm4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGbSURBVDhPY/iPDUxfsC48tSY2swGCYjIbItPqnjx9CZX+/x+LtrWb9zNw6olreYtpeiEjBibNxzCdWLQ19c4VUHaVMwhAQ/KGAQxMWhCdWLS1T1rEr+SCpgeCQDqZtZ4+f0WaNiACOt4vphSkLae8B8gKTqy09U7/8fNX99SleLRJaHkHxJUz5Fb2skraiGp4Cqu5M7Dpfvz8pXf6MvzaAuMrGHyiioH2yuj5q5mHsUhYf/r8tWcaAdtA2oCYX9klNrsR4jEgwO83hDZgcANJqKahom3iQnK0NXTNAYqgqYYjSW0fn8hiLNqev3zDwCDPq+DMo+CEhoCCDKw60+auxaINCD5/+dY7bdmUOatnL9o4d8mm2Ys3TpmzBoj6pi8/dPw8UAF2bXBw++6jMxdu3Lj9AMqHAai22CxEdCMDW590Bm5DNYswKB8GQIkL6EtBFTego4FpEgWx6gATqpSOr5lbMlQ5DDC0T1jEwGMkpOompOqODbkxcOo3986HKocBUMbZvOtI56RFQO9ioo5Ji3btPwlRigD//wMAGucyCG7+ffYAAAAASUVORK5CYII="><td>Clicking this icon does a clipboard copy of the item to the left of the icon.<br>This appears after a deadline, phone number, or email address.</table>
+<table style="border: 1px solid; border-collapse: collapse; margin-bottom: 1em"><tr style="border: 1px solid"><td valign=top align=center><img src="data:image/png;base64,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" height=15 width=15 onclick="alert(this.title)" title="The design notes appear like this."><td>This icon indicates design notes which you can read by clicking the icon or holding your mouse over the icon.<br>These icons only exist for this mockup and will NOT appear in the final product.<tr><td valign=top align=center><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAVCAIAAADEqSm4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGbSURBVDhPY/iPDUxfsC48tSY2swGCYjIbItPqnjx9CZX+/x+LtrWb9zNw6olreYtpeiEjBibNxzCdWLQ19c4VUHaVMwhAQ/KGAQxMWhCdWLS1T1rEr+SCpgeCQDqZtZ4+f0WaNiACOt4vphSkLae8B8gKTqy09U7/8fNX99SleLRJaHkHxJUz5Fb2skraiGp4Cqu5M7Dpfvz8pXf6MvzaAuMrGHyiioH2yuj5q5mHsUhYf/r8tWcaAdtA2oCYX9klNrsR4jEgwO83hDZgcANJqKahom3iQnK0NXTNAYqgqYYjSW0fn8hiLNqev3zDwCDPq+DMo+CEhoCCDKw60+auxaINCD5/+dY7bdmUOatnL9o4d8mm2Ys3TpmzBoj6pi8/dPw8UAF2bXBw++6jMxdu3Lj9AMqHAai22CxEdCMDW590Bm5DNYswKB8GQIkL6EtBFTego4FpEgWx6gATqpSOr5lbMlQ5DDC0T1jEwGMkpOompOqODbkxcOo3986HKocBUMbZvOtI56RFQO9ioo5Ji3btPwlRigD//wMAGucyCG7+ffYAAAAASUVORK5CYII="><td>Clicking this icon does a clipboard copy of the item to the left of the icon.<br>This appears after a deadline, phone number, or email address.</table>
 <form onsubmit="return false">
-<fieldset style="max-width: 100ex"><legend>Claimant Follow-up Status</legend>
-<div><label><input disabled type="radio" name="followup_status" value="deadline_other"> More information was requested no later than <i>[see design notes]</i>. <img src="data:image/png;base64,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" height=15 width=15 onclick="alert(this.title)"  title="This option would be shown only if a deadline was recently entered on another issue for the same party.
+
+<div style="display: flex; flex-wrap: wrap">
+<div style="flex-basis: 100%; max-width: 199ex; text-align: right;"><strong id=unsaved_warning style="color: red; visibility: hidden">[Warning: Not Saved]</strong></div>
+<div style="flex-basis: 100%; max-width: 199ex; background: navy;"><span style="float: right"><button style="margin: 0.5ex; padding: 0.25ex 0.5ex" onclick="document.getElementById('unsaved_warning').style.visibility = 'hidden'; return false;">Save</button> <img src="data:image/png;base64,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" height=15 width=15 onclick="alert(this.title)" title="This is the normal save button.
+
+Follow-up status will be saved even if there has not been a new entry."></span></div>
+
+<div>
+<fieldset style="width: 95ex"><legend>Claimant Follow-up Status</legend>
+<div><label><input disabled type=radio name=clmt_followup_status value=deadline_other onclick="update_will_include_deadline('clmt_'); mark_unsaved()"> More information was requested no later than <i>[see design notes]</i>. <img src="data:image/png;base64,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" height=15 width=15 onclick="alert(this.title)"  title="This option would be shown only if a deadline was recently entered on another issue for the same party.
 
 This option is needed to easily enter different statements on multiple issues, where the statements are specific to that issue.
 
-Even when a deadline was recently given on another issue, the user still needs the next option.
+This option is disabled because the mock-up only has one issue."></label></div>
+<div><label><input type=radio id=clmt_followup_status_deadline_given name=clmt_followup_status value=deadline_given onclick="update_will_include_deadline('clmt_'); mark_unsaved()"> More information was requested no later than <input type=date name=clmt_deadline_date onclick="this.parentElement.firstElementChild.click()"> <input type=time name=clmt_deadline_time onclick="this.parentElement.firstElementChild.click()"></label>. <button onclick="suggest_deadline(this.form.elements.clmt_deadline_date, this.form.elements.clmt_deadline_time); getElementById('clmt_followup_status_deadline_given').checked = true; this.previousElementSibling.firstElementChild.click(); return false;">suggest</button>  <img alt=Copy title="Copy deadline" style="vertical-align: middle; padding-left: 1ex;" onclick="const x = forms[0].elements; const date = date_ymd_to_mdy(x.clmt_deadline_date.value.trim()); const time = time_24_to_ampm(x.clmt_deadline_time.value.trim()); const text = date + ((date == '' || time == '') ? '' : ', ') + time; navigator.clipboard.writeText(text); return false;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAVCAIAAADEqSm4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGbSURBVDhPY/iPDUxfsC48tSY2swGCYjIbItPqnjx9CZX+/x+LtrWb9zNw6olreYtpeiEjBibNxzCdWLQ19c4VUHaVMwhAQ/KGAQxMWhCdWLS1T1rEr+SCpgeCQDqZtZ4+f0WaNiACOt4vphSkLae8B8gKTqy09U7/8fNX99SleLRJaHkHxJUz5Fb2skraiGp4Cqu5M7Dpfvz8pXf6MvzaAuMrGHyiioH2yuj5q5mHsUhYf/r8tWcaAdtA2oCYX9klNrsR4jEgwO83hDZgcANJqKahom3iQnK0NXTNAYqgqYYjSW0fn8hiLNqev3zDwCDPq+DMo+CEhoCCDKw60+auxaINCD5/+dY7bdmUOatnL9o4d8mm2Ys3TpmzBoj6pi8/dPw8UAF2bXBw++6jMxdu3Lj9AMqHAai22CxEdCMDW590Bm5DNYswKB8GQIkL6EtBFTego4FpEgWx6gATqpSOr5lbMlQ5DDC0T1jEwGMkpOompOqODbkxcOo3986HKocBUMbZvOtI56RFQO9ioo5Ji3btPwlRigD//wMAGucyCG7+ffYAAAAASUVORK5CYII="> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAOSAAADkgHKEu2wAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAqNQTFRF////JbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJbfTJrfTJ7jTKLjUKbjUKrnUK7nULLnULbrVLrrVMLvVM7zWNLzWNbzWNr3WOL3XOb3XOr7XO77XPL/YPr/YQMDYQMDZQcDZQ8HZRMHZRsLaScPaSsPaS8PbS8TbTMTbTsXbT8XbUMXcUcXcUsbcU8bcVsfdWMjdWcjeXMneXcreXsrfYMrfYcvfY8vfY8zgZMzgZczgaM3gac7ha87hcNDicdDic9HjdNHjddLjdtLjd9LkedPketPkfNTlfdTlftTlf9XlgdXmg9bmhNbmhdfmhtfnh9fniNjnidjnitjni9nojNnojdnokNrpkdvpktvpk9vplNzpltzql93qmN3qmt7rm97rnN7rnd/rnt/sn9/soeDsouDso+HspOHtpeHtpuLtqeLurOTureTuruTvr+Tvr+XvsOXvseXvsubvtObwtefwuejxuujxu+jxu+nxvenyvuryv+rywOrywuvzw+vzxOzzx+z0yO30ye30yu30y+70zO71ze71ze/1z+/10vD20/D21PH21/L32PL32fL32fP32vP42/P43fT43vT43/T43/X54PX54/b55Pb55Pb65vf65/f66Pf66fj76vj76/n77Pn77fn77vn88Pr88fr88/v99Pv99fz99vz99/z9+P3++f3++v3++/7+/P7+/f7//v//////k7rfVQAAADd0Uk5TAAEDBAYLDA4VHB4fNDg8PUJDR0pbc3yCg4SGiImVlqWnq661uLq/wsPFy9DT2d7m6+zt8/n6/uYUS2MAAAYWSURBVHjazVv5QxRVHB8OuQS5Ia6QewGXS9gHShypWRR2WKSS5pFlWXZYSKd2aGpKVibdWUZp2mHRZdpldFiomYYXMn9Kyy67+x7Mzr7vZwZ2P7/NMu/7+TBv5n2P932KgiA8Oik1O89SWlZRXV1RVmrJy05Nig5XJgSTEjILy5kmygszEyaNK3loXFpxDdNFTfFlcaHjRB+TVcWkUJUVYz775BQrI8CaMtlU+uhcGyPClhttGn1sPoOQH2sKfXwRg1EUb5g+MocZQk6kIfqQ5OnMIKYnh+D8U6YxEzBtCkgfnG5jpsCWHgzNvoWZBgvwJiRWMhNRmUikD8qwMVNhywgieZ2pzHRMJfiosAI2DigIk+WPKMEYmlprdf9eEiHHH2VF2Ntf/35QPdN7l66PjJL6/xH+2qcuqk680ainQOIZhCHPv3G/6sYO3Vnw+R6EQu/fNg+/OrhQ90308S0EQd/f/IucALVb/2vUXw8yoNf/IM+vfql/c4bu+gutf81DgoCTPtZEnVU5Elv/Fwv86g++/IJXzxQM+r8OUcB7Pn2jN++cDq6xW0UBz/gckO4l/kEd4EMC/6UFvl2jZowUAsdftwkCdslEaVpxYjLs5hp+5/j/apYZkqzxBRiIf+/08A+skIuVx34JhuL/l1z8R2+WzRfG5D/Ggo27TwzTn367WXrE6JypyJgAVr9gbUdbHSVrG5V/sgmHmLnmT7yAfCH/Z34AXz/I9YeAXK7+YvOHAJunipNi1FbLynvamsijUtwCrAa461Z39/47vAhc6G4hDrW66284fWNnn2cZPn4NcbSrmpeF0s95/h/BEfYSx18+EolXYfT1286qo3A1zUKVM0aPw/hvPKSOwSqijTiHgDSI/+GBsfzqcqKRNIeAYoB+1geqFmYTzRQ76u81dP6lxzT5j1Ht1AxX9xPo/E9c0uRX95EtJdgFZJJHbVC9YCPZVKZdQCF10LPe+NV2soBCu4By4phNHsLDm8SksJYsoFxRwolDtrjj3+42tkgQsBv4nMKpsYirFPHH+ivtV2sFAWugqCSJdH+Xk+qL1TMcl91CTjYHEJCkpJKf//k3b3Vd/8YL+BZZUFOVbMrt9vWnf+NVHncgzMBmREC2kke5/f49a2Zyl48LAhYjAvIUI0X5Azz/qTrEhEUpNRAOneMFvA/ZKFXKTEmK7XgQslGmVOACdvL8Q3MhGxVKNS6gjxdwCLNRbUDA9cIMvIAKwKfgUUHA7QycAvwl3M/zn57BwJcQ/gwbhKj0Q9BKKb4Q3SHMQAdoxUJbinm8LAhoBa3k0ZwRj194/qOolWyaO+bQKjyAnaiAVGJA4kGnoZyMC0jQ8tBenv9CEyogmhyUulJj4SP8DF5MwulhuRPLhRl4GuUvRxITB3YIAtpQAYVQajaMH3n+fngGMrHklLFrhQfwFiwgAUzP2SOCgPtQfkd6DhUoegxnJJ4CBVKimXmGF/AdPANpaJFqqTADW2EBcWiZbrsgYAnKP1KmAwqVh80IhtyFSnqptkV4AD3wDMSgxep7BQHrUH4rXK4Xg6GFqIAUeMPiG55/8AqQn9uwIG7Z1J/nBRxBH0AuvGnVLszAO3gsgm7biSnRkyB/Pr5x+a4gYBn/p5t29cyTtBKLb932eamQ16761H69Xs5IEb55PVvg/9P1c/NjDmH918lZice378XCyF7njze84nSQP0vy5xhoYBBrY1uGf1rx8Ugr0dez5GxoNDDIt3B0CQIeYE3rfnLnyI2SNpKNNLHsFgTs6Trl6SKTrdRpNrFIt/F87m274DnpRXiKoUamX7XpB+XrdOnGWrkGNPn/WylflAg21MzWoMn/9yJp/spIg+18JzX4P5LfMbQlGm1o/GoM/dlOwkKeYbil87XR/EfmE/h9tHTKNLXOOyfyv9pA4C8INaGtdzNPf3AZxZOXhJnR2Fz/omvrdmgfbZvEGmFSa/eSA8dV9cQn228hxuFRJja3zyV2SzD55nb/t/f7/4CD/494+P+QSwAc8/H/QSf/H/UKgMNu/j/uFwAHHgPgyGcAHHoNgGO/AXDwORCOfgfA4ffxOP7/P/VaRWsshFDTAAAAAElFTkSuQmCC" height=15 width=15 onclick="alert(this.title)" title="The issue will not be &quot;ready for work&quot; until after this date and time.
 
-This option is disabled in the mock-up."></label></div>
-<div><label><input type="radio" id="followup_status_deadline_given" name="followup_status" value="deadline_given"> More information was requested no later than <input type="date" name="deadline_date" onclick="this.parentElement.firstElementChild.click()"> <input type="time" name="deadline_time" onclick="this.parentElement.firstElementChild.click()"></label>. <button onclick="suggest_deadline(this.form.elements.deadline_date, this.form.elements.deadline_time); getElementById('followup_status_deadline_given').checked = true; this.previousElementSibling.firstElementChild.click(); return false;">suggest</button>  <img alt="Copy" title="Copy deadline" style="vertical-align: middle; padding-left: 1ex;" onclick="const x = forms[0].elements; const date = date_ymd_to_mdy(x.deadline_date.value.trim()); const time = time_24_to_ampm(x.deadline_time.value.trim()); const text = date + ((date == '' || time == '') ? '' : ', ') + time; navigator.clipboard.writeText(text); return false;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAVCAIAAADEqSm4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGbSURBVDhPY/iPDUxfsC48tSY2swGCYjIbItPqnjx9CZX+/x+LtrWb9zNw6olreYtpeiEjBibNxzCdWLQ19c4VUHaVMwhAQ/KGAQxMWhCdWLS1T1rEr+SCpgeCQDqZtZ4+f0WaNiACOt4vphSkLae8B8gKTqy09U7/8fNX99SleLRJaHkHxJUz5Fb2skraiGp4Cqu5M7Dpfvz8pXf6MvzaAuMrGHyiioH2yuj5q5mHsUhYf/r8tWcaAdtA2oCYX9klNrsR4jEgwO83hDZgcANJqKahom3iQnK0NXTNAYqgqYYjSW0fn8hiLNqev3zDwCDPq+DMo+CEhoCCDKw60+auxaINCD5/+dY7bdmUOatnL9o4d8mm2Ys3TpmzBoj6pi8/dPw8UAF2bXBw++6jMxdu3Lj9AMqHAai22CxEdCMDW590Bm5DNYswKB8GQIkL6EtBFTego4FpEgWx6gATqpSOr5lbMlQ5DDC0T1jEwGMkpOompOqODbkxcOo3986HKocBUMbZvOtI56RFQO9ioo5Ji3btPwlRigD//wMAGucyCG7+ffYAAAAASUVORK5CYII="> <img src="data:image/png;base64,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" height=15 width=15 onclick="alert(this.title)" title="On business days, the suggested deadline is 2 business days later (correctly skipping holidays), advancing the current time by 5 minutes plus rounding up to :00, :15, :30, and :45 minutes.
+On business days, the suggested deadline is 2 business days later (correctly skipping holidays), advancing the current time by 5 minutes plus rounding up to :00, :15, :30, and :45 minutes.
 
-On weekends and holidays, the suggested deadline is 9:00 AM on the 3rd business day later.  Choosing 9:00 AM is arbitrary &ndash; the deadline could be 8:00 or even 7:00 AM to meet Reasonable Attempt requirements, as it is not necessary to wait until the same time of day as a request was made."></div>
-<div><label><input type="radio" name="followup_status" value="info_needed_no_deadline"> Follow-up is needed, and a deadline must still be given.<!-- <i>(Use sparingly!)</i> --></label></div>
-<div><label><input type="radio" name="followup_status" value="complete"> No follow-up is needed at this time.</label></div>
-<div><label><input type="radio" name="followup_status" value=waiting_other> Waiting on <input type=text name=waiting_other size=21 placeholder="(short description)" onclick="this.parentElement.firstElementChild.click()"> until <input type=date name=waiting_date onclick="this.parentElement.firstElementChild.click()"> <input type=time onclick="this.parentElement.firstElementChild.click()">.</label> <img src="data:image/png;base64,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" height=15 width=15 onclick="alert(this.title)" title="Date is required.
+On weekends and holidays, the suggested deadline is 9:00 AM on the 3rd business day later.  Choosing 9:00 AM is arbitrary &ndash; the deadline could be 8:00 or even 7:00 AM to meet Reasonable Attempt requirements, as it is not necessary to wait until the same time of day as a request was made on a non-business day.
 
-Time is can be blank, meaning 'start of day'."></div>
+Even when a deadline was recently given on another issue, the user still needs this option since they might have contacted the party in the meantime.
+"></div>
+<div><label><input type=radio name=clmt_followup_status value=info_needed_no_deadline onclick="update_will_include_deadline('clmt_', false); mark_unsaved()"> Follow-up is needed, and a deadline must still be given.</label> <img src="data:image/png;base64,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" height=15 width=15 onclick="alert(this.title)" title="This marks the issue as &quot;ready for work&quot; immediately.
+
+This should seldom be used, but would sometimes be needed and cannot be combined with the other statuses.
+
+Some examples:
+* An investigator might document all received emails/voicemails in the morning, before going through and completing any other issues where deadlines have passed without response, and then finally returning emails/calls.
+* On a two-party issue, after receiving information from one party which requires rebuttal, if that rebuttal cannot be made immediately (such as at the end of the day), then this status allows the issue to be marked as &quot;ready for work&quot;.
+* Given multiple issues for the same claimant, making notes and marking which ones need more information can be helpful before actually making a phone call, especially for an investigator in training.
+* Given two-party issues for multiple claimants, marking issues which need party information and then sorting by employer could allow an investigator to more efficiently contact an employer, without mixing up issues involving that employer which don't need more information from those that do."></div>
+<div><label><input type=radio name=clmt_followup_status value=complete onclick="update_will_include_deadline('clmt_', false); mark_unsaved()"> No follow-up is needed at this time.</label></div>
+<div><label><input type=radio name=clmt_followup_status value=waiting_other onclick="update_will_include_deadline('clmt_', false); mark_unsaved()"> Waiting on <input type=text name=clmt_waiting_other size=21 placeholder="(short description)" onclick="this.parentElement.firstElementChild.click()"> until <input type=date name=clmt_waiting_date onclick="this.parentElement.firstElementChild.click()"> <input type=time name=clmt_waiting_time onclick="this.parentElement.firstElementChild.click()">.</label> <img src="data:image/png;base64,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" height=15 width=15 onclick="alert(this.title)" title="The issue will not be &quot;ready for work&quot; until after this date and time.
+
+Date is required.  If time is blank, then the issue will become &quot;ready to work&quot; at midnight."></div>
 </fieldset>
-<fieldset style="max-width: 100ex"><legend>Claimant Statements</legend>
-<div><label>Entry Type: <select name="entry_type" onchange="select_entry_type(this.options[this.selectedIndex].value, this.form, 'entry_type_other', 'spoke_with', 'copy'); return false;">
+<fieldset style="width: 95ex"><legend>Claimant Statements</legend>
+<div><label>Entry Type: <select name=clmt_entry_type onchange="select_entry_type(this.value, this.form, 'clmt_'); return false;">
 <option></option>
+<optgroup label="Phone">
 <option value="Called 555-555-5555">Called 555-555-5555 (primary)</option>
 <option value="Called 123-456-7890">Called 123-456-7890 (secondary)</option>
 <option value="Called ">Called ... (other)</option>
 <option>Answered incoming call</option>
-<option></option>
+</optgroup>
+<optgroup label="Email">
 <option>Emailed claimant@example.com</option>
 <option value="Emailed ">Emailed ... (other)</option>
 <option>Received email</option>
-<option></option>
+</optgroup>
+<optgroup label="Other">
 <option>[Investigator Note]</option>
+<option value="Other ">(other)</option>
+</optgroup>
+</select></label> <img id=clmt_copy alt=Copy title="Copy phone number or email" style="visibility: hidden; vertical-align: middle; padding-left: 1ex;" onclick="const x = forms[0].elements.clmt_entry_type.value; const text = (x.startsWith('Called ') && x != 'Called ' ? x.replace('Called ','') : x.startsWith('Emailed ') ? x.replace('Emailed ','') : ''); if (text != '') navigator.clipboard.writeText(text); return false;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAVCAIAAADEqSm4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGbSURBVDhPY/iPDUxfsC48tSY2swGCYjIbItPqnjx9CZX+/x+LtrWb9zNw6olreYtpeiEjBibNxzCdWLQ19c4VUHaVMwhAQ/KGAQxMWhCdWLS1T1rEr+SCpgeCQDqZtZ4+f0WaNiACOt4vphSkLae8B8gKTqy09U7/8fNX99SleLRJaHkHxJUz5Fb2skraiGp4Cqu5M7Dpfvz8pXf6MvzaAuMrGHyiioH2yuj5q5mHsUhYf/r8tWcaAdtA2oCYX9klNrsR4jEgwO83hDZgcANJqKahom3iQnK0NXTNAYqgqYYjSW0fn8hiLNqev3zDwCDPq+DMo+CEhoCCDKw60+auxaINCD5/+dY7bdmUOatnL9o4d8mm2Ys3TpmzBoj6pi8/dPw8UAF2bXBw++6jMxdu3Lj9AMqHAai22CxEdCMDW590Bm5DNYswKB8GQIkL6EtBFTego4FpEgWx6gATqpSOr5lbMlQ5DDC0T1jEwGMkpOompOqODbkxcOo3986HKocBUMbZvOtI56RFQO9ioo5Ji3btPwlRigD//wMAGucyCG7+ffYAAAAASUVORK5CYII="></div>
+<div id=clmt_entry_type_other style="visibility: hidden"><label>Other: <input type=text size=40 name=clmt_entry_type_other></div>
+<div id=clmt_spoke_with style="visibility: hidden"><label>Spoke with: <select name=clmt_spoke_with onchange="this.form.elements.clmt_spoke_with_other.style.visibility = (this.value == 'other' ? 'visible' : 'hidden'); return false;">
 <option></option>
-<option value="Other">(other)</option>
-</select></label> <img id="copy" alt="Copy" title="Copy phone number or email" style="visibility: hidden; vertical-align: middle; padding-left: 1ex;" onclick="const x = forms[0].elements.entry_type.value; const text = (x.startsWith('Called ') && x != 'Called ' ? x.replace('Called ','') : x.startsWith('Emailed ') ? x.replace('Emailed ','') : ''); if (text != '') navigator.clipboard.writeText(text); return false;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAVCAIAAADEqSm4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGbSURBVDhPY/iPDUxfsC48tSY2swGCYjIbItPqnjx9CZX+/x+LtrWb9zNw6olreYtpeiEjBibNxzCdWLQ19c4VUHaVMwhAQ/KGAQxMWhCdWLS1T1rEr+SCpgeCQDqZtZ4+f0WaNiACOt4vphSkLae8B8gKTqy09U7/8fNX99SleLRJaHkHxJUz5Fb2skraiGp4Cqu5M7Dpfvz8pXf6MvzaAuMrGHyiioH2yuj5q5mHsUhYf/r8tWcaAdtA2oCYX9klNrsR4jEgwO83hDZgcANJqKahom3iQnK0NXTNAYqgqYYjSW0fn8hiLNqev3zDwCDPq+DMo+CEhoCCDKw60+auxaINCD5/+dY7bdmUOatnL9o4d8mm2Ys3TpmzBoj6pi8/dPw8UAF2bXBw++6jMxdu3Lj9AMqHAai22CxEdCMDW590Bm5DNYswKB8GQIkL6EtBFTego4FpEgWx6gATqpSOr5lbMlQ5DDC0T1jEwGMkpOompOqODbkxcOo3986HKocBUMbZvOtI56RFQO9ioo5Ji3btPwlRigD//wMAGucyCG7+ffYAAAAASUVORK5CYII="></div>
-<div id="entry_type_other" style="visibility: hidden"><label>Other: <input type="text" size="40" name="entry_type_other"></div>
-<div id="spoke_with" style="visibility: hidden"><label>Spoke with: <select name="spoke_with" onchange="this.form.elements.spoke_with_other.style.visibility = (this.selectedIndex == 2 ? 'visible' : 'hidden'); return false;">
-<option></option>
-<option value="claimant">...and spoke with the CLAIMANT.</option>
-<option value="other">...and spoke with ... (OTHER)</option>
-<option value="voicemail">...and reached VOICEMAIL.</option>
-<option value="none">...but did not reach anyone.</option>
-</select></label> <input type="text" name="spoke_with_other" size="15" style="visibility: hidden" placeholder="Who?"></div>
-
+<option value=claimant>...and spoke with the CLAIMANT.</option>
+<option value=other>...and spoke with ... (OTHER)</option>
+<option value=voicemail>...and reached VOICEMAIL.</option>
+<option value=none>...but did not reach anyone.</option>
+</select></label> <input type=text name=clmt_spoke_with_other id=clmt_spoke_with_other size=15 style="visibility: hidden" placeholder="Who?"></div>
 <div>
-New Entry:<br>
-<textarea name="new_entry" style="min-width: 100ex; min-height: 20em;" placeholder="Upon clicking &quot;Add&quot;, the new entry will be prefixed the current date, the current time, the entry type, and the entry details (phone number, email address, etc) from just above.
+New Entry: &nbsp; <em id=clmt_will_include_deadline style="visibility: hidden; float: right">(Entry will include "More information was requested no later than ...")</em><br>
+<textarea name=clmt_new_entry style="min-width: 100ex; min-height: 20em;" placeholder="Type your entry here.
 
-For phone call entries only, if follow-up status has a deadline, then the new entry will also include: &quot;More information was requested no later than [deadline].&quot;
+Upon clicking &quot;Add&quot;, the new entry will be prefixed the current date &amp; time, plus any entry details from just above (phone number, email address, etc).
 
-Non-phone entries or non-deadline status will NOT add follow-up status to the new entry."></textarea><br>
-<button onclick="if (add_entry(this.form, 'entry')) document.getElementById('saved_warning').style.visibility = 'visible'; return false;">Add</button>
+For phone entries only, follow-up status will be included if it is, &quot;More information was requested no later than...&quot;.  Non-phone entries or other statuses will NOT add follow-up status to the new entry."></textarea><br>
+<button onclick="add_entry(this.form, 'clmt_', 'clmt_entry'); return false;">Add</button>
 </div>
-
 <hr>
-
 <div>
-All Entries: <strong id="saved_warning" style="color: red; visibility: hidden">[Warning: Not Saved]</strong><br>
-<div id="entry" style="background: #DDD; min-height: 5em; border: 1px solid"></div>
+All Entries:<br>
+<div id=clmt_entry style="width: 90ex; background: #EEE; min-height: 5em; border: 1px solid"></div>
 </div>
-
 </fieldset>
-
-<br><br>
-<div>
-<button onclick="document.getElementById('saved_warning').style.visibility = 'hidden'; return false;">Save</button> (imagine this is the normal save button at the top-right of the screen)<br>(this also saves the follow-up status, even without adding a new entry)
 </div>
+
+<div>
+<fieldset style="width: 95ex"><legend>Employer Follow-up Status</legend>
+<div><label><input disabled type=radio name=empl_followup_status value=empl_deadline_other onclick="update_will_include_deadline('empl_'); mark_unsaved();"> More information was requested no later than <i>[see design notes]</i>. <img src="data:image/png;base64,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" height=15 width=15 onclick="alert(this.title)"  title="This option would be shown only if a deadline was recently entered on another issue for the same party.
+
+This option is needed to easily enter different statements on multiple issues, where the statements are specific to that issue.
+
+This option is disabled because the mock-up only has one issue."></label></div>
+<div><label><input type=radio id=empl_followup_status_deadline_given name=empl_followup_status value=deadline_given onclick="update_will_include_deadline('empl_'); mark_unsaved()"> More information was requested no later than <input type=date name=empl_deadline_date onclick="this.parentElement.firstElementChild.click()"> <input type=time name=empl_deadline_time onclick="this.parentElement.firstElementChild.click()"></label>. <button onclick="suggest_deadline(this.form.elements.empl_deadline_date, this.form.elements.empl_deadline_time); getElementById('empl_followup_status_deadline_given').checked = true; this.previousElementSibling.firstElementChild.click(); return false;">suggest</button>  <img alt=Copy title="Copy deadline" style="vertical-align: middle; padding-left: 1ex;" onclick="const x = forms[0].elements; const date = date_ymd_to_mdy(x.deadline_date.value.trim()); const time = time_24_to_ampm(x.empl_deadline_time.value.trim()); const text = date + ((date == '' || time == '') ? '' : ', ') + time; navigator.clipboard.writeText(text); return false;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAVCAIAAADEqSm4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGbSURBVDhPY/iPDUxfsC48tSY2swGCYjIbItPqnjx9CZX+/x+LtrWb9zNw6olreYtpeiEjBibNxzCdWLQ19c4VUHaVMwhAQ/KGAQxMWhCdWLS1T1rEr+SCpgeCQDqZtZ4+f0WaNiACOt4vphSkLae8B8gKTqy09U7/8fNX99SleLRJaHkHxJUz5Fb2skraiGp4Cqu5M7Dpfvz8pXf6MvzaAuMrGHyiioH2yuj5q5mHsUhYf/r8tWcaAdtA2oCYX9klNrsR4jEgwO83hDZgcANJqKahom3iQnK0NXTNAYqgqYYjSW0fn8hiLNqev3zDwCDPq+DMo+CEhoCCDKw60+auxaINCD5/+dY7bdmUOatnL9o4d8mm2Ys3TpmzBoj6pi8/dPw8UAF2bXBw++6jMxdu3Lj9AMqHAai22CxEdCMDW590Bm5DNYswKB8GQIkL6EtBFTego4FpEgWx6gATqpSOr5lbMlQ5DDC0T1jEwGMkpOompOqODbkxcOo3986HKocBUMbZvOtI56RFQO9ioo5Ji3btPwlRigD//wMAGucyCG7+ffYAAAAASUVORK5CYII="></div>
+<div><label><input type=radio name=empl_followup_status value=info_needed_no_deadline onclick="update_will_include_deadline('empl_', false); mark_unsaved()"> Follow-up is needed, and a deadline must still be given.</label></div>
+<div><label><input type=radio name=empl_followup_status value=complete onclick="update_will_include_deadline('empl_', false); mark_unsaved()"> No follow-up is needed at this time.</label></div>
+<div><label><input type=radio name=empl_followup_status value=waiting_other onclick="update_will_include_deadline('empl_', false); mark_unsaved()"> Waiting on <input type=text name=empl_waiting_other size=21 placeholder="(short description)" onclick="this.parentElement.firstElementChild.click()"> until <input type=date name=empl_waiting_date onclick="this.parentElement.firstElementChild.click()"> <input type=time name=empl_waiting_time onclick="this.parentElement.firstElementChild.click()">.</label></div>
+</fieldset>
+<fieldset style="width: 95ex"><legend>Employer Statements</legend>
+<div><label>Entry Type: <select name=empl_entry_type onchange="select_entry_type(this.value, this.form, 'empl_'); return false;">
+<option></option>
+</optgroup>
+<optgroup label="Phone">
+<option value="Called 555-555-5555">Called 555-555-5555 (from Tax)</option>
+<option value="Called ">Called ... (other)</option>
+<option>Answered incoming call</option>
+</optgroup>
+<optgroup label="Email &amp; Fax">
+<option value="Emailed ">Emailed ... (other)</option>
+<option>Received email</option>
+<option value="Faxed ">Faxed ... (other)</option>
+</optgroup>
+<optgroup label="Other">
+<option>[Investigator Note]</option>
+<option value="Other ">(other)</option>
+</optgroup>
+</select></label> <img id=empl_copy alt=Copy title="Copy phone number or email" style="visibility: hidden; vertical-align: middle; padding-left: 1ex;" onclick="const x = forms[0].elements.empl_entry_type.value; const text = (x.startsWith('Called ') && x != 'Called ' ? x.replace('Called ','') : x.startsWith('Emailed ') ? x.replace('Emailed ','') : ''); if (text != '') navigator.clipboard.writeText(text); return false;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAVCAIAAADEqSm4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGbSURBVDhPY/iPDUxfsC48tSY2swGCYjIbItPqnjx9CZX+/x+LtrWb9zNw6olreYtpeiEjBibNxzCdWLQ19c4VUHaVMwhAQ/KGAQxMWhCdWLS1T1rEr+SCpgeCQDqZtZ4+f0WaNiACOt4vphSkLae8B8gKTqy09U7/8fNX99SleLRJaHkHxJUz5Fb2skraiGp4Cqu5M7Dpfvz8pXf6MvzaAuMrGHyiioH2yuj5q5mHsUhYf/r8tWcaAdtA2oCYX9klNrsR4jEgwO83hDZgcANJqKahom3iQnK0NXTNAYqgqYYjSW0fn8hiLNqev3zDwCDPq+DMo+CEhoCCDKw60+auxaINCD5/+dY7bdmUOatnL9o4d8mm2Ys3TpmzBoj6pi8/dPw8UAF2bXBw++6jMxdu3Lj9AMqHAai22CxEdCMDW590Bm5DNYswKB8GQIkL6EtBFTego4FpEgWx6gATqpSOr5lbMlQ5DDC0T1jEwGMkpOompOqODbkxcOo3986HKocBUMbZvOtI56RFQO9ioo5Ji3btPwlRigD//wMAGucyCG7+ffYAAAAASUVORK5CYII="></div>
+<div id=empl_entry_type_other style="visibility: hidden"><label>Other: <input type=text size=40 name=empl_entry_type_other></div>
+<div id=empl_spoke_with style="visibility: hidden"><label>Spoke with: <select name=empl_spoke_with onchange="this.form.elements.empl_spoke_with_other.style.visibility = (this.value == 'other' ? 'visible' : 'hidden'); return false;">
+<option></option>
+<option value=other>...and spoke with ... (OTHER)</option>
+<option value=voicemail>...and reached VOICEMAIL.</option>
+<option value=none>...but did not reach anyone.</option>
+</select></label> <input type=text name=empl_spoke_with_other id=empl_spoke_with_other size=35 style="visibility: hidden" placeholder="Name &amp; Title"></div>
+<div>
+New Entry: &nbsp; <em id=empl_will_include_deadline style="visibility: hidden; float: right">(Entry will include "More information was requested no later than ...")</em><br>
+<textarea name=empl_new_entry style="min-width: 100ex; min-height: 20em;" placeholder="Type your entry here.
+
+Upon clicking &quot;Add&quot;, the new entry will be prefixed the current date &amp; time, plus any entry details from just above (phone number, email address, etc).
+
+For phone entries only, follow-up status will be included if it is, &quot;More information was requested no later than...&quot;.  Non-phone entries or other statuses will NOT add follow-up status to the new entry."></textarea><br>
+<button onclick="add_entry(this.form, 'empl_', 'empl_entry'); return false;">Add</button>
+</div>
+<hr>
+<div>
+All Entries: <strong id=empl_saved_warning style="color: red; visibility: hidden">[Warning: Not Saved]</strong><br>
+<div id=empl_entry style="width: 90ex; background: #EEE; min-height: 5em; border: 1px solid"></div>
+</div>
+</fieldset>
+</div>
+
+<div style="flex-basis: 100%; max-width: 199ex; background: navy; height: 2ex"></div>
+</div>
+
 </form>
