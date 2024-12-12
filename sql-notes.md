@@ -6,8 +6,8 @@ title: SQL Notes
 * [Oracle SQL Functions](https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/Functions.html#GUID-D079EFD3-C683-441F-977E-2C9503089982)
 * [Oracle Database 19c - Get Started](https://docs.oracle.com/en/database/oracle/oracle-database/19/index.html)
 * [MS SQL Server Database Functions](https://learn.microsoft.com/en-us/sql/t-sql/functions/functions)
-* [Sqlines: Oracle to Microsoft SQL Server (MSSQL) Migration](https://www.sqlines.com/oracle-to-sql-server/)
-    * [Sqlines: TRUNC(datetime)](https://www.sqlines.com/oracle-to-sql-server/trunc_datetime)
+* [SQLines: Oracle to Microsoft SQL Server (MSSQL) Migration](https://www.sqlines.com/oracle-to-sql-server/)
+    * [SQLines: TRUNC(datetime)](https://www.sqlines.com/oracle-to-sql-server/trunc_datetime)
 
 ## Dates, Times, & Timestamps
 
