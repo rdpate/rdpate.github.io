@@ -98,7 +98,7 @@ function add_entry(form, prefix, output_id) {
         new_prefix += `  More information was requested no later than ${deadline_date}, ${deadline_time}.`;
     }
     new_prefix += "\n";
-    new_prefix = `[${date_ymd(now)}, ${time_ampm(now)}] ` + new_prefix;
+    new_prefix = `[${date_ymd(now)}, ${time_ampm(now)}][USERNAME] ` + new_prefix;
 
     const output = document.getElementById(output_id);
     output.innerText = new_prefix + "  " + new_entry + "\n\n" + output.innerText;
