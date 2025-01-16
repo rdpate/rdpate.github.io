@@ -143,30 +143,30 @@ function body_onload() {
     load_format();
     refresh.interval_id = setInterval(refresh, 60 * 1000);
     refresh();
-    if ((new URL(location)).searchParams.get('hide') == '1') {
-        document.getElementById('instructions').style.display = 'none';
-    }
 }
 function go_hidden() {
     let loc = new URL(location);
-    loc.searchParams.set('hide', '1');
-    location.href = loc.href;
+    if (!loc.searchParams.has("hide")) loc.search += (loc.searchParams.size ? "&" : "?") + "hide";
+    document.getElementById("instructions").style.display = "none";
+    history.pushState({}, "", loc.href);
 }
+window.addEventListener("popstate", (event) => {
+    document.getElementById("instructions").style.display = ( (new URL(location)).searchParams.has("hide") ? "none" : "block" );
+});
 </script>
 <body onload="body_onload()">
 <noscript><p>JavaScript is required for this to work.</p></noscript>
 <div><button onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent)">Copy</button> <span id="holder" data-strftime="%A, %B %e at %l:%M %p ET">Error: Not loaded.</span></div>
-<div id="instructions">
+<script>document.write('<div id="instructions" style="display: '+ ( (new URL(location)).searchParams.has("hide") ? "none" : "block" ) + '">')</script>
 <hr style="margin-top: 2em;">
 <p><label>Format: <select id="select_format" onchange="select_format(this.options[this.selectedIndex].value, this.options[0].value)">
 <option>%A, %B %e at %l:%M %p ET</option>
-<option>%B %e, %Y, at %l:%M %p ET</option>
+<option>%B %e, %Y, at %l:%M %p %Zs</option>
 <option>%m/%d/%Y, %l:%M %p ET</option>
 <option>%n/%e/%Y, %l:%M %P ET</option>
 <option value="">(custom)</option>
 </select></label> <input style="visibility: hidden" type="text" id="other" value="" size="40" oninput="update_format(this.value)"></p>
-<p>The deadline shown above is a suggested 2-business-day / 48-business-hour deadline, accounting for holidays and weekends.  The time is updated every minute to show the current time plus 5 minutes, rounded up to the next 15 minutes.</p>
-<p>Click "Copy" to copy the deadline to your clipboard.</p>
-<p>Use the "Format" dropdown to select a different format, or choose "(custom)" to customize the format.  Format codes are listed at <a href="https://thdoan.github.io/strftime/">https://thdoan.github.io/strftime/</a>.</p>
-<div><button onclick="go_hidden()">Hide</button></div>
+<p>The deadline shown above is a suggested 2-business-day / 48-business-hour deadline, accounting for holidays and weekends.  The time is updated every minute to show the current time plus 5 minutes, rounded up to the next 15 minutes.  Click "Copy" to copy the deadline to your clipboard.</p>
+<p>Use the "Format" dropdown to select a different format, or choose "(custom)" to customize using the format codes listed at <a href="https://thdoan.github.io/strftime/">https://thdoan.github.io/strftime/</a>.</p>
+<div><button onclick="go_hidden()">Hide Instructions</button></div>
 </div>
