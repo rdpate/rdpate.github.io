@@ -2,8 +2,8 @@
 <title>Suggest Deadline</title>
 <style>
 body { font-size: 16pt; padding: 0 0.5em; margin: 0; }
-div { margin: 0.7em 0; width: 100%; }
-button { font-size: 60%; padding-left: 0.1em; padding-right: 0.1em; margin-right: 0.1em; vertical-align: middle; cursor: pointer; }
+div { margin: 0.7em 0; }
+button { font-size: 0.8em; padding: 0.2em; margin-right: 0.1em; cursor: pointer; }
 </style>
 <script src="strftime.js"></script>
 <script>
@@ -27,8 +27,21 @@ function is_business_day(d) {
             return ! holidays.includes(d);
     }
 }
+function is_dst(d) {
+    const january = new Date(d.getFullYear(), 0, 1).getTimezoneOffset();
+    const july = new Date(d.getFullYear(), 6, 1).getTimezoneOffset();
+    return Math.max(january, july) !== d.getTimezoneOffset();
+}
+function change_to_eastern_time(d) {
+    // This assumes the current TZ applies DST shifts on the same schedule as desired.
+    // This avoids more complicated logic, and will (currently) work for the entire US.
+    const desired_offset = ( is_dst(d) ? 240 : 300 );
+    const offset_diff = d.getTimezoneOffset() - desired_offset;
+    if (offset_diff) d = new Date(d.getTime() + offset_diff * 60 * 1000);
+    return d;
+}
 function suggest_deadline(now) {
-    // We can ignore DST switches on the assumption this will never be used from 1am to 2am.  This could be corrected with more code.
+    // This ignores DST switches on the assumption this will never be used from 1am to 2am, where that time also never counts for "business hours".
     
     if (!now) now = new Date();
     
@@ -40,7 +53,7 @@ function suggest_deadline(now) {
         if (is_business_day(suggest_date)) days_added += 1;
     }
 
-    const minimum_add_minutes = 6;  // 6 instead of 5 to allow for 60-second update intervals
+    const minimum_add_minutes = 5;
     const round_to_minutes = 15;
     
     suggest_date.setSeconds(0);
@@ -58,38 +71,7 @@ function suggest_deadline(now) {
     }
     return suggest_date;
 }
-function refresh() {
-    var deadline;
-    try { deadline = suggest_deadline(); }
-    catch (e) {
-        clearInterval(refresh.interval_id);
-        document.body = "Error: " + e.message;
-        return;
-    }
-    document.querySelectorAll("span[data-strftime]").forEach(
-        e => e.innerHTML = strftime(e.getAttribute("data-strftime"), deadline)
-    );
-    
-}
-function select_format(new_value, default_value) {
-    const other = document.getElementById("other");
-    if (new_value == "") {
-        if (other.value == "") other.value = default_value;
-        new_value = other.value;
-        other.style.visibility = "visible";
-    }
-    else {
-        other.style.visibility = "hidden";
-        other.value = new_value;
-    }
-    update_format(new_value);
-}
-function update_format(fmt) {
-    const holder = document.getElementById("holder");
-    holder.setAttribute("data-strftime", fmt);
-    refresh();
-    save_format(fmt);
-}
+
 const Cookie = {
     // https://stackoverflow.com/a/48706852
     get: name => {
@@ -116,33 +98,64 @@ const Cookie = {
     delete: (name, opts) => Cookie.set(name, '', {'max-age': -1, ...opts}) 
     // path & domain must match cookie being deleted 
 }
-function save_format(new_value) {
-    //console.log("saving new_value:", new_value);
-    Cookie.set("deadline_format", new_value, {days: 365});
+
+function save_format() {
+    Cookie.set("deadline_format", get_format(), {days: 60});
 }
 function load_format() {
-    const saved = Cookie.get("deadline_format");
-    if (saved) {
-        update_format(saved);
-        const other = document.getElementById("other");
-        other.value = saved;
-        
-        const select_format = document.getElementById("select_format");
-        const opts = select_format.options;
-        for (let x = 0; x < opts.length; ++x) {
-            if (saved == opts[x].value) {
-                select_format.value = saved;
-                return;
-            }
-        }
-        select_format.value = "";
-        other.style.visibility = "visible";
-    }
+    const select_format = document.getElementById("select_format");
+    const other = document.getElementById("other");
+    
+    let format = Cookie.get("deadline_format");
+    if (!format) format = select_format.options[0].value;
+    select_format.value = format;
+    if (select_format.selectedIndex == -1) select_format.value = "";
+    other.value = format;
+    other.style.visibility = select_format.value ? "hidden" : "visible";
 }
+
+function get_format() {
+    return document.getElementById("other").value;
+}
+function select_format(new_value) {
+    const other = document.getElementById("other");
+    if (new_value) {
+        other.value = new_value;
+        other.style.visibility = "hidden";
+    }
+    else other.style.visibility = "visible";
+    
+    refresh();
+    save_format();
+}
+
+function refresh() {
+    var deadline;
+    try { deadline = suggest_deadline(); }
+    catch (e) {
+        // clearInterval(refresh.interval_id);
+        document.body = "Error: " + e.message;
+        return;
+    }
+
+    const format = get_format().replaceAll("%Zs", "ET").replaceAll("%Z", "Eastern Time").replaceAll("%z", "");
+    // %Z, %Zs, and %z are problematic.
+    const current = document.getElementById("current");
+    if (current) current.innerHTML = strftime(format, change_to_eastern_time(new Date()));
+    document.getElementById("deadline").innerHTML = strftime(format, change_to_eastern_time(deadline));
+}
+
 function body_onload() {
     load_format();
     refresh.interval_id = setInterval(refresh, 60 * 1000);
     refresh();
+    save_format();  // Refresh cookie age.
+}
+function toggle_current() {
+    let loc = new URL(location);
+    if (loc.searchParams.has("current")) loc.searchParams.delete("current");
+    else loc.search += (loc.searchParams.size ? "&" : "?") + "current";
+    location = loc.href;
 }
 function hide_instructions() {
     let loc = new URL(location);
@@ -150,23 +163,32 @@ function hide_instructions() {
     document.getElementById("instructions").style.display = "none";
     history.pushState({}, "", loc.href);
 }
-window.addEventListener("popstate", (event) => {
-    document.getElementById("instructions").style.display = ( (new URL(location)).searchParams.has("hide") ? "none" : "block" );
+window.addEventListener("popstate", event => {
+    document.getElementById("instructions").style.display = ( new URL(location).searchParams.has("hide") ? "none" : "block" );
 });
 </script>
 <body onload="body_onload()">
 <noscript><p>JavaScript is required for this to work.</p></noscript>
-<div><button onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent)">Copy</button> <span id="holder" data-strftime="%A, %B %e at %l:%M %p ET">Error: Not loaded.</span></div>
-<script>document.write('<div id="instructions" style="display: '+ ( (new URL(location)).searchParams.has("hide") ? "none" : "block" ) + '">')</script>
-<hr style="margin-top: 2em;">
-<p><label>Format: <select id="select_format" onchange="select_format(this.options[this.selectedIndex].value, this.options[0].value)">
+<table border=0 style="margin: 0.2em 0">
+<script>
+if (new URL(location).searchParams.has("current")) {
+    document.write('<tr style="color: grey"><td style="text-align: center">(now)</td><td id="current" style="text-align: right">Error: Not loaded.</td></tr>');
+}
+</script>
+<tr><td style="text-align: center"><button onclick="navigator.clipboard.writeText(document.getElementById('deadline').textContent)">Copy</button></td><td id="deadline" style="text-align: right">Error: Not loaded.</td></tr></table>
+<script>
+document.write('<div id="instructions"'+ ( new URL(location).searchParams.has("hide") ? ' style="display: none"' : "" ) + ">")
+</script>
+<hr style="margin-top: 1em;">
+<p><label>Format: <select id="select_format" onchange="select_format(this.value)">
 <option>%A, %B %e at %l:%M %p ET</option>
 <option>%B %e, %Y, at %l:%M %p ET</option>
-<option>%m/%d/%Y, %l:%M %p %Zs</option>
+<option>%m/%d/%Y, %l:%M %p ET</option>
 <option>%n/%e/%Y, %l:%M %P ET</option>
 <option value="">(custom)</option>
-</select></label> <input style="visibility: hidden" type="text" id="other" value="" size="40" oninput="update_format(this.value)"></p>
-<p>The deadline shown above is a suggested 2-business-day / 48-business-hour deadline, accounting for holidays and weekends.  The time is updated every minute to show the current time plus 5 minutes, rounded up to the next 15 minutes.  Click "Copy" to copy the deadline to your clipboard.</p>
+</select></label> <input style="visibility: hidden" type="text" id="other" value="%A, %B %e at %l:%M %p ET" size="40" oninput="refresh()"></p>
+<p>The deadline shown above is a suggested 2-business-day / 48-business-hour deadline, accounting for holidays and weekends, always in Eastern Time.  The time is updated once per minute to show the current time plus 5 minutes, rounded up to the next 15 minutes.  Click "Copy" to copy the deadline to your clipboard.</p>
 <p>Use the "Format" dropdown to select a different format, or choose "(custom)" to customize using the format codes listed at <a href="https://thdoan.github.io/strftime/">https://thdoan.github.io/strftime/</a>.</p>
+<div><button onclick="toggle_current()">Show/Hide Current Time</button></div>
 <div><button onclick="hide_instructions()">Hide Instructions</button></div>
 </div>
