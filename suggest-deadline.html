@@ -144,7 +144,7 @@ function body_onload() {
     refresh.interval_id = setInterval(refresh, 60 * 1000);
     refresh();
 }
-function go_hidden() {
+function hide_instructions() {
     let loc = new URL(location);
     if (!loc.searchParams.has("hide")) loc.search += (loc.searchParams.size ? "&" : "?") + "hide";
     document.getElementById("instructions").style.display = "none";
@@ -161,12 +161,12 @@ window.addEventListener("popstate", (event) => {
 <hr style="margin-top: 2em;">
 <p><label>Format: <select id="select_format" onchange="select_format(this.options[this.selectedIndex].value, this.options[0].value)">
 <option>%A, %B %e at %l:%M %p ET</option>
-<option>%B %e, %Y, at %l:%M %p %Zs</option>
-<option>%m/%d/%Y, %l:%M %p ET</option>
+<option>%B %e, %Y, at %l:%M %p ET</option>
+<option>%m/%d/%Y, %l:%M %p %Zs</option>
 <option>%n/%e/%Y, %l:%M %P ET</option>
 <option value="">(custom)</option>
 </select></label> <input style="visibility: hidden" type="text" id="other" value="" size="40" oninput="update_format(this.value)"></p>
 <p>The deadline shown above is a suggested 2-business-day / 48-business-hour deadline, accounting for holidays and weekends.  The time is updated every minute to show the current time plus 5 minutes, rounded up to the next 15 minutes.  Click "Copy" to copy the deadline to your clipboard.</p>
 <p>Use the "Format" dropdown to select a different format, or choose "(custom)" to customize using the format codes listed at <a href="https://thdoan.github.io/strftime/">https://thdoan.github.io/strftime/</a>.</p>
-<div><button onclick="go_hidden()">Hide Instructions</button></div>
+<div><button onclick="hide_instructions()">Hide Instructions</button></div>
 </div>
