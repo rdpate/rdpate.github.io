@@ -187,7 +187,7 @@ document.write('<div id="instructions"'+ ( new URL(location).searchParams.has("h
 <option>%n/%e/%Y, %l:%M %P ET</option>
 <option value="">(custom)</option>
 </select></label> <input style="visibility: hidden" type="text" id="other" value="%A, %B %e at %l:%M %p ET" size="40" oninput="refresh()"></p>
-<p>The deadline shown above is a suggested 2-business-day / 48-business-hour deadline, accounting for holidays and weekends, always in Eastern Time.  The time is updated once per minute to show the current time plus 5 minutes, rounded up to the next 15 minutes.  Click "Copy" to copy the deadline to your clipboard.</p>
+<p>The deadline shown above is a suggested 2-business-day / 48-business-hour deadline, accounting for <span title="...according to the State of Indiana">holidays</span> and weekends, always in Eastern Time.  The time is updated once per minute to show the current time plus 5 minutes, rounded up to the next 15 minutes.  Click "Copy" to copy the deadline to your clipboard.</p>
 <p>Use the "Format" dropdown to select a different format, or choose "(custom)" to customize using the format codes listed at <a href="https://thdoan.github.io/strftime/">https://thdoan.github.io/strftime/</a>.</p>
 <div><button onclick="toggle_current()">Show/Hide Current Time</button></div>
 <div><button onclick="hide_instructions()">Hide Instructions</button></div>
