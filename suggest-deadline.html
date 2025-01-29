@@ -12,7 +12,7 @@ function date_ymd(d) {
     const day = d.getDate().toString().padStart(2, '0');
     return `${d.getFullYear()}-${month}-${day}`
 }
-const holidays = ["2024-11-05", "2024-11-11", "2024-11-28", "2024-11-29", "2024-12-24", "2024-12-25", "2025-01-01", "2025-01-20", "2025-04-18", "2025-05-26", "2025-07-04", "2025-09-01", "2025-10-13", "2025-11-11", "2025-11-27", "2025-11-28", "2025-12-25", "2025-12-26"];
+const holidays = ["2024-11-05", "2024-11-11", "2024-11-28", "2024-11-29", "2024-12-24", "2024-12-25", "2025-01-01", "2025-01-20", "2025-04-18", "2025-05-26", "2025-07-04", "2025-09-01", "2025-10-13", "2025-11-11", "2025-11-27", "2025-11-28", "2025-12-25", "2025-12-26", "2026-01-01"];
 function is_business_day(d) {
     switch (d.getDay()) {
         case 0:
@@ -191,4 +191,19 @@ document.write('<div id="instructions"'+ ( new URL(location).searchParams.has("h
 <p>Use the "Format" dropdown to select a different format, or choose "(custom)" to customize using the format codes listed at <a href="https://thdoan.github.io/strftime/">https://thdoan.github.io/strftime/</a> (except for the timezone codes, which are disabled).</p>
 <div><button onclick="toggle_current()">Show/Hide Current Time</button></div>
 <div><button onclick="hide_instructions()">Hide Instructions</button></div>
+<div><button onclick="toggle_holidays()">Show/Hide Holidays</button></div>
+<table id=holidays style="display: none">
+<script>
+function toggle_holidays() {
+    x = document.getElementById("holidays");
+    x.style.display = (x.style.display == "none" ? "block" : "none");
+}
+(function(){
+    const now = new Date();
+    holidays.forEach(function(x){
+        if (Date.parse(x) >= now) document.write(`<tr><td>${x}</td></tr>\n`);
+    })
+})()
+</script>
+</table>
 </div>
