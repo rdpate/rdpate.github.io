@@ -169,7 +169,7 @@ window.addEventListener("popstate", event => {
 </script>
 <body onload="body_onload()">
 <noscript><p>JavaScript is required for this to work.</p></noscript>
-<table border=0 style="margin: 0.2em 0">
+<table id=display border=0 style="margin: 0.2em 0">
 <script>
 if (new URL(location).searchParams.has("current")) {
     document.write('<tr style="color: grey"><td style="text-align: center">(now)</td><td id="current" style="text-align: right">Error: Not loaded.</td></tr>');
@@ -190,6 +190,7 @@ document.write('<div id="instructions"'+ ( new URL(location).searchParams.has("h
 <p>The deadline shown above is a suggested 2-business-day / 48-business-hour deadline, accounting for <span title="...according to the State of Indiana">holidays</span> and weekends, always in Eastern Time.  The time is updated once per minute to show the current time plus 5 minutes, rounded up to the next 15 minutes.  Click "Copy" to copy the deadline to your clipboard.</p>
 <p>Use the "Format" dropdown to select a different format, or choose "(custom)" to customize using the format codes listed at <a href="https://thdoan.github.io/strftime/">https://thdoan.github.io/strftime/</a> (except for the timezone codes, which are disabled).</p>
 <div><button onclick="toggle_current()">Show/Hide Current Time</button></div>
+<div><button onclick="x = document.getElementById('display').getBoundingClientRect(); window.open(location.href + (location.href.indexOf('?') == -1 ? '?' : '&amp;') + 'hide', '_blank', 'popup,innerWidth=' + (x.width + 50) + ',innerHeight=' + (x.height + 20) + ',location=false,toolbar=false,menubar=false,scrollbars=false,status=false')">Open Popup</button></div>
 <div><button onclick="hide_instructions()">Hide Instructions</button></div>
 <div><button onclick="toggle_holidays()">Show/Hide Holidays</button></div>
 <table id=holidays style="display: none">
