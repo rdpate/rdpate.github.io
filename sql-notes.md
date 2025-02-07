@@ -5,7 +5,11 @@ title: SQL Notes
 ## Links
 * [Oracle SQL Functions](https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/Functions.html#GUID-D079EFD3-C683-441F-977E-2C9503089982)
 * [Oracle Database 19c - Get Started](https://docs.oracle.com/en/database/oracle/oracle-database/19/index.html)
-* [MS SQL Server Database Functions](https://learn.microsoft.com/en-us/sql/t-sql/functions/functions)
+* MS SQL Server
+    * [Functions](https://learn.microsoft.com/en-us/sql/t-sql/functions/functions)
+    * [Date and Time Types](https://learn.microsoft.com/en-us/sql/t-sql/data-types/date-and-time-types)
+        * Documentation recommends use only: date, time, datetime2, datetimeoffset
+        * However, datetimeoffset is not an offset between two datetime2 values, but is instead a datetime2 plus a timezone offset.  Our EDP does not currently store timezones, and we gain no benefit from doing so until it does.
 * [SQLines: Oracle to Microsoft SQL Server (MSSQL) Migration](https://www.sqlines.com/oracle-to-sql-server/)
     * [SQLines: TRUNC(datetime)](https://www.sqlines.com/oracle-to-sql-server/trunc_datetime)
 
