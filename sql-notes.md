@@ -7,9 +7,12 @@ title: SQL Notes
 * [Oracle Database 19c - Get Started](https://docs.oracle.com/en/database/oracle/oracle-database/19/index.html)
 * MS SQL Server
     * [Functions](https://learn.microsoft.com/en-us/sql/t-sql/functions/functions)
+        * [generate_series](https://learn.microsoft.com/en-us/sql/t-sql/functions/generate-series-transact-sql)
+        * [datetrunc, date_bucket, ...](https://learn.microsoft.com/en-us/sql/t-sql/functions/date-and-time-data-types-and-functions-transact-sql)
     * [Date and Time Types](https://learn.microsoft.com/en-us/sql/t-sql/data-types/date-and-time-types)
         * Documentation recommends use only: date, time, datetime2, datetimeoffset
-        * However, datetimeoffset is not an offset between two datetime2 values, but is instead a datetime2 plus a timezone offset.  Our EDP does not currently store timezones, and we gain no benefit from doing so until it does.
+        * However, datetimeoffset is not an offset between two datetime2 values, but is instead a datetime2 plus a timezone offset.  Our EDP does not currently store timezones, and we likely gain no benefit from doing so until it does.
+    * [Merge](https://sqlblog.org/merge)
 * [SQLines: Oracle to Microsoft SQL Server (MSSQL) Migration](https://www.sqlines.com/oracle-to-sql-server/)
     * [SQLines: TRUNC(datetime)](https://www.sqlines.com/oracle-to-sql-server/trunc_datetime)
 
