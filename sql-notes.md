@@ -17,6 +17,63 @@ title: SQL Notes
     * [SQLines: TRUNC(datetime)](https://www.sqlines.com/oracle-to-sql-server/trunc_datetime)
 * [SQL Dialects Reference (Wikibooks)](https://en.wikibooks.org/wiki/SQL_Dialects_Reference)
 
+# Azure SQL Server
+
+## List of Numbers
+
+    -- generate_series(start, stop[, step])
+    --  Stop is included in the output.
+    --  Step defaults to 1 if start <= stop, or -1 otherwise.  Step cannot be 0.
+    --  No output if (start < stop and step < 0) or (stop < start and step > 0).
+    select value from generate_series(0, 42)
+
+## Dates, Times, & Timestamps
+
+    -- Use a [begin, end) range when the end is NOT included in the range.
+    -- This range is empty when end <= begin, and convention is the empty range uses begin = end.
+    -- This is useful to define periods by their start and the next period's start, such as [Sunday, next Sunday).
+    declare @begin date = '2025-01-01'
+    declare @end   date = '2025-03-03'
+    
+    -- Use a [first, last] range when the last IS included in the range.
+    -- This range is empty when last < first.
+    declare @first date = '2025-01-01'
+    declare @last  date = '2025-03-02'
+    
+    -- Change date to start (Sunday) of same week.
+    -- (This is short enough that these variables aren't used below.)
+    declare @begin_sunday date = datetrunc(week, @begin)
+    declare @first_sunday date = datetrunc(week, @first)
+    
+    -- Change date to last day (Saturday) in same week.
+    declare @end_bwe   date = dateadd(day, 6, datetrunc(week, @end))
+    declare @last_bwe  date = dateadd(day, 6, datetrunc(week, @last))
+    
+    select @begin as "begin", @end as "end", @end_bwe  as end_bwe
+         , @first as first  , @last as last, @last_bwe as last_bwe
+         
+    
+    -- Dates between @begin and @end (exclusive).
+    select dateadd(day, value, @begin) as date
+    from generate_series(0, datediff(day, @begin, @end) - 1, 1)
+    
+    -- Dates between @first to @last (inclusive).
+    select dateadd(day, value, @first) as date
+    from generate_series(0, datediff(day, @first, @last), 1)
+    
+    
+    -- Saturdays between @begin and @end (exclusive).
+    -- (This makes more sense with Saturday dates than with arbitrary dates as we have here.)
+    select dateadd(day, 6 + 7 * value, datetrunc(week, @begin)) as bwe
+    from generate_series(0, datediff(week, @begin, dateadd(week, -1, @end)), 1)
+    
+    -- Saturdays between @first to @last (inclusive).
+    select dateadd(day, 6 + 7 * value, datetrunc(week, @first)) as bwe
+    from generate_series(0, datediff(week, @first, @last), 1)
+
+
+# Oracle
+
 ## Dates, Times, & Timestamps
 
     ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD';  -- or 'YYYY-MON-DD'
