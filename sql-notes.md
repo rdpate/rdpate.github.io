@@ -15,6 +15,7 @@ title: SQL Notes
     * [Merge](https://sqlblog.org/merge)
 * [SQLines: Oracle to Microsoft SQL Server (MSSQL) Migration](https://www.sqlines.com/oracle-to-sql-server/)
     * [SQLines: TRUNC(datetime)](https://www.sqlines.com/oracle-to-sql-server/trunc_datetime)
+* [SQL Dialects Reference (Wikibooks)](https://en.wikibooks.org/wiki/SQL_Dialects_Reference)
 
 ## Dates, Times, & Timestamps
 
