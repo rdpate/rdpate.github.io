@@ -16,6 +16,7 @@ title: SQL Notes
 * [SQLines: Oracle to Microsoft SQL Server (MSSQL) Migration](https://www.sqlines.com/oracle-to-sql-server/)
     * [SQLines: TRUNC(datetime)](https://www.sqlines.com/oracle-to-sql-server/trunc_datetime)
 * [SQL Dialects Reference (Wikibooks)](https://en.wikibooks.org/wiki/SQL_Dialects_Reference)
+* [What do BETWEEN and the devil have in common?](https://sqlblog.org/2011/10/19/what-do-between-and-the-devil-have-in-common)
 
 # Azure SQL Server
 
