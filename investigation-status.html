@@ -6,6 +6,16 @@ html { color: black; background: white; }
 div { padding: 0.5ex; }
 td { padding: 0.5ex; }
 label.disabled { color: grey; }
+div.text {
+    margin: 1em;
+    max-width: 100ex;
+    text-wrap: pretty;
+    text-align: justify;
+}
+div.text p {
+    margin: 0;
+    text-indent: 3ex;
+}
 </style>
 <script>
 function date_ymd(d) {
@@ -197,7 +207,7 @@ function body_onpageshow() {
 </script>
 <body onpageshow="body_onpageshow()">
 <h1>Investigation Status Mockup</h1>
-<div style="max-width: 120ex; text-wrap: pretty">
+<div class=text>
 <p>The below follow-up statuses are intended to handle every situation, even usual ones, so every issue can be marked either as "ready for work" or "waiting for a reply until a specific date and time".  When an investigator receives emails, voicemails, and phone calls, they will need to update the status appropriately as they document those interactions.  When an investigator is waiting on an unusual, indefinite situation (such as a Support Desk ticket), they must use the "waiting" deadline as a reminder to check on the issue &ndash; even if all they can do after checking is reset the reminder further out.
 <p>These statuses are designed to be convenient, helpful, and natural for an investigator to use &ndash; a joy, not a burden.  These statuses will reduce their low-level steps, such as mouse clicks, and will enable reduction of their high-level steps, such as finding claimant cases where all deadlines have been missed by involved parties (possibly including multiple employers).
 <p>By fully categorizing every situation in a way that investigators want to use, we can achieve <em>automatic prioritization</em> of an investigator's workload at a glance &ndash; by that investigator, by their supervisor, by daily internal reports, and by historical performance reports.
