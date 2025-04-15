@@ -13,6 +13,8 @@ title: SQL Notes
         * Documentation recommends use only: date, time, datetime2, datetimeoffset
         * However, datetimeoffset is not an offset between two datetime2 values, but is instead a datetime2 plus a timezone offset.  Our EDP does not currently store timezones, and we likely gain no benefit from doing so until it does.
     * [Merge](https://sqlblog.org/merge)
+    * [Regular Expressions](https://learn.microsoft.com/en-us/sql/t-sql/functions/regular-expressions-functions-transact-sql)
+        * [RE2 regex syntax](https://github.com/google/re2/wiki/Syntax)
 * [SQLines: Oracle to Microsoft SQL Server (MSSQL) Migration](https://www.sqlines.com/oracle-to-sql-server/)
     * [SQLines: TRUNC(datetime)](https://www.sqlines.com/oracle-to-sql-server/trunc_datetime)
 * [SQL Dialects Reference (Wikibooks)](https://en.wikibooks.org/wiki/SQL_Dialects_Reference)
