@@ -6,14 +6,14 @@ title: SQL Notes
 * [Oracle SQL Functions](https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/Functions.html#GUID-D079EFD3-C683-441F-977E-2C9503089982)
 * [Oracle Database 19c - Get Started](https://docs.oracle.com/en/database/oracle/oracle-database/19/index.html)
 * MS SQL Server
-    * [Functions](https://learn.microsoft.com/en-us/sql/t-sql/functions/functions)
-        * [generate_series](https://learn.microsoft.com/en-us/sql/t-sql/functions/generate-series-transact-sql)
-        * [datetrunc, date_bucket, ...](https://learn.microsoft.com/en-us/sql/t-sql/functions/date-and-time-data-types-and-functions-transact-sql)
-    * [Date and Time Types](https://learn.microsoft.com/en-us/sql/t-sql/data-types/date-and-time-types)
+    * [Functions](https://learn.microsoft.com/en-us/sql/t-sql/functions/functions?view=azuresqldb-current)
+        * [generate_series](https://learn.microsoft.com/en-us/sql/t-sql/functions/generate-series-transact-sql?view=azuresqldb-current)
+        * [datetrunc, date_bucket, ...](https://learn.microsoft.com/en-us/sql/t-sql/functions/date-and-time-data-types-and-functions-transact-sql?view=azuresqldb-current)
+    * [Date and Time Types](https://learn.microsoft.com/en-us/sql/t-sql/data-types/date-and-time-types?view=azuresqldb-current)
         * Documentation recommends use only: date, time, datetime2, datetimeoffset
         * However, datetimeoffset is not an offset between two datetime2 values, but is instead a datetime2 plus a timezone offset.  Our EDP does not currently store timezones, and we likely gain no benefit from doing so until it does.
     * [Merge](https://sqlblog.org/merge)
-    * [Regular Expressions](https://learn.microsoft.com/en-us/sql/t-sql/functions/regular-expressions-functions-transact-sql)
+    * [Regular Expressions](https://learn.microsoft.com/en-us/sql/t-sql/functions/regular-expressions-functions-transact-sql?view=azuresqldb-current)
         * [RE2 regex syntax](https://github.com/google/re2/wiki/Syntax)
 * [SQLines: Oracle to Microsoft SQL Server (MSSQL) Migration](https://www.sqlines.com/oracle-to-sql-server/)
     * [SQLines: TRUNC(datetime)](https://www.sqlines.com/oracle-to-sql-server/trunc_datetime)
