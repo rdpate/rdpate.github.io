@@ -13,6 +13,10 @@ title: SQL Notes
         * Documentation recommends use only: date, time, datetime2, datetimeoffset
         * However, datetimeoffset is not an offset between two datetime2 values, but is instead a datetime2 plus a timezone offset.  Our EDP does not currently store timezones, and we likely gain no benefit from doing so until it does.
     * [Merge](https://sqlblog.org/merge)
+        * Use "merge TARGET with (holdlock)".  ([source](https://sqlblog.org/merge))
+        * Don't merge on temporal tables if the history table has a nonclustered index. ([source](https://sqlserverfast.com/blog/hugo/2023/09/an-update-on-merge/), issue #8)
+        * Don't merge with both update and delete actions without also having an insert action. ([source](https://sqlserverfast.com/blog/hugo/2023/09/an-update-on-merge/), issue #9)
+        * Don't merge on a partitioned table with only one partition (which shouldn't occur). ([source](https://sqlserverfast.com/blog/hugo/2023/09/an-update-on-merge/), issue #6)
     * [Regular Expressions](https://learn.microsoft.com/en-us/sql/t-sql/functions/regular-expressions-functions-transact-sql?view=azuresqldb-current)
         * [RE2 regex syntax](https://github.com/google/re2/wiki/Syntax)
 * [SQLines: Oracle to Microsoft SQL Server (MSSQL) Migration](https://www.sqlines.com/oracle-to-sql-server/)
