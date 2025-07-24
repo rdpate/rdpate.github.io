@@ -4,6 +4,7 @@ title: SQL Notes
 
 ## Links
 * [Oracle SQL Functions](https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/Functions.html#GUID-D079EFD3-C683-441F-977E-2C9503089982)
+* [Oracle PL/SQL Reference](https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html)
 * [Oracle Database 19c - Get Started](https://docs.oracle.com/en/database/oracle/oracle-database/19/index.html)
 * MS SQL Server
     * [Functions](https://learn.microsoft.com/en-us/sql/t-sql/functions/functions?view=azuresqldb-current)
