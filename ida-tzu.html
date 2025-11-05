@@ -1,0 +1,2046 @@
+<!doctype html>
+<html>
+<meta charset=utf-8>
+<title>Ida Tzu Quotes</title>
+<meta name=viewport content="width=device-width,initial-scale=1.0">
+<script>
+// Claude Sonnet 4.5, 2025-11-04, https://claude.ai/chat/076e0a79-a66d-424e-9abe-86abf4a7ac40
+// Prompt: List 200 of Sun Tzu's most famous quotes, except change them to express the same sentiment about Information Technology, Programming (especially the Design aspect of Development), and closely related topics.  Prefer artistic phrasing strongly reminiscent of Sun Tzu, without being too abstract.  Prefer replacing short words or phrases while maintaining the overall quote structure.  For each of the quotes, list 5 variants with these modifications.
+quotes = [
+    [
+        "All warfare is based on deception.",
+        [
+            "All systems are based on abstraction.",
+            "All architecture is based on encapsulation.",
+            "All debugging is based on observation.",
+            "All programming is based on composition.",
+            "All software is based on representation."
+        ]
+    ],
+    [
+        "The supreme art of war is to subdue the enemy without fighting.",
+        [
+            "The supreme art of code is to solve the problem without complexity.",
+            "The supreme art of design is to meet requirements without overengineering.",
+            "The supreme art of debugging is to prevent the bug without patching.",
+            "The supreme art of scaling is to handle load without rewriting.",
+            "The supreme art of optimization is to improve performance without refactoring."
+        ]
+    ],
+    [
+        "If you know the enemy and know yourself, you need not fear the result of a hundred battles.",
+        [
+            "If you know the system and know your constraints, you need not fear the result of a hundred deployments.",
+            "If you know the requirements and know your architecture, you need not fear the result of a hundred iterations.",
+            "If you know the data and know your algorithms, you need not fear the result of a hundred queries.",
+            "If you know the users and know your interface, you need not fear the result of a hundred releases.",
+            "If you know the bottleneck and know your resources, you need not fear the result of a hundred requests."
+        ]
+    ],
+    [
+        "Appear weak when you are strong, and strong when you are weak.",
+        [
+            "Appear simple when you are robust, and robust when you are simple.",
+            "Appear flexible when you are rigid, and rigid when you are flexible.",
+            "Appear abstracted when you are concrete, and concrete when you are abstracted.",
+            "Appear coupled when you are modular, and modular when you are coupled.",
+            "Appear dynamic when you are static, and static when you are dynamic."
+        ]
+    ],
+    [
+        "The greatest victory is that which requires no battle.",
+        [
+            "The greatest solution is that which requires no code.",
+            "The greatest design is that which requires no compromise.",
+            "The greatest optimization is that which requires no change.",
+            "The greatest feature is that which requires no explanation.",
+            "The greatest architecture is that which requires no documentation."
+        ]
+    ],
+    [
+        "Supreme excellence consists of breaking the enemy's resistance without fighting.",
+        [
+            "Supreme excellence consists of breaking the problem's complexity without hacking.",
+            "Supreme excellence consists of breaking the system's limitations without rewriting.",
+            "Supreme excellence consists of breaking the user's confusion without tutorials.",
+            "Supreme excellence consists of breaking the performance's ceiling without optimizing.",
+            "Supreme excellence consists of breaking the design's rigidity without refactoring."
+        ]
+    ],
+    [
+        "In the midst of chaos, there is also opportunity.",
+        [
+            "In the midst of legacy code, there is also opportunity.",
+            "In the midst of technical debt, there is also opportunity.",
+            "In the midst of requirements change, there is also opportunity.",
+            "In the midst of production failures, there is also opportunity.",
+            "In the midst of breaking changes, there is also opportunity."
+        ]
+    ],
+    [
+        "Let your plans be dark and impenetrable as night, and when you move, fall like a thunderbolt.",
+        [
+            "Let your abstractions be dark and impenetrable as modules, and when you deploy, fall like a release.",
+            "Let your implementations be dark and impenetrable as closures, and when you execute, fall like a function.",
+            "Let your architecture be dark and impenetrable as layers, and when you refactor, fall like a migration.",
+            "Let your algorithms be dark and impenetrable as hashes, and when you compute, fall like a cache hit.",
+            "Let your designs be dark and impenetrable as interfaces, and when you integrate, fall like a plugin."
+        ]
+    ],
+    [
+        "The whole secret lies in confusing the enemy, so that he cannot fathom our real intent.",
+        [
+            "The whole secret lies in abstracting the implementation, so that clients cannot depend on internal details.",
+            "The whole secret lies in encapsulating the state, so that users cannot corrupt the invariants.",
+            "The whole secret lies in separating the concerns, so that changes cannot cascade through modules.",
+            "The whole secret lies in hiding the complexity, so that consumers cannot misuse the interface.",
+            "The whole secret lies in decoupling the components, so that failures cannot propagate through boundaries."
+        ]
+    ],
+    [
+        "Attack him where he is unprepared, appear where you are not expected.",
+        [
+            "Optimize where performance is unprepared, cache where data is not expected.",
+            "Abstract where complexity is unprepared, generalize where patterns are not expected.",
+            "Validate where input is unprepared, sanitize where injection is not expected.",
+            "Scale where load is unprepared, shard where bottlenecks are not expected.",
+            "Test where bugs are unprepared, fuzz where edge cases are not expected."
+        ]
+    ],
+    [
+        "To know your enemy, you must become your enemy.",
+        [
+            "To know your users, you must become your users.",
+            "To know your system, you must become your system.",
+            "To know your bugs, you must become your bugs.",
+            "To know your data, you must become your data.",
+            "To know your bottlenecks, you must become your bottlenecks."
+        ]
+    ],
+    [
+        "Keep your friends close, and your enemies closer.",
+        [
+            "Keep your dependencies close, and your side effects closer.",
+            "Keep your abstractions close, and your implementations closer.",
+            "Keep your interfaces close, and your contracts closer.",
+            "Keep your tests close, and your edge cases closer.",
+            "Keep your logs close, and your errors closer."
+        ]
+    ],
+    [
+        "There is no instance of a nation benefiting from prolonged warfare.",
+        [
+            "There is no instance of a project benefiting from prolonged refactoring.",
+            "There is no instance of a system benefiting from prolonged debugging.",
+            "There is no instance of a team benefiting from prolonged meetings.",
+            "There is no instance of a codebase benefiting from prolonged branching.",
+            "There is no instance of an architecture benefiting from prolonged migration."
+        ]
+    ],
+    [
+        "Victorious warriors win first and then go to war, while defeated warriors go to war first and then seek to win.",
+        [
+            "Victorious developers design first and then write code, while defeated developers write code first and then seek to design.",
+            "Victorious architects plan first and then build systems, while defeated architects build systems first and then seek to plan.",
+            "Victorious engineers test first and then deploy features, while defeated engineers deploy features first and then seek to test.",
+            "Victorious programmers understand first and then solve problems, while defeated programmers solve problems first and then seek to understand.",
+            "Victorious teams prototype first and then commit resources, while defeated teams commit resources first and then seek to prototype."
+        ]
+    ],
+    [
+        "If you wait by the river long enough, the bodies of your enemies will float by.",
+        [
+            "If you wait by the debugger long enough, the source of your bugs will appear.",
+            "If you wait by the profiler long enough, the cause of your slowness will emerge.",
+            "If you wait by the logs long enough, the pattern of your failures will reveal.",
+            "If you wait by the metrics long enough, the trend of your performance will show.",
+            "If you wait by the monitoring long enough, the root of your issues will surface."
+        ]
+    ],
+    [
+        "When strong, avoid them. If of high morale, depress them.",
+        [
+            "When coupled, decouple them. If of high complexity, simplify them.",
+            "When monolithic, split them. If of high interdependence, isolate them.",
+            "When synchronous, queue them. If of high blocking, async them.",
+            "When mutable, immute them. If of high contention, partition them.",
+            "When concrete, abstract them. If of high duplication, extract them."
+        ]
+    ],
+    [
+        "Strategy without tactics is the slowest route to victory.",
+        [
+            "Architecture without implementation is the slowest route to delivery.",
+            "Design without code is the slowest route to validation.",
+            "Planning without execution is the slowest route to deployment.",
+            "Abstraction without concrete is the slowest route to understanding.",
+            "Theory without practice is the slowest route to learning."
+        ]
+    ],
+    [
+        "Tactics without strategy is the noise before defeat.",
+        [
+            "Code without architecture is the noise before collapse.",
+            "Implementation without design is the noise before refactoring.",
+            "Execution without planning is the noise before failure.",
+            "Concrete without abstraction is the noise before duplication.",
+            "Practice without theory is the noise before confusion."
+        ]
+    ],
+    [
+        "All men can see the tactics whereby I conquer, but what none can see is the strategy.",
+        [
+            "All developers can see the code whereby I implement, but what none can see is the architecture.",
+            "All programmers can see the functions whereby I solve, but what none can see is the design.",
+            "All engineers can see the commits whereby I build, but what none can see is the vision.",
+            "All users can see the features whereby I deliver, but what none can see is the abstraction.",
+            "All reviewers can see the changes whereby I fix, but what none can see is the pattern."
+        ]
+    ],
+    [
+        "The general who wins the battle makes many calculations in his temple before the battle is fought.",
+        [
+            "The developer who ships the feature makes many designs in their editor before the code is written.",
+            "The architect who builds the system makes many diagrams in their notebook before the structure is erected.",
+            "The engineer who solves the problem makes many traces in their debugger before the solution is found.",
+            "The programmer who optimizes the algorithm makes many profiles in their tools before the hotspot is removed.",
+            "The team who delivers the project makes many plans in their meetings before the work is started."
+        ]
+    ],
+    [
+        "To secure ourselves against defeat lies in our own hands, but the opportunity of defeating the enemy is provided by the enemy himself.",
+        [
+            "To secure ourselves against bugs lies in our own tests, but the opportunity of finding bugs is provided by the users themselves.",
+            "To secure ourselves against failures lies in our own validation, but the opportunity of discovering failures is provided by the system itself.",
+            "To secure ourselves against complexity lies in our own design, but the opportunity of reducing complexity is provided by the requirements themselves.",
+            "To secure ourselves against performance issues lies in our own optimization, but the opportunity of improving performance is provided by the profiler itself.",
+            "To secure ourselves against technical debt lies in our own refactoring, but the opportunity of eliminating debt is provided by the codebase itself."
+        ]
+    ],
+    [
+        "If your opponent is of choleric temper, seek to irritate him.",
+        [
+            "If your algorithm is of exponential complexity, seek to memoize it.",
+            "If your system is of brittle design, seek to stabilize it.",
+            "If your code is of high coupling, seek to decouple it.",
+            "If your data is of poor locality, seek to reorganize it.",
+            "If your interface is of rigid contract, seek to generalize it."
+        ]
+    ],
+    [
+        "Pretend inferiority and encourage his arrogance.",
+        [
+            "Pretend simplicity and encourage their overconfidence.",
+            "Pretend limitation and encourage their assumptions.",
+            "Pretend weakness and encourage their dependencies.",
+            "Pretend rigidity and encourage their workarounds.",
+            "Pretend opacity and encourage their misunderstandings."
+        ]
+    ],
+    [
+        "He who knows when he can fight and when he cannot will be victorious.",
+        [
+            "He who knows when to optimize and when to refactor will be successful.",
+            "He who knows when to abstract and when to concrete will be effective.",
+            "He who knows when to scale and when to simplify will be efficient.",
+            "He who knows when to decouple and when to inline will be pragmatic.",
+            "He who knows when to generalize and when to specialize will be wise."
+        ]
+    ],
+    [
+        "Opportunities multiply as they are seized.",
+        [
+            "Abstractions multiply as they are composed.",
+            "Optimizations multiply as they are applied.",
+            "Patterns multiply as they are recognized.",
+            "Refactorings multiply as they are executed.",
+            "Insights multiply as they are investigated."
+        ]
+    ],
+    [
+        "When you surround an army, leave an outlet free.",
+        [
+            "When you design a system, leave an extension point free.",
+            "When you build an interface, leave a customization hook free.",
+            "When you write a function, leave a callback parameter free.",
+            "When you create an architecture, leave a plugin mechanism free.",
+            "When you implement a protocol, leave a versioning strategy free."
+        ]
+    ],
+    [
+        "Do not press a desperate foe too hard.",
+        [
+            "Do not push a fragile system too hard.",
+            "Do not stress a constrained resource too hard.",
+            "Do not load a bottlenecked component too hard.",
+            "Do not refactor a critical path too hard.",
+            "Do not optimize a working solution too hard."
+        ]
+    ],
+    [
+        "Thus it is that in war the victorious strategist only seeks battle after the victory has been won.",
+        [
+            "Thus it is that in development the successful architect only writes code after the design has been validated.",
+            "Thus it is that in programming the effective developer only implements after the algorithm has been proven.",
+            "Thus it is that in engineering the wise builder only deploys after the tests have passed.",
+            "Thus it is that in software the prudent team only releases after the quality has been assured.",
+            "Thus it is that in systems the careful designer only scales after the bottleneck has been identified."
+        ]
+    ],
+    [
+        "Regard your soldiers as your children, and they will follow you into the deepest valleys.",
+        [
+            "Regard your functions as your children, and they will compose into the deepest abstractions.",
+            "Regard your modules as your children, and they will integrate into the deepest architectures.",
+            "Regard your tests as your children, and they will protect into the deepest refactorings.",
+            "Regard your data as your children, and they will flow into the deepest pipelines.",
+            "Regard your components as your children, and they will scale into the deepest systems."
+        ]
+    ],
+    [
+        "Build your opponent a golden bridge to retreat across.",
+        [
+            "Build your users a simple path to migrate across.",
+            "Build your system a graceful way to degrade across.",
+            "Build your API a backward-compatible version to transition across.",
+            "Build your data a consistent schema to evolve across.",
+            "Build your service a feature flag to rollback across."
+        ]
+    ],
+    [
+        "There are not more than five musical notes, yet the combinations of these five give rise to more melodies than can ever be heard.",
+        [
+            "There are not more than five design patterns, yet the combinations of these five give rise to more architectures than can ever be built.",
+            "There are not more than five data structures, yet the combinations of these five give rise to more algorithms than can ever be written.",
+            "There are not more than five primitives, yet the combinations of these five give rise to more abstractions than can ever be conceived.",
+            "There are not more than five operators, yet the combinations of these five give rise to more expressions than can ever be evaluated.",
+            "There are not more than five constructs, yet the combinations of these five give rise to more programs than can ever be executed."
+        ]
+    ],
+    [
+        "In war, the way is to avoid what is strong and to strike at what is weak.",
+        [
+            "In optimization, the way is to avoid what is fast and to improve what is slow.",
+            "In refactoring, the way is to avoid what is clean and to simplify what is complex.",
+            "In debugging, the way is to avoid what is correct and to fix what is broken.",
+            "In design, the way is to avoid what is decoupled and to separate what is tangled.",
+            "In testing, the way is to avoid what is robust and to validate what is fragile."
+        ]
+    ],
+    [
+        "The quality of decision is like the well-timed swoop of a falcon.",
+        [
+            "The quality of abstraction is like the well-designed interface of a module.",
+            "The quality of optimization is like the well-placed cache of a system.",
+            "The quality of refactoring is like the well-extracted function of a codebase.",
+            "The quality of architecture is like the well-separated layer of a design.",
+            "The quality of algorithm is like the well-chosen structure of a solution."
+        ]
+    ],
+    [
+        "Quickness is the essence of the war.",
+        [
+            "Simplicity is the essence of the design.",
+            "Clarity is the essence of the interface.",
+            "Efficiency is the essence of the algorithm.",
+            "Modularity is the essence of the architecture.",
+            "Correctness is the essence of the implementation."
+        ]
+    ],
+    [
+        "He will win who knows when to fight and when not to fight.",
+        [
+            "He will succeed who knows when to optimize and when not to optimize.",
+            "He will excel who knows when to abstract and when not to abstract.",
+            "He will thrive who knows when to refactor and when not to refactor.",
+            "He will prevail who knows when to generalize and when not to generalize.",
+            "He will triumph who knows when to scale and when not to scale."
+        ]
+    ],
+    [
+        "The general who advances without coveting fame and retreats without fearing disgrace.",
+        [
+            "The developer who commits without coveting praise and reverts without fearing criticism.",
+            "The architect who designs without coveting elegance and simplifies without fearing plainness.",
+            "The engineer who deploys without coveting features and rolls back without fearing setbacks.",
+            "The programmer who abstracts without coveting generality and concretizes without fearing specificity.",
+            "The team who releases without coveting perfection and patches without fearing imperfection."
+        ]
+    ],
+    [
+        "The good fighters of old first put themselves beyond the possibility of defeat.",
+        [
+            "The good developers of old first put themselves beyond the possibility of bugs.",
+            "The good architects of old first put themselves beyond the possibility of coupling.",
+            "The good engineers of old first put themselves beyond the possibility of failures.",
+            "The good programmers of old first put themselves beyond the possibility of complexity.",
+            "The good designers of old first put themselves beyond the possibility of rigidity."
+        ]
+    ],
+    [
+        "What the ancients called a clever fighter is one who not only wins, but excels in winning with ease.",
+        [
+            "What the ancients called a clever developer is one who not only solves, but excels in solving with simplicity.",
+            "What the ancients called a clever architect is one who not only builds, but excels in building with elegance.",
+            "What the ancients called a clever engineer is one who not only deploys, but excels in deploying with confidence.",
+            "What the ancients called a clever programmer is one who not only codes, but excels in coding with clarity.",
+            "What the ancients called a clever designer is one who not only creates, but excels in creating with grace."
+        ]
+    ],
+    [
+        "Hence his victories bring him neither reputation for wisdom nor credit for courage.",
+        [
+            "Hence his solutions bring him neither reputation for cleverness nor credit for complexity.",
+            "Hence his designs bring him neither reputation for abstraction nor credit for generality.",
+            "Hence his optimizations bring him neither reputation for speed nor credit for tricks.",
+            "Hence his refactorings bring him neither reputation for beauty nor credit for effort.",
+            "Hence his implementations bring him neither reputation for sophistication nor credit for lines."
+        ]
+    ],
+    [
+        "He wins his battles by making no mistakes.",
+        [
+            "He delivers his features by introducing no bugs.",
+            "He builds his systems by creating no coupling.",
+            "He designs his interfaces by producing no confusion.",
+            "He writes his code by generating no complexity.",
+            "He architects his solutions by establishing no bottlenecks."
+        ]
+    ],
+    [
+        "To fight and conquer in all your battles is not supreme excellence.",
+        [
+            "To code and deliver in all your sprints is not supreme excellence.",
+            "To build and deploy in all your releases is not supreme excellence.",
+            "To abstract and generalize in all your designs is not supreme excellence.",
+            "To optimize and accelerate in all your functions is not supreme excellence.",
+            "To refactor and beautify in all your modules is not supreme excellence."
+        ]
+    ],
+    [
+        "The skillful tactician may be likened to the shuai-jan.",
+        [
+            "The skillful developer may be likened to the well-tested framework.",
+            "The skillful architect may be likened to the layered system.",
+            "The skillful engineer may be likened to the monitored service.",
+            "The skillful programmer may be likened to the composed function.",
+            "The skillful designer may be likened to the decoupled module."
+        ]
+    ],
+    [
+        "Confront them with annihilation, and they will then survive.",
+        [
+            "Confront them with constraints, and they will then optimize.",
+            "Confront them with requirements, and they will then design.",
+            "Confront them with failures, and they will then validate.",
+            "Confront them with complexity, and they will then simplify.",
+            "Confront them with scale, and they will then architect."
+        ]
+    ],
+    [
+        "Throw your soldiers into positions whence there is no escape.",
+        [
+            "Throw your functions into closures whence there is no mutation.",
+            "Throw your data into immutables whence there is no corruption.",
+            "Throw your types into constraints whence there is no invalidity.",
+            "Throw your components into containers whence there is no leakage.",
+            "Throw your services into boundaries whence there is no coupling."
+        ]
+    ],
+    [
+        "Ponder and deliberate before you make a move.",
+        [
+            "Design and prototype before you write code.",
+            "Profile and measure before you optimize.",
+            "Test and validate before you deploy.",
+            "Model and diagram before you architect.",
+            "Trace and debug before you fix."
+        ]
+    ],
+    [
+        "To rely on rustics and not prepare is the greatest of crimes.",
+        [
+            "To rely on assumptions and not validate is the greatest of errors.",
+            "To rely on guesses and not measure is the greatest of mistakes.",
+            "To rely on hope and not test is the greatest of failures.",
+            "To rely on intuition and not profile is the greatest of wastes.",
+            "To rely on luck and not monitor is the greatest of risks."
+        ]
+    ],
+    [
+        "Move swift as the wind and closely-formed as the wood.",
+        [
+            "Execute swift as the cache and closely-formed as the module.",
+            "Deploy swift as the pipeline and closely-formed as the container.",
+            "Optimize swift as the index and closely-formed as the batch.",
+            "Refactor swift as the extract and closely-formed as the layer.",
+            "Scale swift as the shard and closely-formed as the cluster."
+        ]
+    ],
+    [
+        "Attack like the fire and be still as the mountain.",
+        [
+            "Optimize like the compiler and be stable as the interface.",
+            "Refactor like the migration and be constant as the contract.",
+            "Deploy like the release and be solid as the foundation.",
+            "Abstract like the pattern and be firm as the principle.",
+            "Scale like the replication and be steady as the protocol."
+        ]
+    ],
+    [
+        "Let your rapidity be that of the wind, your compactness that of the forest.",
+        [
+            "Let your execution be that of the cache, your cohesion be that of the module.",
+            "Let your deployment be that of the automation, your coupling be that of the interface.",
+            "Let your optimization be that of the algorithm, your encapsulation be that of the closure.",
+            "Let your refactoring be that of the transformation, your organization be that of the namespace.",
+            "Let your scaling be that of the distribution, your structure be that of the hierarchy."
+        ]
+    ],
+    [
+        "In raiding and plundering be like fire, in immovability like a mountain.",
+        [
+            "In optimizing and accelerating be like indexes, in stability like types.",
+            "In refactoring and simplifying be like extractions, in consistency like contracts.",
+            "In deploying and releasing be like pipelines, in reliability like monitoring.",
+            "In abstracting and generalizing be like patterns, in solidity like principles.",
+            "In scaling and distributing be like sharding, in durability like persistence."
+        ]
+    ],
+    [
+        "There are roads which must not be followed.",
+        [
+            "There are patterns which must not be applied.",
+            "There are optimizations which must not be attempted.",
+            "There are abstractions which must not be created.",
+            "There are generalizations which must not be pursued.",
+            "There are refactorings which must not be executed."
+        ]
+    ],
+    [
+        "There are armies which must not be attacked.",
+        [
+            "There are systems which must not be rewritten.",
+            "There are codebases which must not be refactored.",
+            "There are interfaces which must not be changed.",
+            "There are architectures which must not be restructured.",
+            "There are protocols which must not be modified."
+        ]
+    ],
+    [
+        "There are cities which must not be besieged.",
+        [
+            "There are modules which must not be coupled.",
+            "There are functions which must not be inlined.",
+            "There are components which must not be merged.",
+            "There are services which must not be consolidated.",
+            "There are layers which must not be bypassed."
+        ]
+    ],
+    [
+        "There are positions which must not be contested.",
+        [
+            "There are trade-offs which must not be avoided.",
+            "There are constraints which must not be violated.",
+            "There are invariants which must not be broken.",
+            "There are contracts which must not be breached.",
+            "There are principles which must not be compromised."
+        ]
+    ],
+    [
+        "There are commands of the sovereign which must not be obeyed.",
+        [
+            "There are requirements of the stakeholder which must not be implemented.",
+            "There are requests of the user which must not be fulfilled.",
+            "There are suggestions of the manager which must not be followed.",
+            "There are demands of the client which must not be accepted.",
+            "There are edicts of the executive which must not be executed."
+        ]
+    ],
+    [
+        "The general who thoroughly understands the advantages that accompany variation of tactics knows how to handle his troops.",
+        [
+            "The developer who thoroughly understands the advantages that accompany variation of patterns knows how to structure their code.",
+            "The architect who thoroughly understands the advantages that accompany variation of designs knows how to build their systems.",
+            "The engineer who thoroughly understands the advantages that accompany variation of approaches knows how to solve their problems.",
+            "The programmer who thoroughly understands the advantages that accompany variation of algorithms knows how to optimize their functions.",
+            "The designer who thoroughly understands the advantages that accompany variation of abstractions knows how to organize their modules."
+        ]
+    ],
+    [
+        "Now the general who wins a battle makes many calculations in his temple ere the battle is fought.",
+        [
+            "Now the developer who ships a feature makes many designs in their workspace ere the code is written.",
+            "Now the architect who builds a system makes many diagrams in their notebook ere the structure is created.",
+            "Now the engineer who solves a problem makes many traces in their debugger ere the solution is found.",
+            "Now the programmer who optimizes an algorithm makes many profiles in their tools ere the bottleneck is removed.",
+            "Now the team who delivers a project makes many plans in their retrospective ere the work is begun."
+        ]
+    ],
+    [
+        "The control of a large force is the same principle as the control of a few men.",
+        [
+            "The design of a large system is the same principle as the design of a few modules.",
+            "The architecture of a large codebase is the same principle as the architecture of a few components.",
+            "The optimization of a large dataset is the same principle as the optimization of a few records.",
+            "The scaling of a large service is the same principle as the scaling of a few instances.",
+            "The management of a large project is the same principle as the management of a few tasks."
+        ]
+    ],
+    [
+        "Fighting with a large army under your command is nowise different from fighting with a small one.",
+        [
+            "Developing with a large framework under your command is nowise different from developing with a small one.",
+            "Architecting with a large system under your command is nowise different from architecting with a small one.",
+            "Optimizing with a large dataset under your command is nowise different from optimizing with a small one.",
+            "Scaling with a large cluster under your command is nowise different from scaling with a small one.",
+            "Managing with a large codebase under your command is nowise different from managing with a small one."
+        ]
+    ],
+    [
+        "It is only one who is thoroughly acquainted with the evils of war that can thoroughly understand the profitable way of carrying it on.",
+        [
+            "It is only one who is thoroughly acquainted with the evils of complexity that can thoroughly understand the profitable way of designing systems.",
+            "It is only one who is thoroughly acquainted with the evils of coupling that can thoroughly understand the profitable way of structuring code.",
+            "It is only one who is thoroughly acquainted with the evils of premature optimization that can thoroughly understand the profitable way of improving performance.",
+            "It is only one who is thoroughly acquainted with the evils of over-abstraction that can thoroughly understand the profitable way of generalizing patterns.",
+            "It is only one who is thoroughly acquainted with the evils of technical debt that can thoroughly understand the profitable way of refactoring codebases."
+        ]
+    ],
+    [
+        "Hence that general is skillful in attack whose opponent does not know what to defend.",
+        [
+            "Hence that developer is skillful in design whose reviewer does not know what to critique.",
+            "Hence that architect is skillful in abstraction whose consumer does not know what to expect.",
+            "Hence that engineer is skillful in optimization whose profiler does not know what to measure.",
+            "Hence that programmer is skillful in implementation whose tester does not know what to verify.",
+            "Hence that designer is skillful in interface whose user does not know what to configure."
+        ]
+    ],
+    [
+        "And he is skillful in defense whose opponent does not know what to attack.",
+        [
+            "And he is skillful in encapsulation whose client does not know what to access.",
+            "And he is skillful in validation whose input does not know what to corrupt.",
+            "And he is skillful in error handling whose exception does not know what to propagate.",
+            "And he is skillful in isolation whose failure does not know what to cascade.",
+            "And he is skillful in immutability whose mutation does not know what to modify."
+        ]
+    ],
+    [
+        "By discovering the enemy's dispositions and remaining invisible ourselves, we can keep our forces concentrated.",
+        [
+            "By discovering the system's bottlenecks and remaining modular ourselves, we can keep our resources optimized.",
+            "By discovering the code's dependencies and remaining decoupled ourselves, we can keep our components isolated.",
+            "By discovering the data's patterns and remaining abstracted ourselves, we can keep our algorithms generalized.",
+            "By discovering the user's needs and remaining flexible ourselves, we can keep our interfaces adaptable.",
+            "By discovering the requirement's constraints and remaining simple ourselves, we can keep our designs focused."
+        ]
+    ],
+    [
+        "Now in order to kill the enemy, our men must be roused to anger.",
+        [
+            "Now in order to optimize the system, our code must be driven to efficiency.",
+            "Now in order to refactor the codebase, our team must be moved to clarity.",
+            "Now in order to debug the problem, our mind must be focused to precision.",
+            "Now in order to scale the service, our architecture must be pushed to distribution.",
+            "Now in order to simplify the design, our abstraction must be reduced to essence."
+        ]
+    ],
+    [
+        "The spot where we intend to fight must not be made known.",
+        [
+            "The module where we intend to extend must not be made public.",
+            "The function where we intend to optimize must not be made obvious.",
+            "The layer where we intend to refactor must not be made visible.",
+            "The component where we intend to replace must not be made apparent.",
+            "The interface where we intend to change must not be made explicit."
+        ]
+    ],
+    [
+        "For should the enemy strengthen his van, he will weaken his rear.",
+        [
+            "For should the system optimize its throughput, it will sacrifice its latency.",
+            "For should the code increase its generality, it will reduce its simplicity.",
+            "For should the design enhance its flexibility, it will compromise its performance.",
+            "For should the architecture improve its scalability, it will weaken its consistency.",
+            "For should the algorithm boost its speed, it will expand its memory."
+        ]
+    ],
+    [
+        "Should he strengthen his rear, he will weaken his van.",
+        [
+            "Should it optimize its latency, it will sacrifice its throughput.",
+            "Should it increase its simplicity, it will reduce its generality.",
+            "Should it enhance its performance, it will compromise its flexibility.",
+            "Should it improve its consistency, it will weaken its scalability.",
+            "Should it minimize its memory, it will slow its speed."
+        ]
+    ],
+    [
+        "Should he strengthen his left, he will weaken his right.",
+        [
+            "Should it optimize its reads, it will slow its writes.",
+            "Should it increase its availability, it will reduce its consistency.",
+            "Should it enhance its security, it will compromise its usability.",
+            "Should it improve its expressiveness, it will weaken its performance.",
+            "Should it maximize its features, it will minimize its simplicity."
+        ]
+    ],
+    [
+        "Should he strengthen his right, he will weaken his left.",
+        [
+            "Should it optimize its writes, it will slow its reads.",
+            "Should it increase its consistency, it will reduce its availability.",
+            "Should it enhance its usability, it will compromise its security.",
+            "Should it improve its performance, it will weaken its expressiveness.",
+            "Should it maximize its simplicity, it will minimize its features."
+        ]
+    ],
+    [
+        "If he sends reinforcements everywhere, he will everywhere be weak.",
+        [
+            "If it adds abstractions everywhere, it will everywhere be complex.",
+            "If it applies optimizations everywhere, it will everywhere be fragile.",
+            "If it inserts validations everywhere, it will everywhere be slow.",
+            "If it creates interfaces everywhere, it will everywhere be coupled.",
+            "If it implements features everywhere, it will everywhere be bloated."
+        ]
+    ],
+    [
+        "Numerical weakness comes from having to prepare against possible attacks.",
+        [
+            "Performance weakness comes from having to validate against possible inputs.",
+            "Design weakness comes from having to abstract against possible changes.",
+            "Code weakness comes from having to handle against possible errors.",
+            "System weakness comes from having to scale against possible loads.",
+            "Architecture weakness comes from having to decouple against possible dependencies."
+        ]
+    ],
+    [
+        "Numerical strength comes from compelling our adversary to make these preparations against us.",
+        [
+            "Performance strength comes from forcing our users to cache these requests for us.",
+            "Design strength comes from requiring our clients to adapt these interfaces for us.",
+            "Code strength comes from demanding our callers to validate these inputs for us.",
+            "System strength comes from making our consumers to batch these operations for us.",
+            "Architecture strength comes from compelling our services to serialize these calls for us."
+        ]
+    ],
+    [
+        "Knowing the place and the time of the coming battle, we may concentrate from the greatest distances.",
+        [
+            "Knowing the module and the moment of the coming change, we may decouple from the tightest coupling.",
+            "Knowing the function and the frequency of the coming call, we may optimize from the slowest execution.",
+            "Knowing the layer and the load of the coming request, we may scale from the smallest capacity.",
+            "Knowing the component and the constraint of the coming requirement, we may abstract from the most concrete.",
+            "Knowing the interface and the interaction of the coming integration, we may generalize from the most specific."
+        ]
+    ],
+    [
+        "Though the enemy be stronger in numbers, we may prevent him from fighting.",
+        [
+            "Though the system be stronger in features, we may prevent it from complexity.",
+            "Though the code be stronger in abstraction, we may prevent it from obscurity.",
+            "Though the design be stronger in generality, we may prevent it from over-engineering.",
+            "Though the architecture be stronger in scalability, we may prevent it from fragility.",
+            "Though the algorithm be stronger in optimization, we may prevent it from premature."
+        ]
+    ],
+    [
+        "Scheme so as to discover his plans and the likelihood of their success.",
+        [
+            "Profile so as to discover its bottlenecks and the likelihood of their optimization.",
+            "Trace so as to discover its bugs and the likelihood of their reproduction.",
+            "Monitor so as to discover its failures and the likelihood of their recurrence.",
+            "Measure so as to discover its inefficiencies and the likelihood of their improvement.",
+            "Test so as to discover its edge cases and the likelihood of their triggering."
+        ]
+    ],
+    [
+        "Rouse him, and learn the principle of his activity or inactivity.",
+        [
+            "Stress it, and learn the principle of its performance or degradation.",
+            "Query it, and learn the principle of its response or timeout.",
+            "Load it, and learn the principle of its scaling or bottleneck.",
+            "Mutate it, and learn the principle of its invariance or corruption.",
+            "Integrate it, and learn the principle of its compatibility or breakage."
+        ]
+    ],
+    [
+        "Force him to reveal himself, so as to find out his vulnerable spots.",
+        [
+            "Force it to execute, so as to find out its slow paths.",
+            "Force it to process, so as to find out its memory leaks.",
+            "Force it to integrate, so as to find out its tight coupling.",
+            "Force it to scale, so as to find out its contention points.",
+            "Force it to fail, so as to find out its error paths."
+        ]
+    ],
+    [
+        "Carefully compare the opposing army with your own, so that you may know where strength is superabundant and where it is deficient.",
+        [
+            "Carefully compare the existing system with your design, so that you may know where coupling is excessive and where it is absent.",
+            "Carefully compare the current implementation with your plan, so that you may know where complexity is superfluous and where it is needed.",
+            "Carefully compare the actual performance with your benchmark, so that you may know where optimization is premature and where it is required.",
+            "Carefully compare the present architecture with your model, so that you may know where abstraction is overdone and where it is lacking.",
+            "Carefully compare the deployed code with your specification, so that you may know where features are bloated and where they are missing."
+        ]
+    ],
+    [
+        "In making tactical dispositions, the highest pitch you can attain is to conceal them.",
+        [
+            "In making architectural decisions, the highest pitch you can attain is to encapsulate them.",
+            "In making design choices, the highest pitch you can attain is to abstract them.",
+            "In making implementation details, the highest pitch you can attain is to hide them.",
+            "In making optimization strategies, the highest pitch you can attain is to internalize them.",
+            "In making structural patterns, the highest pitch you can attain is to isolate them."
+        ]
+    ],
+    [
+        "Conceal your dispositions, and you will be safe from the prying of the subtlest spies.",
+        [
+            "Encapsulate your implementations, and you will be safe from the coupling of the tightest dependencies.",
+            "Abstract your details, and you will be safe from the breaking of the brittlest contracts.",
+            "Hide your internals, and you will be safe from the misuse of the most creative clients.",
+            "Isolate your components, and you will be safe from the cascade of the worst failures.",
+            "Decouple your modules, and you will be safe from the ripple of the broadest changes."
+        ]
+    ],
+    [
+        "How victory may be produced for them out of the enemy's own tactics\u2014that is what the multitude cannot comprehend.",
+        [
+            "How simplicity may be extracted for them out of the complexity's own structure\u2014that is what the multitude cannot comprehend.",
+            "How performance may be gained for them out of the algorithm's own nature\u2014that is what the multitude cannot comprehend.",
+            "How elegance may be derived for them out of the problem's own constraints\u2014that is what the multitude cannot comprehend.",
+            "How modularity may be achieved for them out of the coupling's own patterns\u2014that is what the multitude cannot comprehend.",
+            "How clarity may be distilled for them out of the confusion's own symptoms\u2014that is what the multitude cannot comprehend."
+        ]
+    ],
+    [
+        "All men can see these tactics whereby I conquer, but what none can see is the strategy out of which victory is evolved.",
+        [
+            "All developers can see these functions whereby I implement, but what none can see is the architecture out of which the solution is evolved.",
+            "All programmers can see these lines whereby I code, but what none can see is the design out of which the structure is evolved.",
+            "All engineers can see these commits whereby I deliver, but what none can see is the pattern out of which the abstraction is evolved.",
+            "All reviewers can see these changes whereby I refactor, but what none can see is the principle out of which the simplification is evolved.",
+            "All users can see these features whereby I build, but what none can see is the vision out of which the experience is evolved."
+        ]
+    ],
+    [
+        "Do not repeat the tactics which have gained you one victory, but let your methods be regulated by the infinite variety of circumstances.",
+        [
+            "Do not repeat the patterns which have solved you one problem, but let your designs be regulated by the infinite variety of requirements.",
+            "Do not repeat the optimizations which have accelerated you one function, but let your improvements be regulated by the infinite variety of bottlenecks.",
+            "Do not repeat the abstractions which have generalized you one case, but let your interfaces be regulated by the infinite variety of contexts.",
+            "Do not repeat the refactorings which have cleaned you one module, but let your transformations be regulated by the infinite variety of codebases.",
+            "Do not repeat the architectures which have scaled you one system, but let your structures be regulated by the infinite variety of constraints."
+        ]
+    ],
+    [
+        "Military tactics are like unto water; for water in its natural course runs away from high places and hastens downwards.",
+        [
+            "Design patterns are like unto data; for data in its natural flow moves away from tight coupling and hastens toward loose interfaces.",
+            "Optimization strategies are like unto cache; for cache in its natural behavior avoids slow paths and hastens toward hot spots.",
+            "Refactoring approaches are like unto extraction; for extraction in its natural tendency pulls away from duplication and hastens toward abstraction.",
+            "Architectural principles are like unto layers; for layers in their natural organization separate from monoliths and hasten toward boundaries.",
+            "Code transformations are like unto simplification; for simplification in its natural direction moves away from complexity and hastens toward clarity."
+        ]
+    ],
+    [
+        "So in war, the way is to avoid what is strong and to strike at what is weak.",
+        [
+            "So in refactoring, the way is to avoid what is decoupled and to extract what is tangled.",
+            "So in optimization, the way is to avoid what is cached and to accelerate what is slow.",
+            "So in debugging, the way is to avoid what is tested and to examine what is broken.",
+            "So in design, the way is to avoid what is simple and to clarify what is complex.",
+            "So in architecture, the way is to avoid what is modular and to separate what is coupled."
+        ]
+    ],
+    [
+        "Water shapes its course according to the nature of the ground over which it flows.",
+        [
+            "Code shapes its structure according to the nature of the requirements over which it solves.",
+            "Design shapes its pattern according to the nature of the constraints over which it operates.",
+            "Architecture shapes its layers according to the nature of the system over which it scales.",
+            "Algorithm shapes its approach according to the nature of the data over which it processes.",
+            "Interface shapes its contract according to the nature of the clients over which it serves."
+        ]
+    ],
+    [
+        "The soldier works out his victory in relation to the foe whom he is facing.",
+        [
+            "The developer works out their solution in relation to the problem which they are solving.",
+            "The architect works out their design in relation to the requirements which they are meeting.",
+            "The engineer works out their optimization in relation to the bottleneck which they are removing.",
+            "The programmer works out their abstraction in relation to the duplication which they are extracting.",
+            "The designer works out their interface in relation to the users which they are serving."
+        ]
+    ],
+    [
+        "Therefore, just as water retains no constant shape, so in warfare there are no constant conditions.",
+        [
+            "Therefore, just as code retains no constant structure, so in software there are no constant requirements.",
+            "Therefore, just as design retains no constant pattern, so in systems there are no constant constraints.",
+            "Therefore, just as architecture retains no constant form, so in projects there are no constant specifications.",
+            "Therefore, just as optimization retains no constant strategy, so in performance there are no constant bottlenecks.",
+            "Therefore, just as abstraction retains no constant level, so in development there are no constant contexts."
+        ]
+    ],
+    [
+        "He who can modify his tactics in relation to his opponent and thereby succeed in winning, may be called a heaven-born captain.",
+        [
+            "He who can modify their patterns in relation to their requirements and thereby succeed in delivering, may be called a heaven-born architect.",
+            "He who can modify their designs in relation to their constraints and thereby succeed in solving, may be called a heaven-born developer.",
+            "He who can modify their optimizations in relation to their bottlenecks and thereby succeed in accelerating, may be called a heaven-born engineer.",
+            "He who can modify their abstractions in relation to their contexts and thereby succeed in generalizing, may be called a heaven-born programmer.",
+            "He who can modify their structures in relation to their problems and thereby succeed in simplifying, may be called a heaven-born designer."
+        ]
+    ],
+    [
+        "The five elements are not always equally predominant; the four seasons make way for each other in turn.",
+        [
+            "The five patterns are not always equally applicable; the four constraints make way for each other in turn.",
+            "The five structures are not always equally optimal; the four trade-offs make way for each other in turn.",
+            "The five algorithms are not always equally efficient; the four complexities make way for each other in turn.",
+            "The five abstractions are not always equally suitable; the four contexts make way for each other in turn.",
+            "The five principles are not always equally relevant; the four requirements make way for each other in turn."
+        ]
+    ],
+    [
+        "Thus the highest form of generalship is to balk the enemy's plans.",
+        [
+            "Thus the highest form of architecture is to prevent the coupling's spread.",
+            "Thus the highest form of design is to eliminate the complexity's growth.",
+            "Thus the highest form of optimization is to avoid the bottleneck's formation.",
+            "Thus the highest form of refactoring is to stop the duplication's emergence.",
+            "Thus the highest form of validation is to reject the corruption's entry."
+        ]
+    ],
+    [
+        "The next best is to prevent the junction of the enemy's forces.",
+        [
+            "The next best is to prevent the coupling of the system's components.",
+            "The next best is to prevent the tangling of the code's dependencies.",
+            "The next best is to prevent the merging of the module's responsibilities.",
+            "The next best is to prevent the mixing of the layer's concerns.",
+            "The next best is to prevent the binding of the interface's contracts."
+        ]
+    ],
+    [
+        "The next in order is to attack the enemy's army in the field.",
+        [
+            "The next in order is to refactor the legacy's code in the repository.",
+            "The next in order is to optimize the slow's functions in the codebase.",
+            "The next in order is to debug the broken's features in the system.",
+            "The next in order is to simplify the complex's logic in the module.",
+            "The next in order is to decouple the tangled's dependencies in the architecture."
+        ]
+    ],
+    [
+        "The worst policy of all is to besiege walled cities.",
+        [
+            "The worst policy of all is to rewrite working systems.",
+            "The worst policy of all is to refactor stable codebases.",
+            "The worst policy of all is to optimize fast functions.",
+            "The worst policy of all is to abstract simple solutions.",
+            "The worst policy of all is to generalize specific implementations."
+        ]
+    ],
+    [
+        "The rule is, not to besiege walled cities if it can possibly be avoided.",
+        [
+            "The rule is, not to rewrite working code if it can possibly be avoided.",
+            "The rule is, not to refactor tested modules if it can possibly be avoided.",
+            "The rule is, not to optimize premature bottlenecks if it can possibly be avoided.",
+            "The rule is, not to abstract concrete solutions if it can possibly be avoided.",
+            "The rule is, not to generalize specific cases if it can possibly be avoided."
+        ]
+    ],
+    [
+        "The skillful leader subdues the enemy's troops without any fighting.",
+        [
+            "The skillful architect decouples the system's components without any rewriting.",
+            "The skillful developer simplifies the code's complexity without any refactoring.",
+            "The skillful engineer improves the system's performance without any optimization.",
+            "The skillful programmer abstracts the duplication's patterns without any generalization.",
+            "The skillful designer clarifies the interface's contract without any documentation."
+        ]
+    ],
+    [
+        "He captures their cities without laying siege to them.",
+        [
+            "He refactors their modules without rewriting them.",
+            "He optimizes their functions without restructuring them.",
+            "He debugs their systems without rebuilding them.",
+            "He simplifies their logic without replacing them.",
+            "He decouples their components without extracting them."
+        ]
+    ],
+    [
+        "He overthrows their kingdom without lengthy operations in the field.",
+        [
+            "He transforms their architecture without lengthy migrations in the codebase.",
+            "He improves their performance without lengthy optimizations in the system.",
+            "He reduces their complexity without lengthy refactorings in the modules.",
+            "He eliminates their coupling without lengthy extractions in the components.",
+            "He enhances their design without lengthy rewrites in the implementation."
+        ]
+    ],
+    [
+        "With his forces intact he will dispute the mastery of the empire.",
+        [
+            "With its interfaces intact it will maintain the stability of the system.",
+            "With its contracts intact it will preserve the compatibility of the API.",
+            "With its invariants intact it will ensure the correctness of the state.",
+            "With its boundaries intact it will protect the isolation of the modules.",
+            "With its abstractions intact it will sustain the flexibility of the design."
+        ]
+    ],
+    [
+        "Thus his troops are not worn out and his gains will be complete.",
+        [
+            "Thus its resources are not exhausted and its performance will be optimal.",
+            "Thus its modules are not fragmented and its cohesion will be complete.",
+            "Thus its abstractions are not overworked and its simplicity will be maintained.",
+            "Thus its components are not stressed and its reliability will be assured.",
+            "Thus its design is not compromised and its elegance will be preserved."
+        ]
+    ],
+    [
+        "This is the method of attacking by stratagem.",
+        [
+            "This is the method of refactoring by extraction.",
+            "This is the method of optimizing by caching.",
+            "This is the method of debugging by isolation.",
+            "This is the method of designing by composition.",
+            "This is the method of architecting by layering."
+        ]
+    ],
+    [
+        "It is the rule in war, if our forces are ten to the enemy's one, to surround him.",
+        [
+            "It is the rule in testing, if our cases are ten to the bug's one, to isolate it.",
+            "It is the rule in profiling, if our samples are ten to the hotspot's one, to identify it.",
+            "It is the rule in monitoring, if our metrics are ten to the failure's one, to detect it.",
+            "It is the rule in validation, if our constraints are ten to the input's one, to reject it.",
+            "It is the rule in optimization, if our resources are ten to the bottleneck's one, to eliminate it."
+        ]
+    ],
+    [
+        "If five to one, to attack him.",
+        [
+            "If five to one, to refactor it.",
+            "If five to one, to optimize it.",
+            "If five to one, to simplify it.",
+            "If five to one, to decouple it.",
+            "If five to one, to extract it."
+        ]
+    ],
+    [
+        "If twice as numerous, to divide our army into two.",
+        [
+            "If twice as efficient, to partition our data into shards.",
+            "If twice as fast, to split our processing into parallel.",
+            "If twice as capable, to separate our system into services.",
+            "If twice as robust, to divide our validation into layers.",
+            "If twice as scalable, to distribute our load into clusters."
+        ]
+    ],
+    [
+        "If equally matched, we can offer battle.",
+        [
+            "If equally complex, we can attempt refactoring.",
+            "If equally slow, we can apply optimization.",
+            "If equally coupled, we can introduce abstraction.",
+            "If equally rigid, we can inject flexibility.",
+            "If equally brittle, we can add validation."
+        ]
+    ],
+    [
+        "If slightly inferior in numbers, we can avoid the enemy.",
+        [
+            "If slightly inferior in performance, we can cache the result.",
+            "If slightly inferior in clarity, we can document the intent.",
+            "If slightly inferior in robustness, we can validate the input.",
+            "If slightly inferior in scalability, we can queue the request.",
+            "If slightly inferior in flexibility, we can parameterize the function."
+        ]
+    ],
+    [
+        "If quite unequal in every way, we can flee from him.",
+        [
+            "If quite unequal in every way, we can rewrite it.",
+            "If quite unequal in every way, we can replace it.",
+            "If quite unequal in every way, we can abandon it.",
+            "If quite unequal in every way, we can deprecate it.",
+            "If quite unequal in every way, we can remove it."
+        ]
+    ],
+    [
+        "Hence, though an obstinate fight may be made by a small force, in the end it must be captured by the larger force.",
+        [
+            "Hence, though an elegant solution may be made by a simple design, in the end it must be replaced by the scalable architecture.",
+            "Hence, though an optimized function may be made by a clever trick, in the end it must be superseded by the algorithmic improvement.",
+            "Hence, though a working prototype may be made by a quick hack, in the end it must be rewritten by the proper implementation.",
+            "Hence, though a beautiful abstraction may be made by a pure pattern, in the end it must be grounded by the concrete requirements.",
+            "Hence, though a fast implementation may be made by a local cache, in the end it must be distributed by the global system."
+        ]
+    ],
+    [
+        "Now the general is the bulwark of the state.",
+        [
+            "Now the architecture is the foundation of the system.",
+            "Now the interface is the contract of the module.",
+            "Now the abstraction is the essence of the design.",
+            "Now the type is the constraint of the data.",
+            "Now the test is the specification of the behavior."
+        ]
+    ],
+    [
+        "If the bulwark is complete at all points, the state will be strong.",
+        [
+            "If the architecture is layered at all points, the system will be maintainable.",
+            "If the interface is defined at all points, the module will be usable.",
+            "If the abstraction is proper at all points, the design will be flexible.",
+            "If the validation is present at all points, the data will be correct.",
+            "If the testing is thorough at all points, the behavior will be verified."
+        ]
+    ],
+    [
+        "If the bulwark is defective, the state will be weak.",
+        [
+            "If the architecture is coupled, the system will be fragile.",
+            "If the interface is ambiguous, the module will be confusing.",
+            "If the abstraction is leaky, the design will be brittle.",
+            "If the validation is missing, the data will be corrupt.",
+            "If the testing is sparse, the behavior will be uncertain."
+        ]
+    ],
+    [
+        "There are three ways in which a ruler can bring misfortune upon his army.",
+        [
+            "There are three ways in which a manager can bring failure upon their project.",
+            "There are three ways in which a lead can bring collapse upon their architecture.",
+            "There are three ways in which a designer can bring complexity upon their system.",
+            "There are three ways in which a developer can bring bugs upon their codebase.",
+            "There are three ways in which an architect can bring coupling upon their modules."
+        ]
+    ],
+    [
+        "By commanding the army to advance or to retreat, being ignorant of the fact that it cannot obey.",
+        [
+            "By demanding the team to optimize or to refactor, being ignorant of the fact that it cannot measure.",
+            "By ordering the system to scale or to consolidate, being ignorant of the fact that it cannot redistribute.",
+            "By requiring the code to abstract or to concretize, being ignorant of the fact that it cannot generalize.",
+            "By directing the design to decouple or to integrate, being ignorant of the fact that it cannot separate.",
+            "By instructing the module to simplify or to extend, being ignorant of the fact that it cannot refactor."
+        ]
+    ],
+    [
+        "This is called hobbling the army.",
+        [
+            "This is called crippling the architecture.",
+            "This is called hampering the design.",
+            "This is called constraining the implementation.",
+            "This is called limiting the abstraction.",
+            "This is called restricting the interface."
+        ]
+    ],
+    [
+        "By attempting to govern an army in the same way as he administers a kingdom.",
+        [
+            "By attempting to architect a system in the same way as they design a module.",
+            "By attempting to optimize a function in the same way as they tune a query.",
+            "By attempting to refactor a codebase in the same way as they extract a method.",
+            "By attempting to scale a service in the same way as they replicate a process.",
+            "By attempting to debug a system in the same way as they trace a function."
+        ]
+    ],
+    [
+        "By employing the officers of his army without discrimination.",
+        [
+            "By applying the patterns of their toolkit without consideration.",
+            "By using the abstractions of their library without understanding.",
+            "By deploying the optimizations of their repertoire without profiling.",
+            "By implementing the features of their backlog without prioritization.",
+            "By adopting the frameworks of their ecosystem without evaluation."
+        ]
+    ],
+    [
+        "Through one of these three disastrous causes.",
+        [
+            "Through one of these three architectural flaws.",
+            "Through one of these three design mistakes.",
+            "Through one of these three implementation errors.",
+            "Through one of these three optimization prematurities.",
+            "Through one of these three abstraction leaks."
+        ]
+    ],
+    [
+        "There are five dangerous faults which may affect a general.",
+        [
+            "There are five dangerous antipatterns which may affect an architect.",
+            "There are five dangerous assumptions which may affect a developer.",
+            "There are five dangerous shortcuts which may affect an engineer.",
+            "There are five dangerous habits which may affect a programmer.",
+            "There are five dangerous biases which may affect a designer."
+        ]
+    ],
+    [
+        "Recklessness, which leads to destruction.",
+        [
+            "Premature optimization, which leads to complexity.",
+            "Over-abstraction, which leads to obscurity.",
+            "Tight coupling, which leads to fragility.",
+            "Premature generalization, which leads to confusion.",
+            "Feature creep, which leads to bloat."
+        ]
+    ],
+    [
+        "Cowardice, which leads to capture.",
+        [
+            "Fear of refactoring, which leads to technical debt.",
+            "Avoidance of change, which leads to rigidity.",
+            "Hesitation in deployment, which leads to stagnation.",
+            "Reluctance to simplify, which leads to complexity.",
+            "Unwillingness to delete, which leads to accumulation."
+        ]
+    ],
+    [
+        "A hasty temper, which can be provoked by insults.",
+        [
+            "A reactive approach, which can be triggered by complaints.",
+            "A defensive mindset, which can be provoked by criticism.",
+            "An impulsive style, which can be triggered by pressure.",
+            "A careless attitude, which can be provoked by deadlines.",
+            "A rushed mentality, which can be triggered by urgency."
+        ]
+    ],
+    [
+        "A delicacy of honor which is sensitive to shame.",
+        [
+            "A perfectionist's pride which is sensitive to criticism.",
+            "An architect's ego which is sensitive to simplification.",
+            "A developer's attachment which is sensitive to deletion.",
+            "A designer's vision which is sensitive to compromise.",
+            "An engineer's craft which is sensitive to pragmatism."
+        ]
+    ],
+    [
+        "Over-solicitude for his men, which exposes him to worry and trouble.",
+        [
+            "Over-concern for backward compatibility, which exposes the system to complexity and bloat.",
+            "Over-protection of existing code, which exposes the codebase to stagnation and debt.",
+            "Over-attention to edge cases, which exposes the design to over-engineering and confusion.",
+            "Over-optimization for performance, which exposes the algorithm to premature complexity and brittleness.",
+            "Over-abstraction for flexibility, which exposes the interface to indirection and obscurity."
+        ]
+    ],
+    [
+        "These are the five besetting sins of a general.",
+        [
+            "These are the five besetting flaws of an architect.",
+            "These are the five besetting mistakes of a developer.",
+            "These are the five besetting errors of an engineer.",
+            "These are the five besetting antipatterns of a programmer.",
+            "These are the five besetting pitfalls of a designer."
+        ]
+    ],
+    [
+        "When an army is overthrown and its leader slain, the cause will surely be found among these five dangerous faults.",
+        [
+            "When a system is collapsed and its architecture abandoned, the cause will surely be found among these five dangerous antipatterns.",
+            "When a project is canceled and its codebase discarded, the cause will surely be found among these five dangerous mistakes.",
+            "When a product is sunset and its design rejected, the cause will surely be found among these five dangerous flaws.",
+            "When a service is decomissioned and its implementation rewritten, the cause will surely be found among these five dangerous errors.",
+            "When a platform is deprecated and its framework replaced, the cause will surely be found among these five dangerous pitfalls."
+        ]
+    ],
+    [
+        "We are not fit to lead an army on the march unless we are familiar with the face of the country.",
+        [
+            "We are not fit to design a system unless we are familiar with the nature of the domain.",
+            "We are not fit to architect a solution unless we are familiar with the shape of the requirements.",
+            "We are not fit to optimize a function unless we are familiar with the profile of the execution.",
+            "We are not fit to refactor a codebase unless we are familiar with the structure of the dependencies.",
+            "We are not fit to scale a service unless we are familiar with the pattern of the load."
+        ]
+    ],
+    [
+        "We shall be unable to turn natural advantages to account unless we make use of local guides.",
+        [
+            "We shall be unable to turn algorithmic advantages to account unless we make use of profiling tools.",
+            "We shall be unable to turn architectural patterns to account unless we make use of domain experts.",
+            "We shall be unable to turn optimization opportunities to account unless we make use of performance metrics.",
+            "We shall be unable to turn abstraction benefits to account unless we make use of type systems.",
+            "We shall be unable to turn refactoring improvements to account unless we make use of automated tests."
+        ]
+    ],
+    [
+        "In war, practice dissimulation, and you will succeed.",
+        [
+            "In design, practice encapsulation, and you will succeed.",
+            "In architecture, practice abstraction, and you will succeed.",
+            "In implementation, practice separation, and you will succeed.",
+            "In optimization, practice measurement, and you will succeed.",
+            "In refactoring, practice extraction, and you will succeed."
+        ]
+    ],
+    [
+        "Whether to concentrate or to divide your troops must be decided by circumstances.",
+        [
+            "Whether to couple or to decouple your modules must be decided by requirements.",
+            "Whether to optimize or to simplify your code must be decided by profiling.",
+            "Whether to abstract or to concrete your design must be decided by contexts.",
+            "Whether to generalize or to specialize your interface must be decided by clients.",
+            "Whether to scale or to consolidate your services must be decided by metrics."
+        ]
+    ],
+    [
+        "All warfare is based on deception. Hence, when able to attack, we must seem unable.",
+        [
+            "All abstraction is based on encapsulation. Hence, when able to extend, we must seem closed.",
+            "All optimization is based on measurement. Hence, when able to accelerate, we must seem adequate.",
+            "All refactoring is based on testing. Hence, when able to simplify, we must seem functional.",
+            "All architecture is based on modularity. Hence, when able to separate, we must seem cohesive.",
+            "All design is based on contracts. Hence, when able to change, we must seem stable."
+        ]
+    ],
+    [
+        "When using our forces, we must seem inactive; when we are near, we must make the enemy believe we are far away.",
+        [
+            "When exposing our interfaces, we must seem simple; when we are complex, we must make the client believe we are straightforward.",
+            "When optimizing our algorithms, we must seem unchanged; when we are fast, we must make the caller believe we are familiar.",
+            "When refactoring our modules, we must seem stable; when we are restructured, we must make the user believe we are consistent.",
+            "When scaling our services, we must seem responsive; when we are distributed, we must make the consumer believe we are local.",
+            "When abstracting our implementations, we must seem concrete; when we are general, we must make the developer believe we are specific."
+        ]
+    ],
+    [
+        "When far away, we must make him believe we are near.",
+        [
+            "When slow, we must make them believe we are fast.",
+            "When complex, we must make them believe we are simple.",
+            "When coupled, we must make them believe we are modular.",
+            "When rigid, we must make them believe we are flexible.",
+            "When fragile, we must make them believe we are robust."
+        ]
+    ],
+    [
+        "Hold out baits to entice the enemy.",
+        [
+            "Provide hooks to extend the system.",
+            "Expose callbacks to customize the behavior.",
+            "Define interfaces to implement the protocol.",
+            "Create plugins to augment the functionality.",
+            "Offer parameters to configure the operation."
+        ]
+    ],
+    [
+        "Feign disorder, and crush him.",
+        [
+            "Present simplicity, and abstract complexity.",
+            "Show flexibility, and enforce constraints.",
+            "Display openness, and validate inputs.",
+            "Exhibit generality, and specialize internally.",
+            "Demonstrate ease, and handle edge cases."
+        ]
+    ],
+    [
+        "If he is secure at all points, be prepared for him.",
+        [
+            "If it is validated at all boundaries, be prepared for edge cases.",
+            "If it is tested at all paths, be prepared for concurrency.",
+            "If it is optimized at all hotspots, be prepared for new bottlenecks.",
+            "If it is decoupled at all interfaces, be prepared for integration.",
+            "If it is abstracted at all layers, be prepared for leaks."
+        ]
+    ],
+    [
+        "If he is in superior strength, evade him.",
+        [
+            "If it is in superior complexity, simplify around it.",
+            "If it is in superior coupling, abstract away from it.",
+            "If it is in superior rigidity, adapt alongside it.",
+            "If it is in superior legacy, isolate behind it.",
+            "If it is in superior scale, partition beyond it."
+        ]
+    ],
+    [
+        "If your opponent is of choleric temper, irritate him.",
+        [
+            "If your system is of cached state, invalidate it.",
+            "If your algorithm is of sorted data, randomize it.",
+            "If your code is of assumed invariant, violate it.",
+            "If your interface is of expected contract, stress it.",
+            "If your service is of stable response, load it."
+        ]
+    ],
+    [
+        "Pretend to be weak, that he may grow arrogant.",
+        [
+            "Pretend to be simple, that they may grow careless.",
+            "Pretend to be stable, that they may grow dependent.",
+            "Pretend to be limited, that they may grow creative.",
+            "Pretend to be constrained, that they may grow resourceful.",
+            "Pretend to be rigid, that they may grow adaptive."
+        ]
+    ],
+    [
+        "If he is taking his ease, give him no rest.",
+        [
+            "If it is assuming correctness, inject edge cases.",
+            "If it is relying on cache, invalidate entries.",
+            "If it is expecting order, introduce concurrency.",
+            "If it is trusting input, provide malformed data.",
+            "If it is depending on state, mutate conditions."
+        ]
+    ],
+    [
+        "If his forces are united, separate them.",
+        [
+            "If its concerns are mixed, separate them.",
+            "If its responsibilities are combined, split them.",
+            "If its dependencies are tangled, isolate them.",
+            "If its layers are merged, extract them.",
+            "If its components are coupled, decouple them."
+        ]
+    ],
+    [
+        "If sovereign and subject are in accord, put division between them.",
+        [
+            "If interface and implementation are aligned, introduce abstraction between them.",
+            "If data and logic are intertwined, insert separation between them.",
+            "If concerns and code are mixed, place boundaries between them.",
+            "If layers and details are coupled, establish contracts between them.",
+            "If components and state are merged, create isolation between them."
+        ]
+    ],
+    [
+        "Attack him where he is unprepared, appear where you are not expected.",
+        [
+            "Optimize where it is unoptimized, cache where data is uncached.",
+            "Refactor where it is complex, simplify where code is tangled.",
+            "Validate where it is assumed, sanitize where input is trusted.",
+            "Abstract where it is concrete, generalize where patterns are repeated.",
+            "Decouple where it is bound, separate where concerns are mixed."
+        ]
+    ],
+    [
+        "These military devices, leading to victory, must not be divulged beforehand.",
+        [
+            "These architectural patterns, leading to simplicity, must not be applied prematurely.",
+            "These optimization techniques, leading to performance, must not be implemented early.",
+            "These abstraction strategies, leading to flexibility, must not be generalized hastily.",
+            "These refactoring approaches, leading to clarity, must not be executed rashly.",
+            "These design principles, leading to elegance, must not be enforced dogmatically."
+        ]
+    ],
+    [
+        "Now the general who wins a battle makes many calculations in his temple ere the battle is fought.",
+        [
+            "Now the developer who ships a feature makes many designs in their notebook ere the code is written.",
+            "Now the architect who builds a system makes many models in their workspace ere the structure is created.",
+            "Now the engineer who solves a problem makes many sketches in their whiteboard ere the solution is coded.",
+            "Now the programmer who optimizes an algorithm makes many analyses in their profiler ere the bottleneck is removed.",
+            "Now the designer who creates an interface makes many prototypes in their editor ere the contract is defined."
+        ]
+    ],
+    [
+        "The general who loses a battle makes but few calculations beforehand.",
+        [
+            "The developer who accumulates debt makes but few designs beforehand.",
+            "The architect who creates coupling makes but few diagrams beforehand.",
+            "The engineer who introduces bugs makes but few tests beforehand.",
+            "The programmer who writes complexity makes but few plans beforehand.",
+            "The designer who builds rigidity makes but few prototypes beforehand."
+        ]
+    ],
+    [
+        "Thus do many calculations lead to victory, and few calculations to defeat.",
+        [
+            "Thus do many tests lead to correctness, and few tests to bugs.",
+            "Thus do many abstractions lead to flexibility, and few abstractions to rigidity.",
+            "Thus do many measurements lead to optimization, and few measurements to guessing.",
+            "Thus do many refactorings lead to clarity, and few refactorings to complexity.",
+            "Thus do many validations lead to robustness, and few validations to corruption."
+        ]
+    ],
+    [
+        "How much more no calculation at all!",
+        [
+            "How much more no testing at all!",
+            "How much more no profiling at all!",
+            "How much more no validation at all!",
+            "How much more no design at all!",
+            "How much more no abstraction at all!"
+        ]
+    ],
+    [
+        "It is by attention to this point that I can foresee who is likely to win or lose.",
+        [
+            "It is by attention to this metric that I can foresee which will scale or fail.",
+            "It is by attention to this coupling that I can foresee which will adapt or break.",
+            "It is by attention to this complexity that I can foresee which will maintainable or collapse.",
+            "It is by attention to this test that I can foresee which will work or bug.",
+            "It is by attention to this profile that I can foresee which will perform or slow."
+        ]
+    ],
+    [
+        "The consummate leader cultivates the moral law, and strictly adheres to method and discipline.",
+        [
+            "The consummate architect cultivates the design principles, and strictly adheres to patterns and constraints.",
+            "The consummate developer cultivates the coding standards, and strictly adheres to style and testing.",
+            "The consummate engineer cultivates the best practices, and strictly adheres to profiling and validation.",
+            "The consummate programmer cultivates the algorithmic foundations, and strictly adheres to complexity and correctness.",
+            "The consummate designer cultivates the interface contracts, and strictly adheres to abstraction and encapsulation."
+        ]
+    ],
+    [
+        "Thus it is in his power to control success.",
+        [
+            "Thus it is in their power to control quality.",
+            "Thus it is in their power to control performance.",
+            "Thus it is in their power to control maintainability.",
+            "Thus it is in their power to control scalability.",
+            "Thus it is in their power to control reliability."
+        ]
+    ],
+    [
+        "In respect of military method, we have, firstly, Measurement; secondly, Estimation of quantity; thirdly, Calculation; fourthly, Balancing of chances; fifthly, Victory.",
+        [
+            "In respect of design method, we have, firstly, Profiling; secondly, Analysis of bottlenecks; thirdly, Optimization; fourthly, Validation of improvements; fifthly, Performance.",
+            "In respect of architectural method, we have, firstly, Requirements; secondly, Modeling of structure; thirdly, Implementation; fourthly, Testing of correctness; fifthly, Delivery.",
+            "In respect of refactoring method, we have, firstly, Identification; secondly, Extraction of patterns; thirdly, Transformation; fourthly, Verification of behavior; fifthly, Simplicity.",
+            "In respect of debugging method, we have, firstly, Reproduction; secondly, Isolation of cause; thirdly, Diagnosis; fourthly, Correction of defect; fifthly, Resolution.",
+            "In respect of optimization method, we have, firstly, Measurement; secondly, Detection of hotspots; thirdly, Improvement; fourthly, Benchmarking of gains; fifthly, Acceleration."
+        ]
+    ],
+    [
+        "Measurement owes its existence to Earth; Estimation of quantity to Measurement; Calculation to Estimation of quantity.",
+        [
+            "Profiling owes its existence to Execution; Analysis of bottlenecks to Profiling; Optimization to Analysis of bottlenecks.",
+            "Requirements owe their existence to Users; Modeling of structure to Requirements; Implementation to Modeling of structure.",
+            "Identification owes its existence to Code smell; Extraction of patterns to Identification; Transformation to Extraction of patterns.",
+            "Reproduction owes its existence to Bug report; Isolation of cause to Reproduction; Diagnosis to Isolation of cause.",
+            "Measurement owes its existence to Baseline; Detection of hotspots to Measurement; Improvement to Detection of hotspots."
+        ]
+    ],
+    [
+        "Balancing of chances to Calculation; and Victory to Balancing of chances.",
+        [
+            "Validation of improvements to Optimization; and Performance to Validation of improvements.",
+            "Testing of correctness to Implementation; and Delivery to Testing of correctness.",
+            "Verification of behavior to Transformation; and Simplicity to Verification of behavior.",
+            "Correction of defect to Diagnosis; and Resolution to Correction of defect.",
+            "Benchmarking of gains to Improvement; and Acceleration to Benchmarking of gains."
+        ]
+    ],
+    [
+        "A victorious army opposed to a routed one is as a pound's weight placed in the scale against a single grain.",
+        [
+            "A tested module opposed to an untested one is as a thousand assertions placed in the suite against a single hope.",
+            "An optimized algorithm opposed to a naive one is as a logarithmic complexity placed in the analysis against an exponential cost.",
+            "A decoupled architecture opposed to a monolithic one is as a clean boundary placed in the design against a tangled web.",
+            "A validated input opposed to a trusted one is as a strong constraint placed in the contract against a weak assumption.",
+            "An abstracted interface opposed to a concrete one is as a general protocol placed in the specification against a rigid implementation."
+        ]
+    ],
+    [
+        "The onrush of a conquering force is like the bursting of pent-up waters into a chasm a thousand fathoms deep.",
+        [
+            "The execution of an optimized query is like the retrieval of indexed data from a structure a thousand times faster.",
+            "The deployment of a tested feature is like the release of validated code into a system a thousand times more stable.",
+            "The refactoring of a complex module is like the extraction of simple patterns from a tangle a thousand times clearer.",
+            "The scaling of a distributed service is like the distribution of parallel work across a cluster a thousand times larger.",
+            "The abstraction of a repeated pattern is like the generalization of common logic into an interface a thousand times more reusable."
+        ]
+    ],
+    [
+        "The energy developed by good fighting men is as the momentum of a round stone rolled down a mountain thousands of feet in height.",
+        [
+            "The efficiency achieved by good algorithms is as the throughput of a cached query executed against data indexed thousands of levels deep.",
+            "The clarity produced by good abstractions is as the simplicity of a layered design separated into concerns isolated thousands of dependencies apart.",
+            "The performance gained by good optimizations is as the speedup of a parallel computation distributed across cores numbered thousands of threads wide.",
+            "The robustness ensured by good validations is as the correctness of a constrained input verified against rules numbered thousands of checks strong.",
+            "The maintainability created by good refactorings is as the elegance of a modular codebase organized into components separated thousands of lines clean."
+        ]
+    ],
+    [
+        "The clever combatant looks to the effect of combined energy, and does not require too much from individuals.",
+        [
+            "The clever architect looks to the effect of composed modules, and does not require too much from functions.",
+            "The clever developer looks to the effect of layered abstractions, and does not require too much from implementations.",
+            "The clever engineer looks to the effect of distributed systems, and does not require too much from services.",
+            "The clever programmer looks to the effect of pipelined transformations, and does not require too much from operations.",
+            "The clever designer looks to the effect of separated concerns, and does not require too much from components."
+        ]
+    ],
+    [
+        "Hence his ability to pick out the right men and utilize combined energy.",
+        [
+            "Hence their ability to identify the right patterns and utilize composed abstractions.",
+            "Hence their ability to select the right structures and utilize algorithmic efficiency.",
+            "Hence their ability to choose the right layers and utilize architectural separation.",
+            "Hence their ability to extract the right functions and utilize modular composition.",
+            "Hence their ability to define the right interfaces and utilize protocol flexibility."
+        ]
+    ],
+    [
+        "When he utilizes combined energy, his fighting men become as it were like unto rolling logs or stones.",
+        [
+            "When they utilize composed abstractions, their modules become as it were like unto flowing data or streams.",
+            "When they utilize algorithmic efficiency, their functions become as it were like unto cascading caches or indexes.",
+            "When they utilize architectural separation, their layers become as it were like unto isolated boundaries or walls.",
+            "When they utilize modular composition, their components become as it were like unto connected pipes or channels.",
+            "When they utilize protocol flexibility, their interfaces become as it were like unto adaptable plugins or extensions."
+        ]
+    ],
+    [
+        "For it is the nature of a log or stone to remain motionless on level ground, and to move when on a slope.",
+        [
+            "For it is the nature of data or state to remain cached on frequent access, and to flow when in transformation.",
+            "For it is the nature of code or logic to remain simple on clear requirements, and to complexify when in uncertainty.",
+            "For it is the nature of a module or component to remain decoupled on clean boundaries, and to tangle when in integration.",
+            "For it is the nature of a function or method to remain fast on small inputs, and to slow when in scale.",
+            "For it is the nature of an interface or contract to remain stable on fixed protocols, and to break when in evolution."
+        ]
+    ],
+    [
+        "If four-cornered, to come to a standstill, but if round-shaped, to go rolling down.",
+        [
+            "If tightly coupled, to come to rigidity, but if loosely bound, to go adapting forward.",
+            "If highly complex, to come to confusion, but if cleanly simple, to go understanding through.",
+            "If deeply nested, to come to obscurity, but if flatly structured, to go reading easily.",
+            "If synchronously blocking, to come to contention, but if asynchronously queued, to go scaling outward.",
+            "If statefully mutable, to come to corruption, but if functionally immutable, to go composing safely."
+        ]
+    ],
+    [
+        "Thus the energy developed by good fighting men is as the momentum of a round stone rolled down a mountain thousands of feet in height.",
+        [
+            "Thus the throughput achieved by good pipelines is as the velocity of batched data processed through systems thousands of records wide.",
+            "Thus the simplicity created by good extractions is as the clarity of refactored code cleaned from modules thousands of lines deep.",
+            "Thus the scalability enabled by good sharding is as the capacity of distributed load balanced across nodes thousands of requests high.",
+            "Thus the correctness ensured by good types is as the safety of constrained values validated through checks thousands of cases strong.",
+            "Thus the flexibility provided by good interfaces is as the adaptability of abstract contracts implemented across plugins thousands of variations broad."
+        ]
+    ],
+    [
+        "The direct and the indirect lead on to each other in turn. It is like moving in a circle\u2014you never come to an end.",
+        [
+            "The concrete and the abstract lead on to each other in turn. It is like refactoring in a cycle\u2014you never come to perfection.",
+            "The specific and the general lead on to each other in turn. It is like designing in a loop\u2014you never come to completion.",
+            "The optimization and the simplification lead on to each other in turn. It is like improving in a spiral\u2014you never come to optimum.",
+            "The coupling and the decoupling lead on to each other in turn. It is like architecting in a circle\u2014you never come to ideal.",
+            "The addition and the subtraction lead on to each other in turn. It is like developing in a rhythm\u2014you never come to final."
+        ]
+    ],
+    [
+        "Who can exhaust the possibilities of their combination?.",
+        [
+            "Who can exhaust the possibilities of their composition?.",
+            "Who can exhaust the possibilities of their abstraction?.",
+            "Who can exhaust the possibilities of their generalization?.",
+            "Who can exhaust the possibilities of their transformation?.",
+            "Who can exhaust the possibilities of their configuration?."
+        ]
+    ],
+    [
+        "The onset of troops is like the rush of a torrent which will even roll stones along in its course.",
+        [
+            "The execution of pipelines is like the flow of streams which will even transform data along their path.",
+            "The deployment of releases is like the surge of updates which will even migrate state along their way.",
+            "The refactoring of modules is like the sweep of extractions which will even simplify logic along their course.",
+            "The scaling of services is like the flood of requests which will even distribute load along their route.",
+            "The optimization of algorithms is like the acceleration of computations which will even cache results along their journey."
+        ]
+    ],
+    [
+        "The simulated disorder postulated perfect discipline; the simulated fear postulated courage; the simulated weakness postulated strength.",
+        [
+            "The apparent simplicity postulated careful design; the apparent flexibility postulated strong constraints; the apparent ease postulated deep complexity.",
+            "The visible stability postulated thorough testing; the visible performance postulated hidden optimization; the visible clarity postulated precise abstraction.",
+            "The outward generality postulated internal specialization; the outward openness postulated inner validation; the outward looseness postulated core invariants.",
+            "The exposed interface postulated encapsulated implementation; the exposed contract postulated validated protocol; the exposed API postulated guarded boundary.",
+            "The presented ease postulated handled edge cases; the presented speed postulated managed resources; the presented robustness postulated caught errors."
+        ]
+    ],
+    [
+        "Hiding order beneath the cloak of disorder is simply a question of subdivision.",
+        [
+            "Hiding structure beneath the cloak of flexibility is simply a question of abstraction.",
+            "Hiding complexity beneath the cloak of simplicity is simply a question of encapsulation.",
+            "Hiding implementation beneath the cloak of interface is simply a question of separation.",
+            "Hiding optimization beneath the cloak of clarity is simply a question of measurement.",
+            "Hiding constraint beneath the cloak of freedom is simply a question of validation."
+        ]
+    ],
+    [
+        "Concealing courage under a show of timidity presupposes a fund of latent energy.",
+        [
+            "Concealing optimization under a show of adequacy presupposes a reserve of latent performance.",
+            "Concealing abstraction under a show of concreteness presupposes a foundation of latent generality.",
+            "Concealing validation under a show of trust presupposes a system of latent constraints.",
+            "Concealing complexity under a show of simplicity presupposes a structure of latent sophistication.",
+            "Concealing flexibility under a show of rigidity presupposes a mechanism of latent extensibility."
+        ]
+    ],
+    [
+        "Masking strength with weakness is to be effected by tactical dispositions.",
+        [
+            "Masking complexity with simplicity is to be effected by layered abstractions.",
+            "Masking coupling with modularity is to be effected by defined boundaries.",
+            "Masking mutation with immutability is to be effected by functional transformations.",
+            "Masking synchrony with responsiveness is to be effected by asynchronous queues.",
+            "Masking distribution with locality is to be effected by transparent proxies."
+        ]
+    ],
+    [
+        "Thus one who is skillful at keeping the enemy on the move maintains deceitful appearances.",
+        [
+            "Thus one who is skillful at keeping the system adaptable maintains clean interfaces.",
+            "Thus one who is skillful at keeping the code maintainable maintains clear abstractions.",
+            "Thus one who is skillful at keeping the architecture flexible maintains loose coupling.",
+            "Thus one who is skillful at keeping the design evolvable maintains stable contracts.",
+            "Thus one who is skillful at keeping the implementation changeable maintains comprehensive tests."
+        ]
+    ],
+    [
+        "According to which the enemy will act. He sacrifices something, that the enemy may snatch at it.",
+        [
+            "According to which the client will adapt. They expose extension points, that the user may customize through them.",
+            "According to which the system will scale. They introduce caching, that the load may distribute across it.",
+            "According to which the code will simplify. They extract patterns, that the duplication may consolidate into them.",
+            "According to which the design will decouple. They define boundaries, that the concerns may separate through them.",
+            "According to which the interface will generalize. They abstract protocols, that the implementations may vary beneath them."
+        ]
+    ],
+    [
+        "By holding out advantages to him, he can cause the enemy to approach of his own accord.",
+        [
+            "By providing hooks to them, they can cause the client to extend of their own accord.",
+            "By exposing callbacks to them, they can cause the user to customize of their own accord.",
+            "By defining interfaces to them, they can cause the implementer to conform of their own accord.",
+            "By creating plugins to them, they can cause the developer to integrate of their own accord.",
+            "By offering parameters to them, they can cause the consumer to configure of their own accord."
+        ]
+    ],
+    [
+        "Or, by inflicting damage, he can make it impossible for the enemy to draw near.",
+        [
+            "Or, by enforcing constraints, they can make it impossible for the input to violate invariants.",
+            "Or, by validating boundaries, they can make it impossible for the corruption to propagate inward.",
+            "Or, by hiding internals, they can make it impossible for the client to couple tightly.",
+            "Or, by sealing interfaces, they can make it impossible for the user to extend improperly.",
+            "Or, by restricting access, they can make it impossible for the caller to mutate state."
+        ]
+    ],
+    [
+        "If the enemy is taking his ease, he can harass him.",
+        [
+            "If the system is assuming correctness, they can stress it.",
+            "If the code is trusting input, they can fuzz it.",
+            "If the algorithm is expecting order, they can randomize it.",
+            "If the cache is relying on hits, they can invalidate it.",
+            "If the service is depending on availability, they can load it."
+        ]
+    ],
+    [
+        "If well supplied with food, he can starve him out.",
+        [
+            "If well supplied with cache, they can invalidate it out.",
+            "If well supplied with memory, they can exhaust it out.",
+            "If well supplied with connections, they can saturate them out.",
+            "If well supplied with threads, they can block them out.",
+            "If well supplied with bandwidth, they can congest it out."
+        ]
+    ],
+    [
+        "If quietly encamped, he can force him to move.",
+        [
+            "If peacefully cached, they can force it to recompute.",
+            "If stably deployed, they can force it to migrate.",
+            "If statically typed, they can force it to generalize.",
+            "If tightly coupled, they can force it to decouple.",
+            "If rigidly structured, they can force it to refactor."
+        ]
+    ],
+    [
+        "Appear at points which the enemy must hasten to defend.",
+        [
+            "Optimize at points which the system must hasten to access.",
+            "Validate at points which the input must hasten to enter.",
+            "Cache at points which the query must hasten to reach.",
+            "Abstract at points which the change must hasten to propagate.",
+            "Decouple at points which the failure must hasten to isolate."
+        ]
+    ],
+    [
+        "March swiftly to places where you are not expected.",
+        [
+            "Deploy swiftly to environments where bugs are not expected.",
+            "Optimize swiftly to functions where slowness is not expected.",
+            "Refactor swiftly to modules where complexity is not expected.",
+            "Scale swiftly to loads where bottlenecks are not expected.",
+            "Abstract swiftly to cases where patterns are not expected."
+        ]
+    ],
+    [
+        "An army may march great distances without distress, if it marches through country where the enemy is not.",
+        [
+            "A system may scale great magnitudes without stress, if it distributes through layers where coupling is not.",
+            "A codebase may evolve great iterations without debt, if it refactors through modules where rigidity is not.",
+            "A function may process great volumes without slowness, if it executes through paths where bottlenecks are not.",
+            "A design may accommodate great changes without breakage, if it abstracts through interfaces where assumptions are not.",
+            "A service may handle great loads without failure, if it operates through components where contention is not."
+        ]
+    ],
+    [
+        "You can be sure of succeeding in your attacks if you only attack places which are undefended.",
+        [
+            "You can be sure of succeeding in your optimizations if you only optimize functions which are unmeasured.",
+            "You can be sure of succeeding in your refactorings if you only refactor modules which are untested.",
+            "You can be sure of succeeding in your abstractions if you only abstract patterns which are unrepeated.",
+            "You can be sure of succeeding in your validations if you only validate inputs which are unchecked.",
+            "You can be sure of succeeding in your decouplings if you only decouple components which are unbound."
+        ]
+    ],
+    [
+        "You can ensure the safety of your defense if you only hold positions that cannot be attacked.",
+        [
+            "You can ensure the safety of your invariants if you only expose interfaces that cannot be violated.",
+            "You can ensure the safety of your state if you only provide operations that cannot corrupt.",
+            "You can ensure the safety of your types if you only construct values that cannot invalidate.",
+            "You can ensure the safety of your boundaries if you only define contracts that cannot breach.",
+            "You can ensure the safety of your isolation if you only create encapsulations that cannot leak."
+        ]
+    ],
+    [
+        "Hence that general is skillful in attack whose opponent does not know what to defend.",
+        [
+            "Hence that architect is skillful in abstraction whose client does not know what to depend upon.",
+            "Hence that developer is skillful in encapsulation whose user does not know what to access.",
+            "Hence that engineer is skillful in optimization whose profiler does not know what to measure.",
+            "Hence that programmer is skillful in generalization whose consumer does not know what to expect.",
+            "Hence that designer is skillful in simplification whose reviewer does not know what to critique."
+        ]
+    ],
+    [
+        "And he is skillful in defense whose opponent does not know what to attack.",
+        [
+            "And they are skillful in validation whose input does not know what to exploit.",
+            "And they are skillful in isolation whose failure does not know what to cascade.",
+            "And they are skillful in immutability whose mutation does not know what to corrupt.",
+            "And they are skillful in encapsulation whose client does not know what to couple.",
+            "And they are skillful in abstraction whose change does not know what to break."
+        ]
+    ],
+    [
+        "O divine art of subtlety and secrecy!",
+        [
+            "O divine art of abstraction and encapsulation!",
+            "O divine art of simplicity and elegance!",
+            "O divine art of modularity and separation!",
+            "O divine art of generality and composition!",
+            "O divine art of correctness and verification!"
+        ]
+    ],
+    [
+        "Through you we learn to be invisible, through you inaudible.",
+        [
+            "Through you we learn to be modular, through you decoupled.",
+            "Through you we learn to be abstract, through you encapsulated.",
+            "Through you we learn to be simple, through you clear.",
+            "Through you we learn to be flexible, through you adaptable.",
+            "Through you we learn to be robust, through you resilient."
+        ]
+    ],
+    [
+        "And hence we can hold the enemy's fate in our hands.",
+        [
+            "And hence we can hold the system's scalability in our design.",
+            "And hence we can hold the code's maintainability in our structure.",
+            "And hence we can hold the data's integrity in our constraints.",
+            "And hence we can hold the performance's efficiency in our algorithms.",
+            "And hence we can hold the architecture's flexibility in our abstractions."
+        ]
+    ],
+    [
+        "You may advance and be absolutely irresistible, if you make for the enemy's weak points.",
+        [
+            "You may refactor and be absolutely successful, if you target the code's duplication points.",
+            "You may optimize and be absolutely effective, if you address the system's bottleneck points.",
+            "You may simplify and be absolutely clear, if you reduce the design's complexity points.",
+            "You may decouple and be absolutely modular, if you separate the architecture's coupling points.",
+            "You may abstract and be absolutely general, if you extract the pattern's repetition points."
+        ]
+    ],
+    [
+        "You may retire and be safe from pursuit if your movements are more rapid than those of the enemy.",
+        [
+            "You may rollback and be safe from corruption if your validations are more strict than those of the input.",
+            "You may revert and be safe from breakage if your tests are more comprehensive than those of the change.",
+            "You may migrate and be safe from loss if your backups are more frequent than those of the failure.",
+            "You may deprecate and be safe from dependency if your versions are more backward-compatible than those of the client.",
+            "You may refactor and be safe from regression if your coverage is more thorough than those of the modification."
+        ]
+    ],
+    [
+        "If we wish to fight, the enemy can be forced to an engagement even though he be sheltered behind a high rampart and a deep ditch.",
+        [
+            "If we wish to optimize, the bottleneck can be exposed to measurement even though it be hidden behind a complex call and a deep stack.",
+            "If we wish to refactor, the duplication can be extracted to abstraction even though it be scattered behind different modules and separate files.",
+            "If we wish to debug, the bug can be isolated to reproduction even though it be concealed behind rare conditions and edge cases.",
+            "If we wish to validate, the corruption can be prevented by constraints even though it be attempted behind malicious input and crafted payloads.",
+            "If we wish to decouple, the dependency can be severed by interfaces even though it be entangled behind tight coupling and circular references."
+        ]
+    ],
+    [
+        "All we need do is attack some other place that he will be obliged to relieve.",
+        [
+            "All we need do is abstract some other layer that it will be obliged to adapt.",
+            "All we need do is optimize some other path that it will be obliged to accelerate.",
+            "All we need do is validate some other boundary that it will be obliged to respect.",
+            "All we need do is cache some other query that it will be obliged to invalidate.",
+            "All we need do is extract some other pattern that it will be obliged to generalize."
+        ]
+    ],
+    [
+        "If we do not wish to fight, we can prevent the enemy from engaging us even though the lines of our encampment be merely traced out on the ground.",
+        [
+            "If we do not wish to couple, we can prevent the client from depending on us even though the bounds of our interface be merely sketched out in the contract.",
+            "If we do not wish to mutate, we can prevent the caller from modifying us even though the shape of our state be merely exposed through the API.",
+            "If we do not wish to break, we can prevent the user from corrupting us even though the rules of our invariants be merely documented in the specification.",
+            "If we do not wish to leak, we can prevent the consumer from accessing us even though the structure of our internals be merely visible in the implementation.",
+            "If we do not wish to slow, we can prevent the system from blocking us even though the flow of our execution be merely threaded through the runtime."
+        ]
+    ],
+    [
+        "All we need do is to throw something odd and unaccountable in his way.",
+        [
+            "All we need do is to introduce some unexpected and unintuitive in their path.",
+            "All we need do is to inject some edge case and boundary in their flow.",
+            "All we need do is to insert some constraint and validation in their input.",
+            "All we need do is to place some abstraction and indirection in their access.",
+            "All we need do is to add some async and concurrency in their execution."
+        ]
+    ],
+    [
+        "By discovering the enemy's dispositions and remaining invisible ourselves, we can keep our forces concentrated, while the enemy's must be divided.",
+        [
+            "By profiling the system's bottlenecks and remaining modular ourselves, we can keep our optimizations focused, while the complexity's must be distributed.",
+            "By tracing the code's dependencies and remaining decoupled ourselves, we can keep our components isolated, while the coupling's must be separated.",
+            "By measuring the function's performance and remaining efficient ourselves, we can keep our algorithms optimized, while the slowness's must be eliminated.",
+            "By testing the module's behavior and remaining correct ourselves, we can keep our logic verified, while the bugs' must be reproduced.",
+            "By validating the input's constraints and remaining robust ourselves, we can keep our invariants maintained, while the corruption's must be prevented."
+        ]
+    ],
+    [
+        "We can form a single united body, while the enemy must split up into fractions.",
+        [
+            "We can form a single cohesive module, while the concerns must split up into layers.",
+            "We can form a single abstract interface, while the implementations must split up into variants.",
+            "We can form a single cached result, while the computations must split up into shards.",
+            "We can form a single validated contract, while the inputs must split up into cases.",
+            "We can form a single decoupled boundary, while the dependencies must split up into services."
+        ]
+    ],
+    [
+        "Hence there will be a whole pitted against separate parts of a whole, which means that we shall be many to the enemy's few.",
+        [
+            "Hence there will be a tested suite pitted against separate bugs of a codebase, which means that we shall be verified to the error's unhandled.",
+            "Hence there will be an optimized algorithm pitted against separate bottlenecks of a system, which means that we shall be fast to the slowness's unaddressed.",
+            "Hence there will be a decoupled architecture pitted against separate tangles of a monolith, which means that we shall be modular to the coupling's unresolved.",
+            "Hence there will be a validated boundary pitted against separate exploits of an attack, which means that we shall be robust to the vulnerability's unpatched.",
+            "Hence there will be an abstracted interface pitted against separate details of an implementation, which means that we shall be general to the concrete's unextracted."
+        ]
+    ],
+    [
+        "And if we are able thus to attack an inferior force with a superior one, our opponents will be in dire straits.",
+        [
+            "And if we are able thus to optimize a slow path with an efficient algorithm, our bottlenecks will be in dire elimination.",
+            "And if we are able thus to refactor a complex module with a simple extraction, our technical debt will be in dire reduction.",
+            "And if we are able thus to validate a dangerous input with a strict constraint, our vulnerabilities will be in dire prevention.",
+            "And if we are able thus to decouple a tangled component with a clean boundary, our coupling will be in dire separation.",
+            "And if we are able thus to abstract a repeated pattern with a general interface, our duplication will be in dire consolidation."
+        ]
+    ],
+    [
+        "The spot where we intend to fight must not be made known; for then the enemy will have to prepare against a possible attack at several different points.",
+        [
+            "The module where we intend to extend must not be made public; for then the client will have to adapt against a possible change at several different interfaces.",
+            "The function where we intend to optimize must not be made obvious; for then the system will have to compensate against a possible slowness at several different paths.",
+            "The layer where we intend to refactor must not be made visible; for then the architecture will have to stabilize against a possible breakage at several different boundaries.",
+            "The component where we intend to replace must not be made apparent; for then the design will have to decouple against a possible dependency at several different contracts.",
+            "The interface where we intend to change must not be made explicit; for then the implementation will have to version against a possible incompatibility at several different protocols."
+        ]
+    ],
+    [
+        "And his forces being thus distributed in many directions, the numbers we shall have to face at any given point will be proportionately fewer.",
+        [
+            "And its concerns being thus separated in many layers, the complexity we shall have to address at any given module will be proportionately simpler.",
+            "And its load being thus distributed in many shards, the bottleneck we shall have to optimize at any given service will be proportionately smaller.",
+            "And its responsibilities being thus divided in many components, the coupling we shall have to decouple at any given interface will be proportionately looser.",
+            "And its validations being thus enforced in many boundaries, the corruption we shall have to prevent at any given layer will be proportionately safer.",
+            "And its abstractions being thus generalized in many patterns, the duplication we shall have to extract at any given codebase will be proportionately lesser."
+        ]
+    ],
+    [
+        "For should the enemy strengthen his van, he will weaken his rear; should he strengthen his rear, he will weaken his van.",
+        [
+            "For should the system optimize its throughput, it will sacrifice its latency; should it optimize its latency, it will sacrifice its throughput.",
+            "For should the design increase its flexibility, it will reduce its simplicity; should it increase its simplicity, it will reduce its flexibility.",
+            "For should the algorithm improve its speed, it will expand its memory; should it improve its memory, it will slow its speed.",
+            "For should the architecture enhance its scalability, it will weaken its consistency; should it enhance its consistency, it will weaken its scalability.",
+            "For should the interface broaden its generality, it will complicate its usability; should it broaden its usability, it will narrow its generality."
+        ]
+    ],
+    [
+        "Should he strengthen his left, he will weaken his right; should he strengthen his right, he will weaken his left. If he sends reinforcements everywhere, he will everywhere be weak.",
+        [
+            "Should it optimize its reads, it will slow its writes; should it optimize its writes, it will slow its reads. If it indexes every column, it will everywhere be bloated.",
+            "Should it increase its features, it will reduce its simplicity; should it increase its simplicity, it will reduce its features. If it satisfies every requirement, it will everywhere be complex.",
+            "Should it enhance its security, it will compromise its usability; should it enhance its usability, it will compromise its security. If it validates every input, it will everywhere be restrictive.",
+            "Should it improve its abstraction, it will obscure its clarity; should it improve its clarity, it will concretize its abstraction. If it generalizes every pattern, it will everywhere be indirect.",
+            "Should it maximize its decoupling, it will fragment its cohesion; should it maximize its cohesion, it will tighten its coupling. If it separates every concern, it will everywhere be scattered."
+        ]
+    ]
+]
+</script>
+<style>
+p {
+    font-style: italic;
+    line-height: 1.4;
+    padding: 1em;
+    margin: 0;
+    }
+body {
+    font-size: 18pt;
+    max-width: 80ex;
+    margin: 1em auto;
+    text-align: center;
+    text-wrap-style: balance;
+    }
+</style>
+<body>
+<script>
+quotes.sort(() => Math.random() - 0.5)
+let q, title, hold = 0
+for (const item of quotes) {
+    if (hold) -- hold
+    if (!hold && Math.random() < 0.1) {
+        title = null
+        q = item[0]
+        hold = 3
+        }
+    else {
+        title = item[0]
+        q = item[1]
+        q = q[Math.floor(Math.random() * q.length)]
+        }
+    document.write("<p" + (title ? ` title="${title}"` : "") + `>${q}</p>\n`)
+    }
+</script>
+</body>
