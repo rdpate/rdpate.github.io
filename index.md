@@ -8,6 +8,7 @@ title: rdpate.github.io
 
 ### Reference
 * [SQL Notes](sql-notes)
+* [Ida Tzu](ida-tzu)
 
 ### Ideas, Drafts, WIP
 * [Party Follow-up Status](investigation-status)
